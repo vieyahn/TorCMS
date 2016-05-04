@@ -2,7 +2,7 @@
 
 import tornado.web
 from jinja2 import Environment, FileSystemLoader, TemplateNotFound
-from torcms.torlite.model.muser import MUser
+from torcms.model.muser import MUser
 import config
 
 

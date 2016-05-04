@@ -1,12 +1,12 @@
 # -*- coding:utf-8 -*-
 
 import tornado.web
-
 from torcms.applite.model.app_model import MApp
 from torcms.applite.model.app_rel_model import MAppRel
-from torcms.applite.model.collect_model import MCollect
 from torcms.applite.model.usage_model import MUsage
+
 from torcms.core.base_handler import BaseHandler
+from torcms.model.collect_model import MCollect
 
 
 class CollectHandler(BaseHandler, ):
@@ -16,8 +16,6 @@ class CollectHandler(BaseHandler, ):
         self.musage = MUsage()
         self.mrel = MAppRel()
         self.mcollect = MCollect()
-
-
 
     def get(self, url_str=''):
         if len(url_str) > 0:

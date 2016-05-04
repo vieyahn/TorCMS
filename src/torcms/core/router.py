@@ -1,21 +1,22 @@
 # -*- coding:utf-8 -*-
 
 
-from torcms.torlite.handlers.admin_handler import AdminHandler
-from torcms.torlite.handlers.category_handler import CategoryHandler
-from torcms.torlite.handlers.entity_handler import EntityHandler
-from torcms.torlite.handlers.index import IndexHandler
-from torcms.torlite.handlers.label_handler import LabelHandler
-from torcms.torlite.handlers.link_handler import LinkHandler, LinkAjaxHandler
-from torcms.torlite.handlers.maintain_handler import MaintainCategoryHandler,MaintainCategoryAjaxHandler
-from torcms.torlite.handlers.page_handler import PageHandler, PageAjaxHandler
-from torcms.torlite.handlers.post2reply_handler import Post2ReplyHandler
-from torcms.torlite.handlers.post_handler import PostHandler,PostAjaxHandler
-from torcms.torlite.handlers.reply_handler import ReplyHandler
-from torcms.torlite.handlers.search_handler import SearchHandler
-from torcms.torlite.handlers.user_handler import UserHandler, UserAjaxHandler
-from torcms.torlite.handlers.widget_handler import WidgetHandler
-from torcms.torlite.handlers.wiki_handler import WikiHandler
+from torcms.handlers.admin_handler import AdminHandler
+from torcms.handlers.category_handler import CategoryHandler
+from torcms.handlers.entity_handler import EntityHandler
+from torcms.handlers.index import IndexHandler
+from torcms.handlers.label_handler import LabelHandler
+from torcms.handlers.link_handler import LinkHandler, LinkAjaxHandler
+from torcms.handlers.maintain_handler import MaintainCategoryHandler,MaintainCategoryAjaxHandler
+from torcms.handlers.page_handler import PageHandler, PageAjaxHandler
+from torcms.handlers.post2reply_handler import Post2ReplyHandler
+from torcms.handlers.reply_handler import ReplyHandler
+from torcms.handlers.search_handler import SearchHandler
+from torcms.handlers.user_handler import UserHandler, UserAjaxHandler
+from torcms.handlers.widget_handler import WidgetHandler
+from torcms.handlers.wiki_handler import WikiHandler
+
+from torcms.handlers.post_handler import PostHandler,PostAjaxHandler
 
 urls = [
 

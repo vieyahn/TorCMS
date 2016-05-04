@@ -2,10 +2,12 @@
 
 import tornado.escape
 import tornado.web
+
 from torcms.core.base_handler import BaseHandler
-from torcms.claslite.model.catalog_model import MCatalog as MPycateCatalog
+from torcms.model.mappcatalog import MAppCatalog as   MPycateCatalog
+
 from torcms.core import tools
-from torcms.torlite.model.muser import MUser
+from torcms.model.muser import MUser
 
 
 class MaintainPycateCategoryHandler(BaseHandler):

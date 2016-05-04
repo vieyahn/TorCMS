@@ -1,10 +1,10 @@
 # -*- coding:utf-8 -*-
 
 import tornado.web
-
 from torcms.applite.model.app_model import MApp
-from torcms.applite.model.usage_model import MUsage
+
 from torcms.core.base_handler import BaseHandler
+from torcms.model.usage_model import MUsage
 
 
 class UserListHandler(BaseHandler):

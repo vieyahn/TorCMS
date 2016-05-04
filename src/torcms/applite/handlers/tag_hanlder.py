@@ -1,12 +1,12 @@
 # -*- coding:utf-8 -*-
 
 import tornado.escape
-
-import config
-from torcms.applite.model.app2catalog_model import MApp2Catalog
 from torcms.applite.model.app_model import MApp
 from torcms.applite.model.mappcatalog import MAppCatalog
+
+import config
 from torcms.core.base_handler import BaseHandler
+from torcms.model.app2catalog_model import MApp2Catalog
 
 
 class TagHandler(BaseHandler):
