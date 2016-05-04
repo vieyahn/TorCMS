@@ -162,9 +162,12 @@ class AppHandler(BaseHandler):
 
         ext_dic['def_uid'] = str(uid)
         ext_dic['catid'] = [post_data['catid'][0]]
+
         self.mapp.modify_meta(uid, post_data, extinfo=ext_dic)
         self.update_catalog( uid )
         self.update_tag( uid )
+
+        # Todo: 下面这行应改成self.redirect('/list/{0}'.format(ext_dic['catid'][0]))
         self.redirect('/{0}/{1}'.format(config.app_url_name, uid ))
 
 

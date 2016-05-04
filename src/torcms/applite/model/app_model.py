@@ -158,6 +158,7 @@ class MApp(MAppBase):
             ).where(self.tab_app.uid == uid)
             entry.execute()
         else:
+
             entry = self.add_meta(uid, data_dic, extinfo)
             return entry
         return (uid)
@@ -181,6 +182,7 @@ class MApp(MAppBase):
                 #zoom_min=data_dic['zoom_min'][0],
                 # zoom_current=data_dic['zoom_current'][0],
             )
+
 
 
 
