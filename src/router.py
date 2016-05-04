@@ -14,11 +14,11 @@ import torcms.claslite.handlers.publish_handler
 
 
 urls = [
-    ("/info/(.*)", torcms.claslite.handlers.info_handler.InfoHandler, dict(hinfo={})),
+    # ("/info/(.*)", torcms.claslite.handlers.info_handler.InfoHandler, dict(hinfo={})),
     ("/edit/(.*)", torcms.claslite.handlers.edit_handler.EditHandler, dict(hinfo={})),
-    ("/delete/(.*)", torcms.claslite.handlers.delete_handler.DeleteHandler, dict(hinfo={})),
+    # ("/delete/(.*)", torcms.claslite.handlers.delete_handler.DeleteHandler, dict(hinfo={})),
     ("/maintain/claslitecategory/(.*)", MaintainPycateCategoryHandler, dict()),
-    ("/add/(.*)", torcms.claslite.handlers.add_handler.AddHandler, dict(hinfo={})),
+    # ("/add/(.*)", torcms.claslite.handlers.add_handler.AddHandler, dict(hinfo={})),
     ("/list/(.*)", torcms.claslite.handlers.list_handler.ListHandler, dict(hinfo={})),
     ("/widget/(.*)", torcms.claslite.handlers.widget_handler.WidgetHandler, dict(hinfo={})),
     ("/publish/(.*)", torcms.claslite.handlers.publish_handler.PublishHandler, dict(hinfo={})),

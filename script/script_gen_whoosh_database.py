@@ -12,7 +12,7 @@ from whoosh.qparser import QueryParser
 
 from jieba.analyse import ChineseAnalyzer
 
-# sys.path.append('/opt/torlite/yunsuan')
+sys.path.append('../src')
 
 from torcms.torlite.model.mpost import MPost
 from torcms.applite.model.app_model import MApp

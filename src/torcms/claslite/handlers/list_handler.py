@@ -59,9 +59,9 @@ class ListHandler(BaseHandler):
         num = (len(url_arr) - 2) // 2
 
         if sig.endswith('00'):
-            condition['parentid'] = [sig]
+            condition['def_cate_pid'] = sig
         else:
-            condition['catid'] = [sig]
+            condition['def_cate_uid'] = sig
 
         fenye_num = 1
         for ii in range(num):

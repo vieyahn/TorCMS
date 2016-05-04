@@ -2,7 +2,7 @@
 
 import os
 import sys
-
+import config
 from torcms.torlite.modules.modef import core_modules as modules
 from torcms.claslite.module.modules import *
 from urls import urls
@@ -19,7 +19,6 @@ cur_modues = {'Topline': ToplineModule,
               }
 
 from torcms.applite.modules.extends import *
-from maplet.modules.map_modules import *
 
 modules['rel_post2app'] = rel_post2app
 modules['rel_app2post'] = rel_app2post
@@ -41,8 +40,6 @@ modules['app_most_used_by_cat'] = app_most_used_by_cat
 modules['app_least_used_by_cat'] = app_least_use_by_cat
 modules['app_user_recent_by_cat'] = app_user_recent_by_cat
 
-modules['app_layout'] = app_layout
-modules['app_json'] = app_json
 modules['app_catalog_of'] = app_catalog_of
 
 modules = dict(modules, **cur_modues)

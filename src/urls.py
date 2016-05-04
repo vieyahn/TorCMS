@@ -14,14 +14,10 @@ from torcms.applite.handlers.evaluation_handler import EvaluationHandler
 from torcms.applite.handlers.rel_handler import RelHandler
 from torcms.applite.handlers.app2reply_handler import App2ReplyHandler
 from torcms.applite.handlers.redirect_handler import RedirectHandler
-from maplet.handlers.overlay_handler import MapOverlayHandler
 
-from maplet.handlers.geojson import GeoJsonHandler
-from maplet.handlers.layout_handler import LayoutHandler
 from router import urls as info_urls
 urls = router.urls + info_urls + [
     ("/collect/(.*)", CollectHandler, dict()),
-    ('/map/overlay/(.*)', MapOverlayHandler, dict()),
     ('/rel/(.*)', RelHandler, dict()),
     ("/user_list/(.*)", UserListHandler, dict()),
     ("/tag/(.*)", TagHandler, dict()),
@@ -34,7 +30,5 @@ urls = router.urls + info_urls + [
 
     ('/map/toreply/(.*)', App2ReplyHandler, dict()),
     ('/map/(.*)', AppHandler, dict()),
-    ('/geojson/(.*)', GeoJsonHandler, dict()),
-    ('/layout/(.*)', LayoutHandler, dict()),
     ("/(.*)", RedirectHandler, dict()),
 ]
