@@ -3,24 +3,24 @@
 import torcms.handlers.info_handler
 import torcms.handlers.info_list_handler
 import torcms.handlers.info_publish_handler
-from torcms.handlers.info_tag_hanler import InfoTagHandler
-from torcms.claslite.handlers.maintain_handler import MaintainPycateCategoryHandler
-from torcms.handlers.meta_handler import MetaHandler
 from torcms.handlers.admin_handler import AdminHandler
 from torcms.handlers.category_handler import CategoryHandler
 from torcms.handlers.entity_handler import EntityHandler
 from torcms.handlers.index import IndexHandler
+from torcms.handlers.info_tag_hanler import InfoTagHandler
 from torcms.handlers.label_handler import LabelHandler
 from torcms.handlers.link_handler import LinkHandler, LinkAjaxHandler
 from torcms.handlers.maintain_handler import MaintainCategoryHandler,MaintainCategoryAjaxHandler
+from torcms.handlers.maintain_info_handler import MaintainPycateCategoryHandler
+from torcms.handlers.meta_handler import MetaHandler
 from torcms.handlers.page_handler import PageHandler, PageAjaxHandler
 from torcms.handlers.post2reply_handler import Post2ReplyHandler
+from torcms.handlers.post_handler import PostHandler,PostAjaxHandler
 from torcms.handlers.reply_handler import ReplyHandler
 from torcms.handlers.search_handler import SearchHandler
 from torcms.handlers.user_handler import UserHandler, UserAjaxHandler
 from torcms.handlers.widget_handler import WidgetHandler
 from torcms.handlers.wiki_handler import WikiHandler
-from torcms.handlers.post_handler import PostHandler,PostAjaxHandler
 
 urls = [
 
