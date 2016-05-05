@@ -1,6 +1,11 @@
 # -*- coding:utf-8 -*-
 
-
+import torcms.handlers.info_handler
+import torcms.handlers.info_list_handler
+import torcms.handlers.info_publish_handler
+from torcms.handlers.info_tag_hanler import InfoTagHandler
+from torcms.claslite.handlers.maintain_handler import MaintainPycateCategoryHandler
+from torcms.handlers.meta_handler import MetaHandler
 from torcms.handlers.admin_handler import AdminHandler
 from torcms.handlers.category_handler import CategoryHandler
 from torcms.handlers.entity_handler import EntityHandler
@@ -15,7 +20,6 @@ from torcms.handlers.search_handler import SearchHandler
 from torcms.handlers.user_handler import UserHandler, UserAjaxHandler
 from torcms.handlers.widget_handler import WidgetHandler
 from torcms.handlers.wiki_handler import WikiHandler
-
 from torcms.handlers.post_handler import PostHandler,PostAjaxHandler
 
 urls = [
@@ -42,5 +46,13 @@ urls = [
     ("/reply/(.*)", ReplyHandler, dict()),
 
     ("/widget/(.*)", WidgetHandler, dict(hinfo={})),
+
+    ('/meta/(.*)', MetaHandler, dict()),
+    ("/info/(.*)", torcms.handlers.info_handler.InfoHandler, dict(hinfo={})),
+    ("/maintain/claslitecategory/(.*)", MaintainPycateCategoryHandler, dict()),
+    ("/list/(.*)", torcms.handlers.info_list_handler.InfoListHandler, dict(hinfo={})),
+    ("/publish/(.*)", torcms.handlers.info_publish_handler.InfoPublishHandler, dict(hinfo={})),
+    ('/info_tag/(.*)', InfoTagHandler, dict(hinfo={})),
     ("/", IndexHandler, dict()),
+
 ]
