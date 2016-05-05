@@ -15,8 +15,6 @@ class WikiHandler(BaseHandler):
     def initialize(self):
         self.init()
         self.mwiki = MWiki()
-        # self.mcat = MCatalog()
-        # self.cats = self.mcat.query_all()
         self.mwiki_hist = MWikiHist()
 
 
@@ -123,12 +121,12 @@ class WikiHandler(BaseHandler):
 
         kwd = {
             'pager': '',
-            'cats': self.cats,
+            # 'cats': self.cats,
         }
         self.render('{0}/wiki/wiki_edit.html'.format(self.tmpl_name),
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
-                    tag_infos=self.mcat.query_all(),
+                    # tag_infos=self.mcat.query_all(),
                     dbrec=wiki_rec,
                     cfg  = config.cfg,
                     userinfo = self.userinfo,

@@ -130,18 +130,26 @@ class MetaHandler(BaseHandler):
         else:
             self.render('html/404.html')
             return
-
-        catid = rec_info.extinfo['def_cat_uid']
+        if 'def_cat_uid' in rec_info.extinfo :
+            catid = rec_info.extinfo['def_cat_uid']
+        else:
+            catid = ''
 
         kwd = {
             'def_cat_uid': catid,
-            'parentname': self.mtag.get_by_id(catid[:2] + '00').name,
-            'catname': self.mtag.get_by_id(catid).name,
+            'parentname': self.mtag.get_by_id(catid[:2] + '00').name if catid != '' else '',
+            'catname': self.mtag.get_by_id(catid).name if catid != '' else '',
             'parentlist': self.mtag.get_parent_list(),
             'userip': self.request.remote_ip
 
         }
-        self.render('autogen/edit/edit_{0}.html'.format(catid),
+
+        if catid:
+            tmpl = 'autogen/view/view_{0}.html'.format(catid)
+        else:
+            tmpl = 'tmpl_applite/app/edit.html'
+
+        self.render(tmpl,
                     kwd=kwd,
                     post_info=rec_info,
                     userinfo=self.userinfo,
@@ -181,7 +189,8 @@ class MetaHandler(BaseHandler):
                 post_data[key] = self.get_arguments(key)
 
         ext_dic['def_uid'] = str(uid)
-        ext_dic['def_cat_uid'] = post_data['def_cat_uid'][0]
+        if 'def_cat_uid' in post_data:
+            ext_dic['def_cat_uid'] = post_data['def_cat_uid'][0]
 
         self.mapp.modify_meta(uid, post_data, extinfo=ext_dic)
         self.update_catalog(uid)
@@ -285,7 +294,7 @@ class MetaHandler(BaseHandler):
             }
         return json.dump(output, self)
 
-    # def show_app(self, app_id):
+    # def view_info(self, app_id):
     #     qian = self.get_secure_cookie('map_hist')
     #
     #     post_data = {}

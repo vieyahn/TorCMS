@@ -17,8 +17,6 @@ class Post2ReplyHandler(BaseHandler):
         self.mreply2user = MReply2User()
         self.mpost2reply = MPost2Reply()
 
-
-
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
 

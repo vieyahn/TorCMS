@@ -17,14 +17,14 @@ class InfoPublishHandler(BaseHandler):
         self.redirect('/member/login')
         return (True)
 
-    def get(self, input=''):
-        url_arr = input.split('/')
-        if input == '':
+    def get(self, url_str=''):
+        url_arr = self.parse_url(url_str)
+        if url_str == '':
             self.view_class1()
-        elif len(input) == 4:
-            self.view_class2(input)
-        elif len(input) == 5:
-            self.echo_class2(input)
+        elif len(url_str) == 4:
+            self.view_class2(url_str)
+        elif len(url_str) == 5:
+            self.echo_class2(url_str)
         elif len(url_arr) == 2 and url_arr[1] == 'vip':
             self.view_class2(url_arr[0], 1)
 

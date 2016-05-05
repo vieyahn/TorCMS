@@ -10,6 +10,9 @@ from torcms.model.app2catalog_model import MApp2Catalog
 
 
 class TagHandler(BaseHandler):
+    '''
+    List the infos by the slug of the catalog.
+    '''
     def initialize(self):
         self.init()
 

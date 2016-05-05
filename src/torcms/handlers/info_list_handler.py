@@ -27,13 +27,13 @@ class InfoListHandler(BaseHandler):
         self.minfo = MInfor()
         self.mcat = MCatalog()
 
-    def get(self, input=''):
-        print(input)
+    def get(self, url_str=''):
+        url_arr = self.parse_url(url_str)
 
-        if len(input) == 4:
-            self.list(input)
-        elif len(input) > 4:
-            self.echo_html(input)
+        if len(url_str) == 4:
+            self.list(url_str)
+        elif len(url_str) > 4:
+            self.echo_html(url_str)
         else:
             self.render('html/404.html', kwd = {})
 

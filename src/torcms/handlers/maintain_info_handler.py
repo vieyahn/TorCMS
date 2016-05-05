@@ -21,9 +21,8 @@ class MaintainPycateCategoryHandler(BaseHandler):
             self.userinfo = None
 
     def get(self, url_str=''):
-        if url_str == '':
-            return
-        url_arr = url_str.split('/')
+        url_arr = self.parse_url(url_str)
+
 
         if url_str == 'add':
             self.to_add_class()
@@ -43,10 +42,7 @@ class MaintainPycateCategoryHandler(BaseHandler):
             self.render('html/404.html', kwd=kwd)
 
     def post(self, url_str=''):
-        if url_str == '':
-            return
-
-        url_arr = url_str.split('/')
+        url_arr = self.parse_url(url_str)
 
         if len(url_arr) == 1 and url_str.endswith('.html'):
             self.add_post()

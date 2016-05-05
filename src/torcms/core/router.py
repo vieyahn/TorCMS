@@ -7,6 +7,8 @@ from torcms.handlers.admin_handler import AdminHandler
 from torcms.handlers.category_handler import CategoryHandler
 from torcms.handlers.entity_handler import EntityHandler
 from torcms.handlers.index import IndexHandler
+from torcms.handlers.tag_hanlder import TagHandler
+
 from torcms.handlers.info_tag_hanler import InfoTagHandler
 from torcms.handlers.label_handler import LabelHandler
 from torcms.handlers.link_handler import LinkHandler, LinkAjaxHandler
@@ -22,6 +24,22 @@ from torcms.handlers.user_handler import UserHandler, UserAjaxHandler
 from torcms.handlers.widget_handler import WidgetHandler
 from torcms.handlers.wiki_handler import WikiHandler
 
+from torcms.handlers.index import IndexHandler as  AppIndexHandler
+from torcms.handlers.user_info_list_handler import UserListHandler
+# from torcms.handlers.label_hander import AppLabelHandler
+# from torcms.handlers.labellist_hander import AppLabellistHandler
+from torcms.handlers.collect_handler import CollectHandler
+from torcms.handlers.evaluation_handler import EvaluationHandler
+from torcms.handlers.post_info_relation_handler import RelHandler
+from torcms.handlers.app2reply_handler import App2ReplyHandler
+
+from maplet.handlers.overlay_handler import MapOverlayHandler
+
+from maplet.handlers.map_handler import MapHandler
+from maplet.handlers.geojson import GeoJsonHandler
+from maplet.handlers.layout_handler import LayoutHandler
+
+
 urls = [
 
     ("/label/(.*)", LabelHandler, dict()),
@@ -33,6 +51,7 @@ urls = [
     ("/user/(.*)", UserHandler, dict()),
     ("/post/p/(.*)", PostAjaxHandler, dict()),
     ("/post/(.*)", PostHandler, dict()),
+
 
     ("/maintain/p/category/(.*)", MaintainCategoryAjaxHandler, dict()),
     ("/maintain/category/(.*)", MaintainCategoryHandler, dict()),
@@ -49,10 +68,18 @@ urls = [
 
     ('/meta/(.*)', MetaHandler, dict()),
     ("/info/(.*)", torcms.handlers.info_handler.InfoHandler, dict(hinfo={})),
+    ("/tag/(.*)", TagHandler, dict()),
+
     ("/maintain/claslitecategory/(.*)", MaintainPycateCategoryHandler, dict()),
     ("/list/(.*)", torcms.handlers.info_list_handler.InfoListHandler, dict(hinfo={})),
     ("/publish/(.*)", torcms.handlers.info_publish_handler.InfoPublishHandler, dict(hinfo={})),
     ('/info_tag/(.*)', InfoTagHandler, dict(hinfo={})),
+
+    ("/collect/(.*)", CollectHandler, dict()),
+    ('/rel/(.*)', RelHandler, dict()),
+    ("/user_list/(.*)", UserListHandler, dict()),
+
+    ("/evaluate/(.*)", EvaluationHandler, dict()),
     ("/", IndexHandler, dict()),
 
 ]
