@@ -36,14 +36,13 @@ class InfoHandler( BaseHandler ):
 
         self.minfo = self.mapp
         self.mcat = self.mtag
-        self.template_dir_name = 'tmpl_claslite'
 
 
     def get(self, input=''):
         if len(input) == 4:
             self.show_app(input)
         else:
-            self.render('{0}/404.html'.format(self.template_dir_name))
+            self.render('html/404.html')
 
     def is_viewable(self, info):
         '''
@@ -81,7 +80,10 @@ class InfoHandler( BaseHandler ):
         self.set_secure_cookie('map_hist', (app_id + qian)[:20])
         replys = self.mreply.get_by_id(app_id)
         rec = self.mapp.get_by_uid(app_id)
-        cat_id = rec.extinfo['def_cat_uid']
+        if 'def_cat_uid' in rec.extinfo and rec.extinfo['def_cat_uid'] != '':
+            cat_id = rec.extinfo['def_cat_uid']
+        else:
+            cat_id = False
 
         if rec == False:
             kwd = {
@@ -165,8 +167,10 @@ class InfoHandler( BaseHandler ):
         rand_recs = self.mapp.query_random(4 - rel_recs.count() + 2)
 
 
-
-        tmpl = 'autogen/view/view_{0}.html'.format(cat_id)
+        if cat_id:
+            tmpl = 'autogen/view/view_{0}.html'.format(cat_id)
+        else:
+            tmpl = 'tmpl_applite/app/show_map.html'
         self.render(tmpl,
                     kwd=kwd,
                     calc_info=rec,
@@ -183,35 +187,6 @@ class InfoHandler( BaseHandler ):
                     post_info = rec,
                     replys=replys,
                     )
-    # def view(self, uuid):
-    #     info = self.minfo.get_by_uid(uuid)
-    #
-    #     if info is None:
-    #         self.set_status(404)
-    #         self.render('{0}/404_view.html'.format(self.template_dir_name))
-    #         return (False)
-    #     elif self.is_viewable(info):
-    #         pass
-    #     else:
-    #         self.render('{0}/404.html'.format(self.template_dir_name))
-    #         return
-    #
-    #     cat_id = info.extinfo['def_cat_uid']
-    #
-    #     has_image = 0
-    #     # if len(info.extinfo['mymps_img']) > 0:
-    #     #     has_image = 1
-    #
-    #     kwd = {
-    #         'daohangstr': self.gen_daohang_html(cat_id),
-    #         'has_image': has_image,
-    #         'parentid': cat_id[:2] + '00',
-    #         'parentlist': self.mcat.get_parent_list(),
-    #     }
-    #     # self.update_info_when_view(info)
-    #     self.render('autogen/view/view_{0}.html'.format( cat_id),
-    #                 kwd=kwd,
-    #                 post_info=info)
 
 
     def add_relation(self, f_uid, t_uid):
