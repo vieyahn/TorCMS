@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from torcms.applite.model.app_model import MApp
-
+from torcms.model.app_model import MApp
 from torcms.core.base_handler import BaseHandler
 from torcms.model.app_rel_model import MRelApp2Post
 from torcms.model.app_rel_model import MRelPost2App

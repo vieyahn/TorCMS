@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from torcms.torlite.handlers.post2reply_handler import Post2ReplyHandler
+from torcms.handlers.post2reply_handler import Post2ReplyHandler
 from torcms.model.app_reply_model import MApp2Reply
 from torcms.model.mreply import MReply
 from torcms.model.mreply2user import MReply2User

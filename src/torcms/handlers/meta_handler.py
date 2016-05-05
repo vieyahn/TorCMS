@@ -31,7 +31,6 @@ class MetaHandler(BaseHandler):
         self.mrel = MAppRel()
         self.mreply = MApp2Reply()
 
-
     def get(self, url_str=''):
 
         url_arr = self.parse_url(url_str)
@@ -83,10 +82,9 @@ class MetaHandler(BaseHandler):
 
     def catalog(self):
         self.render('tmpl_applite/app/catalog.html',
-                        userinfo=self.userinfo,
-                        kwd={'uid': '',}
-                        )
-
+                    userinfo=self.userinfo,
+                    kwd={'uid': '',}
+                    )
 
     @tornado.web.authenticated
     def user_to_add(self, catid):
@@ -94,7 +92,6 @@ class MetaHandler(BaseHandler):
             pass
         else:
             return
-
 
         uid = tools.get_uu4d()
         while self.mapp.get_by_uid(uid):
@@ -144,10 +141,14 @@ class MetaHandler(BaseHandler):
             'userip': self.request.remote_ip
 
         }
-        self.render('autogen/edit/edit_{0}.html'.format( catid),
+        self.render('autogen/edit/edit_{0}.html'.format(catid),
                     kwd=kwd,
                     post_info=rec_info,
-                    app2label_info=self.mapp2tag.get_by_id(infoid),)
+                    userinfo=self.userinfo,
+                    app_info=rec_info,
+                    unescape=tornado.escape.xhtml_unescape,
+                    tag_infos=[],
+                    app2label_info=self.mapp2tag.get_by_id(infoid), )
 
     # @tornado.web.authenticated
     # def to_edit_app(self, app_id):
@@ -182,13 +183,13 @@ class MetaHandler(BaseHandler):
         ext_dic['def_uid'] = str(uid)
         ext_dic['def_cat_uid'] = post_data['def_cat_uid'][0]
 
-        self.mapp.modify_meta(uid, post_data, extinfo = ext_dic)
+        self.mapp.modify_meta(uid, post_data, extinfo=ext_dic)
         self.update_catalog(uid)
         self.update_tag(uid)
-        self.redirect('/info/{0}'.format( uid))
+        self.redirect('/info/{0}'.format(uid))
 
     @tornado.web.authenticated
-    def add(self, uid = ''):
+    def add(self, uid=''):
         if self.userinfo.privilege[4] == '1':
             pass
         else:
@@ -210,11 +211,10 @@ class MetaHandler(BaseHandler):
         ext_dic['def_uid'] = str(uid)
         ext_dic['def_cat_uid'] = post_data['def_cat_uid'][0]
         self.mapp.modify_meta(uid, post_data, extinfo=ext_dic)
-        self.update_catalog( uid )
-        self.update_tag( uid )
+        self.update_catalog(uid)
+        self.update_tag(uid)
 
-        self.redirect('/list/{0}'.format( ext_dic['def_cat_uid'] ))
-
+        self.redirect('/list/{0}'.format(ext_dic['def_cat_uid']))
 
     @tornado.web.authenticated
     def update_tag(self, signature):

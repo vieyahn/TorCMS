@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 
 import tornado.web
-from torcms.applite.model.app_model import MApp
-from torcms.applite.model.app_rel_model import MAppRel
-from torcms.applite.model.usage_model import MUsage
+from torcms.model.app_model import MApp
+from torcms.model.app_rel_model import MAppRel
+from torcms.model.usage_model import MUsage
 
 from torcms.core.base_handler import BaseHandler
 from torcms.model.collect_model import MCollect

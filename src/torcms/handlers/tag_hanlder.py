@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
 
 import tornado.escape
-from torcms.applite.model.app_model import MApp
-from torcms.applite.model.mappcatalog import MAppCatalog
+from torcms.model.app_model import MApp
+from torcms.model.mappcatalog import MAppCatalog
 
 import config
 from torcms.core.base_handler import BaseHandler

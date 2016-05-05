@@ -55,14 +55,17 @@ class InfoHandler( BaseHandler ):
         '''
         面包屑导航, 可以做成模块
         '''
-        parent_id = cat_id[:2] + '00'
-        parent_catname = self.mcat.get_by_id(parent_id).name
-        catname = self.mcat.get_by_id(cat_id).name
-
-        daohang_str = '<a href="/">数据中心</a>'
-        daohang_str += ' &gt; <a href="/list/{0}">{1}</a>'.format(parent_id, parent_catname)
-        daohang_str += ' &gt; <a href="/list/{0}">{1}</a>'.format(cat_id, catname)
-        return (daohang_str)
+        return ''
+        # parent_id = cat_id[:2] + '00'
+        # parent_catname = self.mcat.get_by_id(parent_id).name
+        # print('=-' * 20)
+        # print(cat_id)
+        # catname = self.mcat.get_by_id(cat_id).name
+        #
+        # daohang_str = '<a href="/">数据中心</a>'
+        # daohang_str += ' &gt; <a href="/list/{0}">{1}</a>'.format(parent_id, parent_catname)
+        # daohang_str += ' &gt; <a href="/list/{0}">{1}</a>'.format(cat_id, catname)
+        # return (daohang_str)
 
     def show_app(self, app_id):
         qian = self.get_secure_cookie('map_hist')

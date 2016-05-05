@@ -3,8 +3,6 @@
 from torcms.modules.base_modules import *
 from torcms.modules.info_modules import *
 
-
-
 core_modules = {'ModuleCatMenu': ModuleCatMenu,
                 'get_footer': get_footer,
                 'previous_post_link': previous_post_link,
@@ -32,6 +30,7 @@ core_modules = {'ModuleCatMenu': ModuleCatMenu,
                 'catalog_pager': catalog_pager,
                 'catalog_of': catalog_of,
                 'app_catalog_of': app_catalog_of,
+                'widget_search': widget_search,
 
                 'Topline': ToplineModule,
                 'Banner': BannerModule,
@@ -41,6 +40,23 @@ core_modules = {'ModuleCatMenu': ModuleCatMenu,
                 'ImgSlide': ImgSlide,
                 'user_info': UserInfo,
                 'vip_info': VipInfo,
+
+                'rel_post2app': rel_post2app,
+                'rel_app2post': rel_app2post,
+                'app_most_used': app_most_used,
+                'app_random_choose': app_random_choose,
+                'app_tags': app_tags,
+                'app_menu': app_menu,
+                'app_user_recent': app_user_recent,
+                'app_user_most': app_user_most,
+                'app_recent_used': app_recent_used,
+                'label_count': label_count,
+
+                'amazon_ad': amazon_ad,
+                'baidu_search': baidu_search,
+                'site_ad': site_ad,
+                'app_most_used_by_cat': app_most_used_by_cat,
+                'app_least_used_by_cat': app_least_use_by_cat,
+                'app_user_recent_by_cat': app_user_recent_by_cat,
+
                 }
-
-
