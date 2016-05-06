@@ -49,22 +49,18 @@ class MPost(MSingleTable):
 
     def insert_data(self, id_post, post_data):
 
-        uu = self.get_by_id(id_post)
-        if uu is None:
-            pass
-        else:
+        cur_rec = self.get_by_id(id_post)
+        if cur_rec :
             return (False)
-
-        cnt_html = tools.markdown2html(post_data['cnt_md'][0])
 
         entry = CabPost.create(
             title=post_data['title'][0],
             date=datetime.datetime.now(),
-            cnt_html=cnt_html,
+            cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
+            cnt_html= tools.markdown2html(post_data['cnt_md'][0]) ,
             uid=id_post,
             time_create=time.time(),
             user_name=post_data['user_name'],
-            cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
             time_update=time.time(),
             view_count=1,
             logo=post_data['logo'][0],
@@ -153,7 +149,3 @@ class MPost(MSingleTable):
         else:
             return query.get()
 
-    def delete_last_post(self):
-        # Todo: delete
-        query = CabPost.select().order_by(CabPost.time_update.desc()).limit(1).get()
-        self.delete(query.uid)

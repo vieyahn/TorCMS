@@ -9,15 +9,16 @@ class MLink(MSingleTable):
             self.tab.create_table()
         except:
             pass
-    # Todo: update_time 参数需要去掉
-    def update(self, uid, post_data, update_time=False):
+
+    def update(self, uid, post_data):
         entry = CabLink.update(
-                name=post_data['name'][0],
-                link=post_data['link'][0],
-                order=post_data['order'][0],
-                logo = post_data['logo'][0],
-            ).where(CabLink.uid == uid)
+            name=post_data['name'][0],
+            link=post_data['link'][0],
+            order=post_data['order'][0],
+            logo=post_data['logo'][0],
+        ).where(CabLink.uid == uid)
         entry.execute()
+
     def insert_data(self, id_link, post_data):
         uu = self.get_by_id(id_link)
         if uu is None:
@@ -28,10 +29,10 @@ class MLink(MSingleTable):
             name=post_data['name'][0],
             link=post_data['link'][0],
             order=post_data['order'][0],
-            logo = post_data['logo'][0],
+            logo=post_data['logo'][0],
             uid=id_link,
         )
-        return ( id_link )
+        return (id_link)
 
     def query_link(self, num):
-        return self.tab.select().limit(num).order_by( self.tab.order )
+        return self.tab.select().limit(num).order_by(self.tab.order)

@@ -77,122 +77,115 @@ class InfoHandler(BaseHandler):
             }
         return json.dump(output, self)
 
-    def gen_daohang_html(self, cat_id):
+    def view_info(self, info_id):
         '''
-        面包屑导航, 可以做成模块
+        Render the info
+        :param info_id:
+        :return: Nonthing.
         '''
-        return ''
-        # parent_id = cat_id[:2] + '00'
-        # parent_catname = self.mcat.get_by_id(parent_id).name
-        # print('=-' * 20)
-        # print(cat_id)
-        # catname = self.mcat.get_by_id(cat_id).name
-        #
-        # daohang_str = '<a href="/">数据中心</a>'
-        # daohang_str += ' &gt; <a href="/list/{0}">{1}</a>'.format(parent_id, parent_catname)
-        # daohang_str += ' &gt; <a href="/list/{0}">{1}</a>'.format(cat_id, catname)
-        # return (daohang_str)
 
-    def view_info(self, app_id):
-        qian = self.get_secure_cookie('map_hist')
+        rec = self.minfo.get_by_uid(info_id)
 
-        post_data = {}
-        for key in self.request.arguments:
-            post_data[key] = self.get_arguments(key)
-
-        if qian:
-            qian = qian.decode('utf-8')
+        if rec:
+            pass
         else:
-            qian = ''
-        self.set_secure_cookie('map_hist', (app_id + qian)[:20])
-        replys = self.mreply.get_by_id(app_id)
-        rec = self.minfo.get_by_uid(app_id)
-        if 'def_cat_uid' in rec.extinfo and rec.extinfo['def_cat_uid'] != '':
-            cat_id = rec.extinfo['def_cat_uid']
-        else:
-            cat_id = False
-
-        if rec == False:
             kwd = {
-                'info': '您要找的云算应用不存在。',
+                'info': '您要找的信息不存在。',
             }
-            self.render('html/404.html', kwd=kwd,
+            self.render('html/404.html',
+                        kwd=kwd,
                         userinfo=self.userinfo, )
             return False
 
-        last_map_id = self.get_secure_cookie('use_app_uid')
-
-        if last_map_id:
-            last_map_id = last_map_id.decode('utf-8')
-
-        self.set_secure_cookie('use_app_uid', app_id)
-
-        if last_map_id and self.minfo.get_by_uid(last_map_id):
-            self.add_relation(last_map_id, app_id)
-
+        replys = self.mreply.get_by_id(info_id)
+        rel_recs = self.mrel.get_app_relations(rec.uid, 4)
+        rand_recs = self.minfo.query_random(4 - rel_recs.count() + 2)
+        self.chuli_cookie_relation(info_id)
         cookie_str = tools.get_uuid()
+
         kwd = {
             'pager': '',
             'url': self.request.uri,
             'cookie_str': cookie_str,
-            'marker': 1 if 'marker' in post_data  else 0,
-            'geojson': post_data['gson'][0] if 'gson' in post_data else '',
-            'signature': app_id,
+
+            'signature': info_id,
             'tdesc': '',
-            'eval_0': self.mevaluation.app_evaluation_count(app_id, 0),
-            'eval_1': self.mevaluation.app_evaluation_count(app_id, 1),
+            'eval_0': self.mevaluation.app_evaluation_count(info_id, 0),
+            'eval_1': self.mevaluation.app_evaluation_count(info_id, 1),
             'site_url': config.site_url,
             'login': 1 if self.get_current_user() else 0,
-
-            'daohangstr': self.gen_daohang_html(cat_id),
-
             'has_image': 0,
             'parentlist': self.mcat.get_parent_list(),
-
         }
-
-        self.minfo.view_count_increase(app_id)
-
+        self.minfo.view_count_increase(info_id)
         if self.get_current_user():
-            self.musage.add_or_update(self.userinfo.uid, app_id)
-
+            self.musage.add_or_update(self.userinfo.uid, info_id)
         self.set_cookie('user_pass', cookie_str)
-
-        map_hist = []
-        if self.get_secure_cookie('map_hist'):
-            for xx in range(0, len(self.get_secure_cookie('map_hist').decode('utf-8')), 4):
-                map_hist.append(self.get_secure_cookie('map_hist').decode('utf-8')[xx: xx + 4])
-
-        rel_recs = self.mrel.get_app_relations(rec.uid, 4)
-
-        rand_recs = self.minfo.query_random(4 - rel_recs.count() + 2)
-
-        if cat_id:
-            tmpl = 'autogen/view/view_{0}.html'.format(cat_id)
-        else:
-            tmpl = 'tmpl_applite/app/show_map.html'
+        tmpl = self.get_tmpl_name(rec)
         self.render(tmpl,
-                    kwd=kwd,
+                    kwd=dict(kwd, **self.extra_kwd(rec)),
                     calc_info=rec,
                     userinfo=self.userinfo,
                     relations=rel_recs,
                     rand_recs=rand_recs,
                     unescape=tornado.escape.xhtml_unescape,
                     ad_switch=random.randint(1, 18),
-                    tag_info=self.mapp2tag.get_by_id(app_id),
+                    tag_info=self.mapp2tag.get_by_id(info_id),
                     recent_apps=self.musage.query_recent(self.get_current_user(), 6)[1:],
-                    map_hist=map_hist,
                     post_info=rec,
                     replys=replys,
                     )
 
+    def extra_kwd(self, info_rec):
+        '''
+        The additional information.
+        :param info_rec:
+        :return: directory.
+        '''
+        return {}
+
+    def chuli_cookie_relation(self, app_id):
+        '''
+        The current Info and the Info viewed last should have some relation.
+        And the last viewed Info could be found from cookie.
+        :param app_id: the current app
+        :return: None
+        '''
+        last_map_id = self.get_secure_cookie('use_app_uid')
+        if last_map_id:
+            last_map_id = last_map_id.decode('utf-8')
+        self.set_secure_cookie('use_app_uid', app_id)
+        if last_map_id and self.minfo.get_by_uid(last_map_id):
+            self.add_relation(last_map_id, app_id)
+
+    def get_tmpl_name(self, rec):
+        '''
+        According to the application, each info of it's classification could has different temaplate.
+        :param rec: the App record.
+        :return: the temaplte path.
+        '''
+        if 'def_cat_uid' in rec.extinfo and rec.extinfo['def_cat_uid'] != '':
+            cat_id = rec.extinfo['def_cat_uid']
+        else:
+            cat_id = False
+        if cat_id:
+            tmpl = 'autogen/view/view_{0}.html'.format(cat_id)
+        else:
+            tmpl = 'tmpl_applite/app/show_map.html'
+        return tmpl
+
     def add_relation(self, f_uid, t_uid):
-        if False == self.minfo.get_by_uid(t_uid):
+        '''
+        Add the relation. And the from and to, should have different weight.
+        :param f_uid:
+        :param t_uid:
+        :return: return True if the relation has been succesfully added.
+        '''
+        if self.minfo.get_by_uid(t_uid):
+            pass
+        else:
             return False
         if f_uid == t_uid:
-            '''
-            关联其本身
-            '''
             return False
         self.mrel.add_relation(f_uid, t_uid, 2)
         self.mrel.add_relation(t_uid, f_uid, 1)
