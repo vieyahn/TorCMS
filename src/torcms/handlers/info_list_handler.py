@@ -23,7 +23,7 @@ redisvr = redis.Redis(host='localhost', port=6379, db=0, password=None, socket_t
 class InfoListHandler(BaseHandler):
     def initialize(self, hinfo=''):
         self.init()
-        self.template_dir_name = 'tmpl_claslite'
+        self.template_dir_name = 'infor'
         self.minfo = MInfor()
         self.mcat = MCatalog()
 

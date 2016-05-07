@@ -25,7 +25,7 @@ redisvr = redis.Redis(host='localhost',
 class InfoTagHandler(BaseHandler):
     def initialize(self, hinfo=''):
         self.init()
-        self.template_dir_name = 'tmpl_claslite'
+        self.template_dir_name = 'infor'
         self.minfo = MInfor()
         self.mcat = MCatalog()
 

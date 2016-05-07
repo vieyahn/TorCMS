@@ -93,6 +93,7 @@ class MCatalog(MSingleTable):
         entry.execute()
 
     def insert_data(self, id_post, post_data):
+
         uu = self.get_by_id(id_post)
         if uu is None:
             pass
@@ -104,6 +105,6 @@ class MCatalog(MSingleTable):
             name=post_data['name'][0],
             slug=post_data['slug'][0],
             order=post_data['order'][0],
-            uid=post_data['uid'][0],
+            uid= id_post,
         )
         return (entry.uid)

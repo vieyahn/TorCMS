@@ -13,7 +13,7 @@ from config import menu_arr
 
 class reply_panel(tornado.web.UIModule):
     def render(self, sig, uid, userinfo, replys):
-        return self.render_string('tmpl_torlite/modules/reply_panel.html',
+        return self.render_string('doc/modules/reply_panel.html',
                                   sig=sig,
                                   uid=uid,
                                   replys=replys,
@@ -30,7 +30,7 @@ class get_footer(tornado.web.UIModule):
         kwd = {
             'cats': all_cats,
         }
-        return self.render_string('tmpl_torlite/modules/menu.html',
+        return self.render_string('doc/modules/menu.html',
                                   kwd=kwd)
 
 
@@ -53,7 +53,7 @@ class post_most_view(tornado.web.UIModule):
             'with_date': with_date,
             'with_catalog': with_catalog,
         }
-        return self.render_string('tmpl_torlite/modules/post_list.html', recs=recs, kwd=kwd)
+        return self.render_string('doc/modules/post_list.html', recs=recs, kwd=kwd)
 
 
 class post_random(tornado.web.UIModule):
@@ -64,7 +64,7 @@ class post_random(tornado.web.UIModule):
             'with_date': with_date,
             'with_catalog': with_catalog,
         }
-        return self.render_string('tmpl_torlite/modules/post_list.html',
+        return self.render_string('doc/modules/post_list.html',
                                   recs=recs, kwd=kwd)
 
 
@@ -76,7 +76,7 @@ class post_cat_random(tornado.web.UIModule):
             'with_date': with_date,
             'with_catalog': with_catalog,
         }
-        return self.render_string('tmpl_torlite/modules/post_list.html',
+        return self.render_string('doc/modules/post_list.html',
                                   recs=recs, kwd=kwd)
 
 
@@ -88,14 +88,14 @@ class post_recent_most_view(tornado.web.UIModule):
             'with_date': with_date,
             'with_catalog': with_catalog,
         }
-        return self.render_string('tmpl_torlite/modules/post_list.html', recs=recs, kwd=kwd)
+        return self.render_string('doc/modules/post_list.html', recs=recs, kwd=kwd)
 
 class catalog_of(tornado.web.UIModule):
     def render(self, uid_with_str):
         self.mcat = MCatalog()
         recs = self.mcat.query_uid_starts_with( uid_with_str )
 
-        return self.render_string('tmpl_torlite/modules/catalog_of.html',
+        return self.render_string('doc/modules/catalog_of.html',
                                   recs=recs)
 
 class post_recent(tornado.web.UIModule):
@@ -106,7 +106,7 @@ class post_recent(tornado.web.UIModule):
             'with_date': with_date,
             'with_catalog': with_catalog,
         }
-        return self.render_string('tmpl_torlite/modules/post_list.html',
+        return self.render_string('doc/modules/post_list.html',
                                   recs=recs,
                                   unescape=tornado.escape.xhtml_unescape,
                                   kwd=kwd, )
@@ -116,7 +116,7 @@ class link_list(tornado.web.UIModule):
     def render(self, num=10):
         self.mlink = MLink()
         recs = self.mlink.query_link(num)
-        return self.render_string('tmpl_torlite/modules/link_list.html',
+        return self.render_string('doc/modules/link_list.html',
                                   recs=recs,
                                   )
 
@@ -130,7 +130,7 @@ class post_category_recent(tornado.web.UIModule):
             'with_catalog': with_catalog,
             'with_date': with_date,
         }
-        return self.render_string('tmpl_torlite/modules/post_list.html',
+        return self.render_string('doc/modules/post_list.html',
                                   recs=recs,
                                   unescape=tornado.escape.xhtml_unescape,
                                   kwd=kwd, )
@@ -149,7 +149,7 @@ class showout_recent(tornado.web.UIModule):
             'height': height,
         }
 
-        return self.render_string('tmpl_torlite/modules/showout_list.html',
+        return self.render_string('doc/modules/showout_list.html',
                                   recs=recs,
                                   unescape=tornado.escape.xhtml_unescape,
                                   kwd=kwd, )
@@ -254,10 +254,10 @@ class post_tags(tornado.web.UIModule):
 class userinfo_widget(tornado.web.UIModule, tornado.web.RequestHandler):
     def render(self, signature):
         if self.get_secure_cookie("user"):
-            self.render('tmpl_torlite/widget/loginfo.html',
+            self.render('doc/widget/loginfo.html',
                         username=self.get_secure_cookie("user"))
         else:
-            self.render('tmpl_torlite/widget/tologinfo.html',
+            self.render('doc/widget/tologinfo.html',
                         )
 
 
@@ -269,7 +269,7 @@ class ModuleCatMenu(tornado.web.UIModule):
             'cats': all_cats,
             'with_count': with_count,
         }
-        return self.render_string('tmpl_torlite/modules/menu_post.html',
+        return self.render_string('doc/modules/menu_post.html',
                                   kwd=kwd)
 
 
@@ -288,7 +288,7 @@ class TopMenu(tornado.web.UIModule):
 
 class ToplineModule(tornado.web.UIModule):
     def render(self):
-        return self.render_string('tmpl_torlite/modules/topline.html')
+        return self.render_string('doc/modules/topline.html')
 
 class baidu_share(tornado.web.UIModule):
     def render(self):
@@ -322,7 +322,7 @@ class catalog_pager(tornado.web.UIModule):
             'page_next': False if current >= page_num else True,
         }
 
-        return self.render_string('tmpl_torlite/modules/catalog_pager.html',
+        return self.render_string('doc/modules/catalog_pager.html',
                                   kwd = kwd,
                                   cat_slug = cat_slug,
                                   pager_num = page_num,

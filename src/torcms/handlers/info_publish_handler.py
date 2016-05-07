@@ -10,7 +10,7 @@ from torcms.model.mappcatalog import MAppCatalog as  MCatalog
 class InfoPublishHandler(BaseHandler):
     def initialize(self, hinfo=''):
         self.init()
-        self.template_dir_name = 'tmpl_claslite'
+        self.template_dir_name = 'infor'
         self.mcat = MCatalog()
 
     def to_login(self):
@@ -68,7 +68,7 @@ class InfoPublishHandler(BaseHandler):
             'parentid': '0',
             'parentlist': self.mcat.get_parent_list(),
         }
-        self.render('tmpl_claslite/publish/publish.html',
+        self.render('infor/publish/publish.html',
                     kwd=kwd)
 
     @tornado.web.authenticated
@@ -88,5 +88,5 @@ class InfoPublishHandler(BaseHandler):
             'parentid': '0',
             'parentlist': self.mcat.get_parent_list(),
         }
-        self.render('tmpl_claslite/publish/publish2.html',
+        self.render('infor/publish/publish2.html',
                     kwd=kwd)

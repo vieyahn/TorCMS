@@ -192,7 +192,9 @@ class MetaHandler(BaseHandler):
         if 'def_cat_uid' in post_data:
             ext_dic['def_cat_uid'] = post_data['def_cat_uid'][0]
 
-        self.mapp.modify_meta(uid, post_data, extinfo=ext_dic)
+        self.mapp.modify_meta(uid,
+                              post_data,
+                              extinfo=dict(ext_dic, **self.extra_data(post_data)))
         self.update_catalog(uid)
         self.update_tag(uid)
         self.redirect('/info/{0}'.format(uid))
@@ -219,11 +221,22 @@ class MetaHandler(BaseHandler):
 
         ext_dic['def_uid'] = str(uid)
         ext_dic['def_cat_uid'] = post_data['def_cat_uid'][0]
-        self.mapp.modify_meta(uid, post_data, extinfo=ext_dic)
+        self.mapp.modify_meta(uid,
+                              post_data,
+                              extinfo=dict(ext_dic, **self.extra_data(post_data)))
         self.update_catalog(uid)
         self.update_tag(uid)
 
         self.redirect('/list/{0}'.format(ext_dic['def_cat_uid']))
+
+    @tornado.web.authenticated
+    def extra_data(self, post_data):
+        '''
+        The additional information.
+        :param post_data:
+        :return: directory.
+        '''
+        return {}
 
     @tornado.web.authenticated
     def update_tag(self, signature):
@@ -294,121 +307,7 @@ class MetaHandler(BaseHandler):
             }
         return json.dump(output, self)
 
-    # def view_info(self, app_id):
-    #     qian = self.get_secure_cookie('map_hist')
-    #
-    #     post_data = {}
-    #     for key in self.request.arguments:
-    #         post_data[key] = self.get_arguments(key)
-    #
-    #     if qian:
-    #         qian = qian.decode('utf-8')
-    #     else:
-    #         qian = ''
-    #     self.set_secure_cookie('map_hist', (app_id + qian)[:20])
-    #     replys = self.mreply.get_by_id(app_id)
-    #     rec = self.mapp.get_by_uid(app_id)
-    #
-    #     if rec == False:
-    #         kwd = {
-    #             'info': '您要找的云算应用不存在。',
-    #         }
-    #         self.render('html/404.html', kwd=kwd,
-    #                     userinfo = self.userinfo,)
-    #         return False
-    #
-    #     if 'zoom' in post_data:
-    #         rec.zoom_current = post_data['zoom'][0]
-    #     if 'lat' in post_data:
-    #         rec.lat = post_data['lat'][0]
-    #     if 'lon' in post_data:
-    #         rec.lon = post_data['lon'][0]
-    #
-    #     if 'lng' in post_data:
-    #         rec.lon = post_data['lng'][0]
-    #
-    #     last_map_id = self.get_secure_cookie('use_app_uid')
-    #
-    #     if last_map_id:
-    #         last_map_id = last_map_id.decode('utf-8')
-    #
-    #     self.set_secure_cookie('use_app_uid', app_id)
-    #
-    #     if last_map_id and self.mapp.get_by_uid(last_map_id):
-    #         self.add_relation(last_map_id, app_id)
-    #
-    #     cookie_str = tools.get_uuid()
-    #     kwd = {
-    #         'pager': '',
-    #         'url': self.request.uri,
-    #         'cookie_str': cookie_str,
-    #         'marker': 1 if 'marker' in post_data  else 0,
-    #         'geojson': post_data['gson'][0] if 'gson' in post_data else '',
-    #         'signature': app_id,
-    #         'tdesc': '',
-    #         'eval_0': self.mevaluation.app_evaluation_count(app_id, 0),
-    #         'eval_1': self.mevaluation.app_evaluation_count(app_id, 1),
-    #         'site_url': config.site_url,
-    #         'login': 1 if self.get_current_user() else 0,
-    #
-    #     }
-    #
-    #     self.mapp.view_count_increase(app_id)
-    #
-    #     if self.get_current_user():
-    #         self.musage.add_or_update(self.userinfo.uid, app_id)
-    #
-    #         # json_recs = self.mjson.query_by_app(app_id, self.userinfo.uid)
-    #         # layout_recs = self.mlayout.query_by_app(app_id, self.userinfo.uid)
-    #         #
-    #         # layout_links = []
-    #         #
-    #         # for layout_rec in layout_recs:
-    #         #     out_link = '{0}?zoom={1}&lat={2}&lon={3}'.format(layout_rec.app.uid, layout_rec.zoom, layout_rec.lat,
-    #         #                                                      layout_rec.lon)
-    #         #     if layout_rec.marker != 0:
-    #         #         out_link = out_link + '&marker=1'
-    #         #     if layout_rec.json != '':
-    #         #         out_link = out_link + '&gson={0}'.format(layout_rec.json)
-    #         #     layout_links.append({'uid': layout_rec.uid, 'link': out_link})
-    #
-    #
-    #     self.set_cookie('user_pass', cookie_str)
-    #
-    #     map_hist = []
-    #     if self.get_secure_cookie('map_hist'):
-    #         for xx in range(0, len(self.get_secure_cookie('map_hist').decode('utf-8')), 4):
-    #             map_hist.append(self.get_secure_cookie('map_hist').decode('utf-8')[xx: xx + 4])
-    #
-    #     if 'fullscreen' in self.request.arguments:
-    #         tmpl = 'tmpl_applite/app/full_screen.html'
-    #         # if self.userinfo.privilege[4] == '1':
-    #         #     tmpl = 'tmpl_applite/app/full_vip.html'
-    #         # else:
-    #         #     tmpl = 'tmpl_applite/app/full_screen.html'
-    #     else:
-    #
-    #         tmpl = 'tmpl_applite/app/show_map.html'
-    #
-    #     rel_recs = self.mrel.get_app_relations(rec.uid, 4)
-    #
-    #     rand_recs = self.mapp.query_random(4 - rel_recs.count() + 2)
-    #
-    #     self.render(tmpl,
-    #                 kwd=kwd,
-    #                 calc_info=rec,
-    #                 userinfo=self.userinfo,
-    #                 relations=rel_recs,
-    #                 rand_recs=rand_recs,
-    #                 unescape=tornado.escape.xhtml_unescape,
-    #                 ad_switch=random.randint(1, 18),
-    #                 tag_info=self.mapp2tag.get_by_id(app_id),
-    #                 recent_apps=self.musage.query_recent(self.get_current_user(), 6)[1:],
-    #                 map_hist=map_hist,
-    #                 # json_recs=json_recs,
-    #                 # layout_links=layout_links,
-    #                 replys=replys,
-    #                 )
+
 
     def add_relation(self, f_uid, t_uid):
         if False == self.mapp.get_by_uid(t_uid):

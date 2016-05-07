@@ -11,7 +11,7 @@
 #         self.init()
 #         self.minfo = MInfor()
 #         self.mcat = MCatalog()
-#         self.template_dir_name = 'tmpl_claslite'
+#         self.template_dir_name = 'infor'
 #
 #     def get(self, input=''):
 #         if len(input) > 0:

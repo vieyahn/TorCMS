@@ -27,7 +27,7 @@ class TemplateRendring(object):
 
 class BaseHandler(tornado.web.RequestHandler, TemplateRendring):
     def init(self):
-        self.tmpl_name = 'tmpl_torlite'
+        self.tmpl_name = 'doc'
         self.muser = MUser()
         if self.get_current_user():
             self.userinfo = self.muser.get_by_id(self.get_current_user())

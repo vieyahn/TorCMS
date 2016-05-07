@@ -297,17 +297,17 @@ class rel_app2post(tornado.web.UIModule):
 
 class ImgSlide(tornado.web.UIModule):
     def render(self, info):
-        return self.render_string('tmpl_claslite/modules/img_slide.html', post_info=info)
+        return self.render_string('infor/modules/img_slide.html', post_info=info)
 
 
 class UserInfo(tornado.web.UIModule):
     def render(self, uinfo, uop):
-        return self.render_string('tmpl_claslite/modules/user_info.html', userinfo=uinfo, userop=uop)
+        return self.render_string('infor/modules/user_info.html', userinfo=uinfo, userop=uop)
 
 
 class VipInfo(tornado.web.UIModule):
     def render(self, uinfo, uvip):
-        return self.render_string('tmpl_claslite/modules/vip_info.html', userinfo=uinfo, uservip=uvip)
+        return self.render_string('infor/modules/vip_info.html', userinfo=uinfo, uservip=uvip)
 
 
 
@@ -324,12 +324,12 @@ class BannerModule(tornado.web.UIModule):
             'parentlist': parentlist,
             'parentid': self.parentid,
         }
-        return self.render_string('tmpl_claslite/modules/banner.html', kwd=kwd)
+        return self.render_string('infor/modules/banner.html', kwd=kwd)
 
 
 class BreadCrumb(tornado.web.UIModule):
     def render(self, info):
-        return self.render_string('tmpl_claslite/modules/bread_crumb.html', info=info)
+        return self.render_string('infor/modules/bread_crumb.html', info=info)
 
 
 class ContactInfo(tornado.web.UIModule):
@@ -342,7 +342,7 @@ class ContactInfo(tornado.web.UIModule):
         kwd = {
             'maskip': '',  # maskip,
         }
-        return self.render_string('tmpl_claslite/modules/contact_info.html', post_info=info, kwd=kwd)
+        return self.render_string('infor/modules/contact_info.html', post_info=info, kwd=kwd)
 
 
 class BreadcrumbPublish(tornado.web.UIModule):
@@ -350,7 +350,7 @@ class BreadcrumbPublish(tornado.web.UIModule):
         kwd = {
             'sig': sig,
         }
-        return self.render_string('tmpl_claslite/modules/breadcrumb_publish.html', kwd=kwd)
+        return self.render_string('infor/modules/breadcrumb_publish.html', kwd=kwd)
 
 
 class InfoList:
@@ -373,6 +373,6 @@ class InfoList:
             'tuiguan': tuiguang_str,
         }
 
-        return self.render_string('tmpl_claslite/infolist/infolist_{0}.html'.format(list_type),
+        return self.render_string('infor/infolist/infolist_{0}.html'.format(list_type),
                                   kwd=kwd,
                                   post_info=info)

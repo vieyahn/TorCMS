@@ -13,10 +13,10 @@ class WidgetHandler(BaseHandler):
 
     def loginfo(self):
         if self.get_secure_cookie("user"):
-            self.render('tmpl_torlite/widget/loginfo.html',
+            self.render('doc/widget/loginfo.html',
                         username=self.get_secure_cookie("user"))
         else:
-            self.render('tmpl_torlite/widget/tologinfo.html',
+            self.render('doc/widget/tologinfo.html',
                         cfg=config.cfg,
                         userinfo=self.userinfo,
 
