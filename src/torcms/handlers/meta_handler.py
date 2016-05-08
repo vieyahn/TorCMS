@@ -221,22 +221,24 @@ class MetaHandler(BaseHandler):
 
         ext_dic['def_uid'] = str(uid)
         ext_dic['def_cat_uid'] = post_data['def_cat_uid'][0]
-        self.mapp.modify_meta(uid,
+
+        ext_dic = self.extra_data(ext_dic, post_data)
+        self.mapp.modify_meta( ext_dic['def_uid'],
                               post_data,
-                              extinfo=dict(ext_dic, **self.extra_data(post_data)))
-        self.update_catalog(uid)
-        self.update_tag(uid)
+                              extinfo=ext_dic)
+        self.update_catalog(ext_dic['def_uid'])
+        self.update_tag(ext_dic['def_uid'])
 
         self.redirect('/list/{0}'.format(ext_dic['def_cat_uid']))
 
     @tornado.web.authenticated
-    def extra_data(self, post_data):
+    def extra_data(self, ext_dic, post_data):
         '''
         The additional information.
         :param post_data:
         :return: directory.
         '''
-        return {}
+        return ext_dic
 
     @tornado.web.authenticated
     def update_tag(self, signature):

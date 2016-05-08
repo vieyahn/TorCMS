@@ -121,7 +121,7 @@ class InfoHandler(BaseHandler):
         if self.get_current_user():
             self.musage.add_or_update(self.userinfo.uid, info_id)
         self.set_cookie('user_pass', cookie_str)
-        tmpl = self.get_tmpl_name(rec)
+        tmpl = self.ext_tmpl_name(rec) if self.ext_tmpl_name(rec) else self.get_tmpl_name(rec)
         self.render(tmpl,
                     kwd=dict(kwd, **self.extra_kwd(rec)),
                     calc_info=rec,
@@ -157,6 +157,9 @@ class InfoHandler(BaseHandler):
         self.set_secure_cookie('use_app_uid', app_id)
         if last_map_id and self.minfo.get_by_uid(last_map_id):
             self.add_relation(last_map_id, app_id)
+
+    def ext_tmpl_name(self, rec):
+        return None
 
     def get_tmpl_name(self, rec):
         '''

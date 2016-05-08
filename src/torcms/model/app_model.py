@@ -139,6 +139,10 @@ class MApp(MAppBase):
         '''
         cur_info = self.get_by_uid(uid)
         if cur_info:
+            cur_extinfo = cur_info.extinfo
+            # Update the extinfo, Not replace
+            for key in extinfo:
+                cur_extinfo[key] = extinfo[key]
             entry = self.tab_app.update(
                 title=data_dic['title'][0],
                 keywords= ','.join([x.strip() for x in data_dic['keywords'][0].split(',')]),
@@ -152,7 +156,7 @@ class MApp(MAppBase):
                 # zoom_max=data_dic['zoom_max'][0],
                 # zoom_min=data_dic['zoom_min'][0],
                 # zoom_current=data_dic['zoom_current'][0],
-                extinfo=extinfo
+                extinfo= cur_extinfo
 
             ).where(self.tab_app.uid == uid)
             entry.execute()
@@ -223,7 +227,7 @@ class MApp(MAppBase):
         entry.execute()
         return (uid)
 
-    def addata_init(self, data_dic):
+    def addata_init(self, data_dic, ext_dic = {} ):
         if self.get_by_uid(data_dic['sig']):
             uu = self.get_by_uid(data_dic['sig'])
             if data_dic['title'] == uu.title and data_dic['desc'] == uu.desc and data_dic['type'] == uu.type:
@@ -232,6 +236,7 @@ class MApp(MAppBase):
                 self.modify_init(data_dic['sig'], data_dic)
         else:
             time_stamp = int(time.time())
+
             entry = self.tab_app.create(
                 uid=data_dic['sig'],
                 title=data_dic['title'],
@@ -239,16 +244,12 @@ class MApp(MAppBase):
                 type=data_dic['type'],
                 create_time=time_stamp,
                 update_time=time_stamp,
-                # html_path=data_dic['html_path'],
+                # html_path=,
                 cnt_md=data_dic['cnt_md'],
                 cnt_html=data_dic['cnt_html'],
                 date=datetime.now(),
-                memo='',
-                lat=43,
-                lon=105,
-                zoom_max=13,
-                zoom_min=8,
-                zoom_current=8,
+                extinfo = ext_dic
+
             )
 
 

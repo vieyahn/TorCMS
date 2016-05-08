@@ -19,7 +19,7 @@ class app_catalog_of(tornado.web.UIModule):
         self.mcat = MAppCatalog()
         recs = self.mcat.query_uid_starts_with( uid_with_str )
 
-        return self.render_string('tmpl_applite/modules/catalog_of.html',
+        return self.render_string('infor/modules/catalog_of.html',
                                   recs=recs)
 
 class app_user_most(tornado.web.UIModule):
@@ -29,7 +29,7 @@ class app_user_most(tornado.web.UIModule):
         kwd = {
             'with_tag': with_tag,
         }
-        return self.render_string('tmpl_applite/modules/list_user_equation.html',
+        return self.render_string('infor/modules/list_user_equation.html',
                                   recs=all_cats,
                                   kwd=kwd)
 
@@ -45,7 +45,7 @@ class app_user_recent(tornado.web.UIModule):
         kwd = {
             'with_tag': with_tag,
         }
-        return self.render_string('tmpl_applite/modules/list_user_equation.html',
+        return self.render_string('infor/modules/list_user_equation.html',
                                   recs=all_cats,
                                   kwd=kwd,
                                   )
@@ -55,7 +55,7 @@ class app_user_recent_by_cat(tornado.web.UIModule):
     def render(self, user_name, cat_id, num):
         self.mcat =  torcms.model.usage_model.MUsage()
         all_cats = self.mcat.query_recent_by_cat(user_name, cat_id, num)
-        return self.render_string('tmpl_applite/modules/list_user_equation_no_catalog.html', recs=all_cats)
+        return self.render_string('infor/modules/list_user_equation_no_catalog.html', recs=all_cats)
 
 
 class app_most_used(tornado.web.UIModule):
@@ -65,7 +65,7 @@ class app_most_used(tornado.web.UIModule):
         kwd = {
             'with_tag': with_tag,
         }
-        return self.render_string('tmpl_applite/modules/list_equation.html', recs=all_cats,
+        return self.render_string('infor/modules/list_equation.html', recs=all_cats,
                                   kwd=kwd,
                                   )
 
@@ -74,14 +74,14 @@ class app_most_used_by_cat(tornado.web.UIModule):
     def render(self, num, cat_str):
         self.mcat =  torcms.model.app_model.MApp()
         all_cats = self.mcat.query_most_by_cat(num, cat_str)
-        return self.render_string('tmpl_applite/modules/list_equation_by_cat.html', recs=all_cats)
+        return self.render_string('infor/modules/list_equation_by_cat.html', recs=all_cats)
 
 
 class app_least_use_by_cat(tornado.web.UIModule):
     def render(self, num, cat_str):
         self.mcat =  torcms.model.app_model.MApp()
         all_cats = self.mcat.query_least_by_cat(num, cat_str)
-        return self.render_string('tmpl_applite/modules/list_equation_by_cat.html', recs=all_cats)
+        return self.render_string('infor/modules/list_equation_by_cat.html', recs=all_cats)
 
 
 class app_recent_used(tornado.web.UIModule):
@@ -91,7 +91,7 @@ class app_recent_used(tornado.web.UIModule):
         kwd = {
             'with_tag': with_tag,
         }
-        return self.render_string('tmpl_applite/modules/list_equation.html',
+        return self.render_string('infor/modules/list_equation.html',
                                   recs=all_cats,
                                   kwd=kwd, )
 
@@ -100,7 +100,7 @@ class app_random_choose(tornado.web.UIModule):
     def render(self, num):
         self.mcat =  torcms.model.app_model.MApp()
         all_cats = self.mcat.query_random(num)
-        return self.render_string('tmpl_applite/modules/list_equation.html', recs=all_cats)
+        return self.render_string('infor/modules/list_equation.html', recs=all_cats)
 
 
 class app_tags(tornado.web.UIModule):
@@ -133,7 +133,7 @@ class app_menu(tornado.web.UIModule):
         kwd = {
             'cats': all_cats,
         }
-        return self.render_string('tmpl_applite/modules/app_menu.html', kwd=kwd)
+        return self.render_string('infor/modules/app_menu.html', kwd=kwd)
 
 
 class baidu_search(tornado.web.UIModule):
@@ -141,7 +141,7 @@ class baidu_search(tornado.web.UIModule):
         baidu_script = '''
         <script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=17856875184698336445' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>
         '''
-        return self.render_string('tmpl_applite/modules/baidu_script.html',
+        return self.render_string('infor/modules/baidu_script.html',
                                   baidu_script=baidu_script)
 
 
@@ -153,13 +153,13 @@ class site_ad(tornado.web.UIModule):
                '由科学家、工程师维护的云计算网站', '人算不如天算，天算不如云算',
                '坚持创新，每天都在改进']
         ad = random.choice(ads)
-        return self.render_string('tmpl_applite/modules/site_ad.html',
+        return self.render_string('infor/modules/site_ad.html',
                                   ad=ad)
 
 
 class widget_search(tornado.web.UIModule):
     def render(self, ):
-        return self.render_string('tmpl_applite/modules/widget_search.html')
+        return self.render_string('infor/modules/widget_search.html')
 
 
 
@@ -251,7 +251,7 @@ class amazon_ad(tornado.web.UIModule):
         # uu = ''
         # yyinfos = self.mrefresh.get_by_id(info_id)
         # return ''
-        return self.render_string('tmpl_applite/modules/amazon_ad.html',
+        return self.render_string('infor/modules/amazon_ad.html',
                                   kwd=kwd,
                                   ad_html=uu, )
 
@@ -269,7 +269,7 @@ class rel_post2app(tornado.web.UIModule):
 
         rand_recs = self.app.query_random(num - rel_recs.count() + 2)
 
-        return self.render_string('tmpl_applite/modules/relation_post2app.html',
+        return self.render_string('infor/modules/relation_post2app.html',
                                   relations= rel_recs,
                                   rand_recs = rand_recs,
                                   kwd=kwd, )
@@ -288,7 +288,7 @@ class rel_app2post(tornado.web.UIModule):
 
         rand_recs = self.mpost.query_random(num - rel_recs.count() + 2)
 
-        return self.render_string('tmpl_applite/modules/relation_app2post.html',
+        return self.render_string('infor/modules/relation_app2post.html',
                                   relations= rel_recs,
                                   rand_recs = rand_recs,
                                   kwd=kwd, )
