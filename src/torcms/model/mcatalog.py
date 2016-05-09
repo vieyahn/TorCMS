@@ -52,17 +52,13 @@ class MCatalog(MSingleTable):
     def get_by_slug(self, slug):
         return self.tab.get(slug=slug)
 
-    def update_app_catalog_num(self, cat_id, num):
+    def update_count(self, cat_id, num):
         entry = self.tab.update(
             count=num,
         ).where(self.tab.uid == cat_id)
         entry.execute()
 
-    def update_post_catalog_num(self, cat_id, num):
-        entry = self.tab.update(
-            count=num,
-        ).where(self.tab.uid == cat_id)
-        entry.execute()
+
 
     def initial_db(self, post_data):
         entry = self.tab.create(

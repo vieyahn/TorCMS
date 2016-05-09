@@ -88,6 +88,7 @@ class InfoListHandler(BaseHandler):
             condition[ckey] = cval
 
         print(condition)
+
         if url_arr[1] == 'con':
             infos = self.minfo.get_list_fenye(condition, fenye_num)
             self.echo_html_list_str(sig, infos)
@@ -185,5 +186,6 @@ class InfoListHandler(BaseHandler):
         for x in redis_kw:
             kw_condition_arr.append(x.decode('utf-8'))
         self.render('autogen/list/list_{1}.html'.format(self.template_dir_name, input),
-                    kwd=kwd, widget_info=kwd,
+                    kwd=kwd,
+                    widget_info=kwd,
                     condition_arr=kw_condition_arr)

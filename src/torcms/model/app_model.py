@@ -4,6 +4,7 @@ import time
 from datetime import datetime
 
 import config
+from config import cfg
 from torcms.core import tools
 from torcms.model.ext_tab import *
 
@@ -166,6 +167,9 @@ class MApp(MAppBase):
             return entry
         return (uid)
 
+    def query_extinfo_by_cat(self, cat_id):
+        return self.tab_app.select().where(self.tab_app.extinfo['def_cat_uid'] == cat_id)
+
     def query_by_tagname(self, tag_name):
 
         # condition = {'keywords': {'$elemMatch': {'$eq': tag_name}}}
@@ -177,7 +181,7 @@ class MApp(MAppBase):
         all_list = self.query_by_tagname(tag_slug)
 
         # 当前分页的记录
-        # current_list = all_list[(page_num - 1) * c.info_list_per_page: (page_num) * c.info_list_per_page]
+        current_list = all_list[(page_num - 1) * cfg['info_per_page']: (page_num) * cfg['info_per_page']]
         return (all_list)
 
     def add_meta(self, uid,  data_dic, extinfo = {}):
@@ -255,10 +259,11 @@ class MApp(MAppBase):
 
     def get_list_fenye(self, tag_slug, page_num):
         # 所有的记录
+
         all_list = self.get_list(tag_slug)
         # 当前分页的记录
-        # current_list = all_list[(page_num - 1) * c.info_list_per_page: (page_num) * c.info_list_per_page]
-        return (all_list)
+        current_list = all_list[(page_num - 1) * cfg['info_per_page']: (page_num) * cfg['info_per_page']]
+        return (current_list)
 
 
     def get_cat_recs_count(self, catid):

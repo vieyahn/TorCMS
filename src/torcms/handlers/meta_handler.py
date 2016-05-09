@@ -22,6 +22,7 @@ from torcms.model.app2catalog_model import MApp2Catalog
 class MetaHandler(BaseHandler):
     def initialize(self):
         self.init()
+        self.mappcat = MAppCatalog()
         self.mevaluation = MEvaluation()
         self.mapp2catalog = MApp2Catalog()
         self.mapp2tag = MApp2Label()
@@ -156,6 +157,7 @@ class MetaHandler(BaseHandler):
                     userinfo=self.userinfo,
                     app_info=rec_info,
                     unescape=tornado.escape.xhtml_unescape,
+                    cat_enum = self.mappcat.get_qian2(catid[:2]),
                     tag_infos=[],
                     app2label_info=self.mapp2tag.get_by_id(infoid), )
 
@@ -191,8 +193,11 @@ class MetaHandler(BaseHandler):
 
         ext_dic['def_uid'] = str(uid)
         if 'def_cat_uid' in post_data:
+            print('=x' * 30)
+            print(post_data['def_cat_uid'])
             ext_dic['def_cat_uid'] = post_data['def_cat_uid'][0]
 
+        print(ext_dic)
         ext_dic = self.extra_data(ext_dic, post_data)
         self.mapp.modify_meta(uid,
                               post_data,
