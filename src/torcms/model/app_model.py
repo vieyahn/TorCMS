@@ -241,7 +241,7 @@ class MApp(MAppBase):
                 uid=data_dic['sig'],
                 title=data_dic['title'],
                 desc=data_dic['desc'],
-                type=data_dic['type'],
+                # type=data_dic['type'],
                 create_time=time_stamp,
                 update_time=time_stamp,
                 # html_path=,
