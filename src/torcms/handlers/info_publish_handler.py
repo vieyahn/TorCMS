@@ -38,9 +38,11 @@ class InfoPublishHandler(BaseHandler):
 
     @tornado.web.authenticated
     def format_class2(self, fatherid):
-        dbdata = self.mcat.get_range2_without_parent(fatherid)
+        dbdata = self.mcat.get_qian2(fatherid[:2])
         outstr = '<ul class="list-group">'
         for rec in dbdata:
+            if rec.uid.endswith('00'):
+                continue
             outstr += '''
             <a href="/meta/cat_add/{0}" class="btn btn-primary" style="display: inline-block;margin:3px;" >{1}</a>
             '''.format(rec.uid, rec.name)

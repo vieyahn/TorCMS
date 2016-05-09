@@ -22,31 +22,28 @@ class MCatalog(MSingleTable):
         :return: 数组，包含了找到的分类
         '''
 
-        parentid = qian2 + '00'
-        a = self.tab.select().where(self.tab.uid.startswith(qian2)).order_by(self.tab.uid)
+        a = self.tab.select().where(self.tab.uid.startswith(qian2)).order_by(self.tab.order)
         return (a)
     
-    def get_range2_with_parent(self, parentid):
-        db_data = self.tab.select().where(self.tab.pid == parentid).order_by(self.tab.uid)
 
-        return (db_data)
 
-    def get_range2_without_parent(self, parentid):
-        a = self.tab.select().where(self.tab.uid.startswith(parentid[:2]))
-        return (a)
+
+
+
+
+
+
     
     def query_uid_starts_with(self, qian2):
         return self.tab.select().where(self.tab.uid.startswith(qian2)).order_by(self.tab.uid)
 
-    def query_all(self, by_uid=True, by_count=False, by_order=False):
-        if by_uid:
-            recs = self.tab.select().order_by(self.tab.uid)
-        elif by_count:
+    def query_all(self, by_count=False, by_order=True):
+        if by_count:
             recs = self.tab.select().order_by(self.tab.count.desc())
         elif by_order:
             recs = self.tab.select().order_by(self.tab.order)
         else:
-            recs = self.tab.select().order_by(self.tab.name)
+            recs = self.tab.select().order_by(self.tab.uid)
         return (recs)
 
     def query_field_count(self, limit_num):
@@ -76,35 +73,25 @@ class MCatalog(MSingleTable):
         )
         return (entry)
 
-    def update(self, uid, post_data, update_time=False):
+    def update(self, uid, post_data):
 
-        if update_time:
-            entry = self.tab.update(
-                name=post_data['name'][0],
-                slug=post_data['slug'][0],
-                order=post_data['order'][0],
-            ).where(self.tab.uid == uid)
-        else:
-            entry = self.tab.update(
-                name=post_data['name'][0],
-                slug=post_data['slug'][0],
-                order=post_data['order'][0],
-            ).where(self.tab.uid == uid)
+        entry = self.tab.update(
+            name=post_data['name'][0],
+            slug=post_data['slug'][0],
+            order=post_data['order'][0],
+        ).where(self.tab.uid == uid)
         entry.execute()
 
     def insert_data(self, id_post, post_data):
 
         uu = self.get_by_id(id_post)
-        if uu is None:
-            pass
+        if uu :
+            self.update(id_post ,post_data)
         else:
-            return (False)
-
-        entry = self.tab.create(
-
+            entry = self.tab.create(
             name=post_data['name'][0],
             slug=post_data['slug'][0],
             order=post_data['order'][0],
             uid= id_post,
         )
-        return (entry.uid)
+            return (entry.uid)

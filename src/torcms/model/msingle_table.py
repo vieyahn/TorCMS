@@ -36,7 +36,6 @@ class MSingleTable():
         return (db_data)
     def get_by_id(self, in_uid):
         recs = self.tab.select().where(self.tab.uid == in_uid)
-
         if recs.count() == 0:
             return None
         else:
