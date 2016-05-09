@@ -145,12 +145,13 @@ class MetaHandler(BaseHandler):
         }
 
         if catid:
-            tmpl = 'autogen/view/view_{0}.html'.format(catid)
+            tmpl = 'autogen/edit/edit_{0}.html'.format(catid)
         else:
             tmpl = 'tmpl_applite/app/edit.html'
 
         self.render(tmpl,
                     kwd=kwd,
+                    calc_info = rec_info,
                     post_info=rec_info,
                     userinfo=self.userinfo,
                     app_info=rec_info,
@@ -192,9 +193,10 @@ class MetaHandler(BaseHandler):
         if 'def_cat_uid' in post_data:
             ext_dic['def_cat_uid'] = post_data['def_cat_uid'][0]
 
+        ext_dic = self.extra_data(ext_dic, post_data)
         self.mapp.modify_meta(uid,
                               post_data,
-                              extinfo=dict(ext_dic, **self.extra_data(post_data)))
+                              extinfo=ext_dic)
         self.update_catalog(uid)
         self.update_tag(uid)
         self.redirect('/info/{0}'.format(uid))
