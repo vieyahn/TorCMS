@@ -175,7 +175,7 @@ class MApp(MAppBase):
         # condition = {'keywords': {'$elemMatch': {'$eq': tag_name}}}
         condition = {'keywords': [tag_name]}
 
-        return self.tab_app.select().where(self.tab_app.extinfo.contains(condition))
+        return self.tab_app.select().where(self.tab_app.extinfo.contains(condition)).order_by(self.tab_app.updatetime.desc())
 
     def get_label_fenye(self, tag_slug, page_num):
         all_list = self.query_by_tagname(tag_slug)
