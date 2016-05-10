@@ -25,15 +25,6 @@ class MCatalog(MSingleTable):
         a = self.tab.select().where(self.tab.uid.startswith(qian2)).order_by(self.tab.order)
         return (a)
     
-
-
-
-
-
-
-
-
-    
     def query_uid_starts_with(self, qian2):
         return self.tab.select().where(self.tab.uid.startswith(qian2)).order_by(self.tab.uid)
 
