@@ -21,9 +21,13 @@ class MAppBase(object):
     def get_all(self):
         return (self.tab_app.select().order_by(self.tab_app.view_count))
 
-    def update_jsonb(self, uid, indic):
+    def update_jsonb(self, uid, extinfo):
+        cur_extinfo = self.get_by_uid(uid).extinfo
+        # Update the extinfo, Not replace
+        for key in extinfo:
+            cur_extinfo[key] = extinfo[key]
         entry = self.tab_app.update(
-            extinfo = indic,
+            extinfo = cur_extinfo,
         ).where(self.tab_app.uid == uid)
         entry.execute()
         return (uid)
@@ -205,11 +209,8 @@ class MApp(MAppBase):
             )
 
     def get_list(self, condition):
-
         db_data = self.tab_app.select().where(self.tab_app.extinfo.contains(condition))
-
         return (db_data)
-
 
     def get_num_condition(self, con):
 
@@ -271,6 +272,6 @@ class MApp(MAppBase):
         获取某一分类下的数目
         '''
         condition = {'catid': [catid]}
-    
+
         db_data = self.tab_app.select().where(self.tab_app.extinfo.contains(condition))
         return db_data.count()
