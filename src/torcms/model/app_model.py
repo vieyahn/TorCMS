@@ -150,7 +150,7 @@ class MApp(MAppBase):
                 cur_extinfo[key] = extinfo[key]
             entry = self.tab_app.update(
                 title=data_dic['title'][0],
-                keywords= ','.join([x.strip() for x in data_dic['keywords'][0].split(',')]),
+                keywords= ','.join([x.strip() for x in data_dic['keywords'][0].strip().strip(',').split(',')]),
                 desc=data_dic['desc'][0],
                 update_time=int(time.time()),
                 date=datetime.now(),
