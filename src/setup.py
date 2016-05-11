@@ -9,6 +9,7 @@ setup(
     keywords=('torcms', 'tornado', 'cms',),
     description='''CMS based on Python 3 and Tornado.
         Flexible, extensible web CMS framework built on Tornado, Peewee and Purecss, compatible with Python 3.4 and 3.5.
+        Merged from torlite, applite and claslite.
         ''',
     license='MIT License',
 
