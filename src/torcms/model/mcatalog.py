@@ -25,15 +25,6 @@ class MCatalog(MSingleTable):
         a = self.tab.select().where(self.tab.uid.startswith(qian2)).order_by(self.tab.order)
         return (a)
     
-
-
-
-
-
-
-
-
-    
     def query_uid_starts_with(self, qian2):
         return self.tab.select().where(self.tab.uid.startswith(qian2)).order_by(self.tab.uid)
 
@@ -49,6 +40,9 @@ class MCatalog(MSingleTable):
     def query_field_count(self, limit_num):
         return self.tab.select().order_by(self.tab.count.desc()).limit(limit_num)
 
+    def get_by_uid(self, uid):
+        return self.tab.get(uid = uid)
+        
     def get_by_slug(self, slug):
         return self.tab.get(slug=slug)
 

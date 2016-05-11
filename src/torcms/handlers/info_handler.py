@@ -18,6 +18,7 @@ from torcms.model.usage_model import MUsage
 from torcms.model.app2catalog_model import MApp2Catalog
 
 
+
 class InfoHandler(BaseHandler):
     def initialize(self, hinfo=''):
         self.init()
@@ -29,6 +30,7 @@ class InfoHandler(BaseHandler):
         self.mcat = MAppCatalog()
         self.mrel = MAppRel()
         self.mreply = MApp2Reply()
+
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
@@ -122,6 +124,7 @@ class InfoHandler(BaseHandler):
             self.musage.add_or_update(self.userinfo.uid, info_id)
         self.set_cookie('user_pass', cookie_str)
         tmpl = self.ext_tmpl_name(rec) if self.ext_tmpl_name(rec) else self.get_tmpl_name(rec)
+        catid = rec.extinfo['def_cat_uid'] if 'def_cat_uid' in rec.extinfo else None
         self.render(tmpl,
                     kwd=dict(kwd, **self.extra_kwd(rec)),
                     calc_info=rec,
@@ -134,6 +137,7 @@ class InfoHandler(BaseHandler):
                     recent_apps=self.musage.query_recent(self.get_current_user(), 6)[1:],
                     post_info=rec,
                     replys=replys,
+                    cat_enum = self.mcat.get_qian2(catid[:2]) if catid else [],
                     )
 
     def extra_kwd(self, info_rec):

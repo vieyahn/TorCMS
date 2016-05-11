@@ -21,9 +21,13 @@ class MAppBase(object):
     def get_all(self):
         return (self.tab_app.select().order_by(self.tab_app.view_count))
 
-    def update_jsonb(self, uid, indic):
+    def update_jsonb(self, uid, extinfo):
+        cur_extinfo = self.get_by_uid(uid).extinfo
+        # Update the extinfo, Not replace
+        for key in extinfo:
+            cur_extinfo[key] = extinfo[key]
         entry = self.tab_app.update(
-            extinfo = indic,
+            extinfo = cur_extinfo,
         ).where(self.tab_app.uid == uid)
         entry.execute()
         return (uid)
@@ -146,7 +150,7 @@ class MApp(MAppBase):
                 cur_extinfo[key] = extinfo[key]
             entry = self.tab_app.update(
                 title=data_dic['title'][0],
-                keywords= ','.join([x.strip() for x in data_dic['keywords'][0].split(',')]),
+                keywords= ','.join([x.strip() for x in data_dic['keywords'][0].strip().strip(',').split(',')]),
                 desc=data_dic['desc'][0],
                 update_time=int(time.time()),
                 date=datetime.now(),
@@ -175,7 +179,7 @@ class MApp(MAppBase):
         # condition = {'keywords': {'$elemMatch': {'$eq': tag_name}}}
         condition = {'keywords': [tag_name]}
 
-        return self.tab_app.select().where(self.tab_app.extinfo.contains(condition))
+        return self.tab_app.select().where(self.tab_app.extinfo.contains(condition)).order_by(self.tab_app.updatetime.desc())
 
     def get_label_fenye(self, tag_slug, page_num):
         all_list = self.query_by_tagname(tag_slug)
@@ -205,11 +209,8 @@ class MApp(MAppBase):
             )
 
     def get_list(self, condition):
-
         db_data = self.tab_app.select().where(self.tab_app.extinfo.contains(condition))
-
         return (db_data)
-
 
     def get_num_condition(self, con):
 
@@ -271,6 +272,6 @@ class MApp(MAppBase):
         获取某一分类下的数目
         '''
         condition = {'catid': [catid]}
-    
+
         db_data = self.tab_app.select().where(self.tab_app.extinfo.contains(condition))
         return db_data.count()

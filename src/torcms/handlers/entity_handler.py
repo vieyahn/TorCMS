@@ -14,7 +14,7 @@ class EntityHandler( BaseHandler ):
     def initialize(self):
         self.init()
         self.mpic = MEntry()
-        self.tmpl_name= config.torlite_template_name
+        self.tmpl_name=  'doc'
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)

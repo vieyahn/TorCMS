@@ -10,6 +10,7 @@ import config
 from torcms.model.mappcatalog import MAppCatalog as  MCatalog
 from torcms.model.app_model import MApp as  MInfor
 from torcms.core.base_handler import BaseHandler
+from torcms.model.mappcatalog import MAppCatalog
 
 redisvr = redis.Redis(host='localhost', port=6379, db=0, password=None, socket_timeout=None, connection_pool=None,
                       charset='utf-8', errors='strict', unix_socket_path=None)
@@ -26,6 +27,7 @@ class InfoListHandler(BaseHandler):
         self.template_dir_name = 'infor'
         self.minfo = MInfor()
         self.mcat = MCatalog()
+        self.mappcat = MAppCatalog()
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
@@ -188,4 +190,5 @@ class InfoListHandler(BaseHandler):
         self.render('autogen/list/list_{1}.html'.format(self.template_dir_name, input),
                     kwd=kwd,
                     widget_info=kwd,
-                    condition_arr=kw_condition_arr)
+                    condition_arr=kw_condition_arr,
+                    cat_enum = self.mappcat.get_qian2(parent_id[:2]),)

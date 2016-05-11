@@ -109,7 +109,7 @@ class MetaHandler(BaseHandler):
     @tornado.web.authenticated
     def to_add_app(self, uid):
         if self.mapp.get_by_uid(uid):
-            self.redirect('/map/edit/{0}'.format(uid))
+            self.redirect('/info/edit/{0}'.format(uid))
         else:
             self.render('tmpl_applite/app/add.html',
                         tag_infos=self.mtag.query_all(),
