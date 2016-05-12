@@ -14,7 +14,7 @@ class TabApp(BaseModel):
     title = peewee.CharField(null=False, help_text='标题', )
     keywords = peewee.CharField(null=True, default='')
     desc = peewee.CharField(null=True, default='')
-    industry = peewee.CharField(default='')
+    logo = peewee.CharField(default='')
     date = peewee.DateTimeField(null=False, help_text='显示出来的日期时间')
     run_count = peewee.IntegerField(null=False, default=0, help_text='运行次数')
     view_count = peewee.IntegerField(null=False, default=0, help_text='查看次数')
