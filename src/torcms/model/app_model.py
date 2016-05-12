@@ -155,6 +155,7 @@ class MApp(MAppBase):
                 update_time=int(time.time()),
                 date=datetime.now(),
                 cnt_md=data_dic['cnt_md'][0],
+                logo=data_dic['logo'][0],
                 cnt_html=tools.markdown2html(data_dic['cnt_md'][0]),
                 # lat=data_dic['lat'][0],
                 # lon=data_dic['lon'][0],
@@ -198,6 +199,7 @@ class MApp(MAppBase):
                 update_time=int(time.time()),
                 date=datetime.now(),
                 cnt_md=data_dic['cnt_md'][0],
+                logo=data_dic['logo'][0],
                 cnt_html=tools.markdown2html(data_dic['cnt_md'][0]),
                 extinfo=extinfo,
 
