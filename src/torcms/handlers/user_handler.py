@@ -189,23 +189,22 @@ class UserHandler(BaseHandler):
     def changepass(self):
 
         self.render('{0}/{1}/changepass.html'.format(self.tmpl_name, self.tmpl_router),
-                    user_info=self.muser.get_by_id(self.user_name))
+                    userinfo=self.muser.get_by_id(self.user_name))
 
     @tornado.web.authenticated
     def change_info(self):
         self.render('{0}/{1}/changeinfo.html'.format(self.tmpl_name, self.tmpl_router),
-                    user_info=self.muser.get_by_id(self.user_name))
+                    userinfo=self.muser.get_by_id(self.user_name))
 
     @tornado.web.authenticated
     def change_privilege(self, xg_username):
         self.render('{0}/{1}/changeprivilege.html'.format(self.tmpl_name, self.tmpl_router),
 
-                    user_info=self.muser.get_by_id(xg_username))
+                    userinfo=self.muser.get_by_id(xg_username))
 
     @tornado.web.authenticated
     def show_info(self):
         self.render('{0}/{1}/info.html'.format(self.tmpl_name, self.tmpl_router),
-                    user_info=self.muser.get_by_id(self.user_name),
                     userinfo=self.muser.get_by_id(self.user_name), )
 
     def to_reset_password(self):
