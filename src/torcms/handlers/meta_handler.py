@@ -226,7 +226,7 @@ class MetaHandler(BaseHandler):
 
         ext_dic['def_uid'] = str(uid)
         ext_dic['def_cat_uid'] = post_data['def_cat_uid'][0]
-        ext_dic['def_tag_arr'] = [x.strip() for x in data_dic['tags'][0].strip().strip(',').split(',')]
+        ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'][0].strip().strip(',').split(',')]
 
         ext_dic = self.extra_data(ext_dic, post_data)
         self.mapp.modify_meta( ext_dic['def_uid'],
