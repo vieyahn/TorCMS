@@ -109,7 +109,7 @@ class InfoHandler(BaseHandler):
             'pager': '',
             'url': self.request.uri,
             'cookie_str': cookie_str,
-
+            'daohangstr': '',
             'signature': info_id,
             'tdesc': '',
             'eval_0': self.mevaluation.app_evaluation_count(info_id, 0),
