@@ -209,11 +209,15 @@ class category_menu(tornado.web.UIModule):
     def render(self):
         self.mcat = MCatalog()
         recs = self.mcat.query_all()
-        out_str = ''
-        for rec in recs:
-            tmp_str = '''<li><a href="/category/{0}" title="{1}">{1}</a></li>'''.format(rec.slug, rec.name)
-            out_str += tmp_str
-        return out_str
+        #out_str = ''
+        #for rec in recs:
+        #    tmp_str = '''<li><a href="/category/{0}" title="{1}">{1}</a></li>'''.format(rec.slug, rec.name)
+        #    out_str += tmp_str
+        #return out_str
+        return self.render_string('doc/modules/showcat_list.html',
+                                  recs=recs,
+                                  unescape=tornado.escape.xhtml_unescape,
+                                  )
 
 
 class copyright(tornado.web.UIModule):
