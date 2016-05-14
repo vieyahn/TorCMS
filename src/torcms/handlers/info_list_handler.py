@@ -149,7 +149,7 @@ class InfoListHandler(BaseHandler):
 
         sig = input
 
-        bread_crumb_nav_str = '当前位置：<a href="/">数据中心</a>'
+        bread_crumb_nav_str = '当前位置：<a href="/">信息</a>'
         bread_crumb_nav_str += ' > '
         if input.endswith('00'):
             parent_id = input
