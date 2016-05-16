@@ -191,4 +191,5 @@ class InfoListHandler(BaseHandler):
                     kwd=kwd,
                     widget_info=kwd,
                     condition_arr=kw_condition_arr,
+                    userinfo  = self.userinfo,
                     cat_enum = self.mappcat.get_qian2(parent_id[:2]),)

@@ -104,7 +104,9 @@ class MetaHandler(BaseHandler):
             'parentname': self.mtag.get_by_id(catid[:2] + '00').name,
             'catname': self.mtag.get_by_id(catid).name,
         }
-        self.render('autogen/add/add_{0}.html'.format(catid), kwd=kwd)
+        self.render('autogen/add/add_{0}.html'.format(catid), 
+                userinfo = self.userinfo,
+                kwd=kwd)
 
     @tornado.web.authenticated
     def to_add_app(self, uid):

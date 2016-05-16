@@ -47,8 +47,6 @@ class InfoPublishHandler(BaseHandler):
             <a href="/meta/cat_add/{0}" class="btn btn-primary" style="display: inline-block;margin:3px;" >{1}</a>
             '''.format(rec.uid, rec.name)
         outstr += '</ul>'
-
-        print(outstr)
         return (outstr)
 
     @tornado.web.authenticated
@@ -71,6 +69,7 @@ class InfoPublishHandler(BaseHandler):
             'parentlist': self.mcat.get_parent_list(),
         }
         self.render('infor/publish/publish.html',
+           userinfo = self.userinfo,
                     kwd=kwd)
 
     @tornado.web.authenticated
@@ -91,4 +90,5 @@ class InfoPublishHandler(BaseHandler):
             'parentlist': self.mcat.get_parent_list(),
         }
         self.render('infor/publish/publish2.html',
+                userinfo = self.userinfo,
                     kwd=kwd)
