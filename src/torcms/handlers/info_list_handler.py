@@ -149,7 +149,7 @@ class InfoListHandler(BaseHandler):
         condition = self.gen_redis_kw()
 
         sig = input
-
+        bread_title=''
         bread_crumb_nav_str = '当前位置：<a href="/">信息</a>'
         bread_crumb_nav_str += ' > '
         if input.endswith('00'):
@@ -158,6 +158,7 @@ class InfoListHandler(BaseHandler):
             condition['parentid'] = [parent_id]
             catname = self.mcat.get_by_id(sig).name
             bread_crumb_nav_str += '<a href="/list/{0}">{1}</a>'.format(sig, catname)
+            bread_title = '{1}'.format(sig, catname)
 
         else:
             condition['catid'] = [sig]
@@ -167,6 +168,8 @@ class InfoListHandler(BaseHandler):
             bread_crumb_nav_str += '<a href="/list/{0}">{1}</a>'.format(parent_id, parent_catname)
             bread_crumb_nav_str += ' > '
             bread_crumb_nav_str += '<a href="/list/{0}">{1}</a>'.format(sig, catname)
+            bread_title += '{1} - '.format(parent_id, parent_catname)
+            bread_title += '{1}'.format(sig, catname)
 
         num = self.minfo.get_num_condition(condition)
 
@@ -174,6 +177,7 @@ class InfoListHandler(BaseHandler):
         kwd = {
             'catid': input,
             'daohangstr': bread_crumb_nav_str,
+            'breadtilte':bread_title,
             'parentid': parent_id,
             'parentlist': self.mcat.get_parent_list(),
             'condition': condition,
