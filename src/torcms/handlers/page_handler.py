@@ -53,7 +53,9 @@ class PageHandler(BaseHandler):
             'slug': citiao,
             'pager': '',
         }
-        self.render('{0}/page/page_add.html'.format(self.tmpl_name), kwd=kwd)
+        self.render('{0}/page/page_add.html'.format(self.tmpl_name),
+                    kwd=kwd,
+                    userinfo = self.userinfo,)
 
     @tornado.web.authenticated
     def update(self, slug):
