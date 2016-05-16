@@ -71,6 +71,7 @@ class InfoPublishHandler(BaseHandler):
             'parentlist': self.mcat.get_parent_list(),
         }
         self.render('infor/publish/publish.html',
+                    userinfo=self.userinfo,
                     kwd=kwd)
 
     @tornado.web.authenticated
@@ -91,4 +92,5 @@ class InfoPublishHandler(BaseHandler):
             'parentlist': self.mcat.get_parent_list(),
         }
         self.render('infor/publish/publish2.html',
+                    userinfo=self.userinfo,
                     kwd=kwd)
