@@ -32,6 +32,7 @@ class InfoHandler(BaseHandler):
         self.mreply = MApp2Reply()
 
 
+
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
 
@@ -105,6 +106,11 @@ class InfoHandler(BaseHandler):
         self.chuli_cookie_relation(info_id)
         cookie_str = tools.get_uuid()
 
+        if 'def_cat_uid' in rec.extinfo :
+            catid = rec.extinfo['def_cat_uid']
+        else:
+            catid = ''
+
         kwd = {
             'pager': '',
             'url': self.request.uri,
@@ -118,6 +124,8 @@ class InfoHandler(BaseHandler):
             'login': 1 if self.get_current_user() else 0,
             'has_image': 0,
             'parentlist': self.mcat.get_parent_list(),
+            'parentname': self.mcat.get_by_id(catid[:2] + '00').name if catid != '' else '',
+            'catname': self.mcat.get_by_id(catid).name if catid != '' else '',
         }
         self.minfo.view_count_increase(info_id)
         if self.get_current_user():
