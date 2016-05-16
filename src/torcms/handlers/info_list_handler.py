@@ -112,6 +112,7 @@ class InfoListHandler(BaseHandler):
             'tuiguang': tuiguang_str,
         }
         self.render('autogen/infolist/infolist_{1}.html'.format(self.template_dir_name, list_type),
+                    userinfo=self.userinfo,
                     kwd=kwd,
                     post_infos=infos,
                     widget_info=kwd)
@@ -188,8 +189,8 @@ class InfoListHandler(BaseHandler):
         for x in redis_kw:
             kw_condition_arr.append(x.decode('utf-8'))
         self.render('autogen/list/list_{1}.html'.format(self.template_dir_name, input),
+                    userinfo=self.userinfo,
                     kwd=kwd,
                     widget_info=kwd,
                     condition_arr=kw_condition_arr,
-                    userinfo  = self.userinfo,
                     cat_enum = self.mappcat.get_qian2(parent_id[:2]),)
