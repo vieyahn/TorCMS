@@ -112,8 +112,8 @@ class InfoHandler(BaseHandler):
             catid = ''
 
 
-        parent_name = self.mcat.get_by_id(catid[:2] + '00').name if catid != '' else '',
-        cat_name = self.mcat.get_by_id(catid).name if catid != '' else '',
+        parent_name = self.mcat.get_by_id(catid[:2] + '00').name if catid != '' else ''
+        cat_name = self.mcat.get_by_id(catid).name if catid != '' else ''
         parentname = '<a href="/list/{0}">{1}</a>'.format(catid[:2] + '00', parent_name)
 
         catname = '<a href="/list/{0}">{1}</a>'.format(catid, cat_name)
@@ -132,6 +132,7 @@ class InfoHandler(BaseHandler):
             'has_image': 0,
             'parentlist': self.mcat.get_parent_list(),
             'parentname': parentname,
+
             'catname': catname,
         }
         self.minfo.view_count_increase(info_id)
