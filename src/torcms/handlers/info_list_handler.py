@@ -150,14 +150,14 @@ class InfoListHandler(BaseHandler):
 
         sig = input
         bread_title=''
-        bread_crumb_nav_str = '当前位置：<a href="/">信息</a>'
-        bread_crumb_nav_str += ' > '
+        bread_crumb_nav_str = '<li>当前位置：<a href="/">信息</a></li>'
+
         if input.endswith('00'):
             parent_id = input
             parent_catname = self.mcat.get_by_id(parent_id).name
             condition['parentid'] = [parent_id]
             catname = self.mcat.get_by_id(sig).name
-            bread_crumb_nav_str += '<a href="/list/{0}">{1}</a>'.format(sig, catname)
+            bread_crumb_nav_str += '<li><a href="/list/{0}">{1}</a></li>'.format(sig, catname)
             bread_title = '{1}'.format(sig, catname)
 
         else:
@@ -165,9 +165,9 @@ class InfoListHandler(BaseHandler):
             parent_id = sig[:2] + '00'
             parent_catname = self.mcat.get_by_id(parent_id).name
             catname = self.mcat.get_by_id(sig).name
-            bread_crumb_nav_str += '<a href="/list/{0}">{1}</a>'.format(parent_id, parent_catname)
-            bread_crumb_nav_str += ' > '
-            bread_crumb_nav_str += '<a href="/list/{0}">{1}</a>'.format(sig, catname)
+            bread_crumb_nav_str += '<li><a href="/list/{0}">{1}</a></li>'.format(parent_id, parent_catname)
+
+            bread_crumb_nav_str += '<li><a href="/list/{0}">{1}</a></li>'.format(sig, catname)
             bread_title += '{1} - '.format(parent_id, parent_catname)
             bread_title += '{1}'.format(sig, catname)
 

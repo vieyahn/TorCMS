@@ -331,6 +331,14 @@ class BreadCrumb(tornado.web.UIModule):
     def render(self, info):
         return self.render_string('infor/modules/bread_crumb.html', info=info)
 
+class parentname(tornado.web.UIModule):
+    def render(self, info):
+        return self.render_string('infor/modules/parentname.html', info=info)
+
+class catname(tornado.web.UIModule):
+    def render(self, info):
+        return self.render_string('infor/modules/catname.html', info=info)
+
 
 class ContactInfo(tornado.web.UIModule):
     def render(self, info):
