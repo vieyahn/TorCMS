@@ -18,41 +18,34 @@ class TabApp(BaseModel):
     date = peewee.DateTimeField(null=False, help_text='显示出来的日期时间')
     run_count = peewee.IntegerField(null=False, default=0, help_text='运行次数')
     view_count = peewee.IntegerField(null=False, default=0, help_text='查看次数')
-    run_time = peewee.IntegerField(null = False, default = 0, help_text='上次运行时间')
+    run_time = peewee.IntegerField(null=False, default=0, help_text='上次运行时间')
     update_time = peewee.IntegerField(null=False, default=0, help_text='更新时间')
     create_time = peewee.IntegerField(null=False, default=0, help_text='创建时间')
     type = peewee.IntegerField(null=False, default=1)
     html_path = peewee.CharField(default='')
-    cnt_md = peewee.TextField(null = True)
-    cnt_html = peewee.TextField(null = True)
-    # lon = peewee.FloatField()
-    # lat = peewee.FloatField()
-    # zoom_current = peewee.IntegerField()
-    # zoom_max = peewee.IntegerField()
-    # zoom_min = peewee.IntegerField()
-    time_update = peewee.IntegerField(null = False, default = 0)
+    cnt_md = peewee.TextField(null=True)
+    cnt_html = peewee.TextField(null=True)
+    time_update = peewee.IntegerField(null=False, default=0)
     extinfo = BinaryJSONField()
+
 
 class TabCatalog(BaseModel):
     uid = peewee.CharField(null=False, max_length=4, index=True, unique=True, primary_key=True, help_text='', )
-    # pid = peewee.CharField(max_length=4, null=False, )
     slug = peewee.CharField(null=False, index=True, unique=True, max_length=36, help_text='', )
     name = peewee.CharField(null=False, max_length=255, help_text='', )
     order = peewee.IntegerField()
-    # post_count = peewee.IntegerField(default=0)
     count = peewee.IntegerField(default=0)
-
 
 
 class TabApp2Catalog(BaseModel):
     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
     catalog = peewee.ForeignKeyField(TabCatalog, related_name='catalog_id')
-    post = peewee.ForeignKeyField(TabApp,  related_name='app_id')
+    post = peewee.ForeignKeyField(TabApp, related_name='app_id')
     order = peewee.IntegerField()
 
 
 class TabLabel(BaseModel):
-    uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, help_text='',  max_length=8)
+    uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, help_text='', max_length=8)
     name = peewee.CharField(null=False, max_length=255, help_text='', )
     count = peewee.IntegerField()
 
@@ -60,28 +53,28 @@ class TabLabel(BaseModel):
 class TabApp2Label(BaseModel):
     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
     tag = peewee.ForeignKeyField(TabLabel, related_name='tag_app_id')
-    app = peewee.ForeignKeyField(TabApp,  related_name='app_tag_id')
+    app = peewee.ForeignKeyField(TabApp, related_name='app_tag_id')
     order = peewee.IntegerField()
 
 
 class TabCollect(BaseModel):
     '''
-    用户收藏的算式
+    用户收藏
     '''
     uid = peewee.CharField(max_length=36, null=False, unique=True, help_text='', primary_key=True)
-    app = peewee.ForeignKeyField(TabApp,  related_name='collect_app_rel')
+    app = peewee.ForeignKeyField(TabApp, related_name='collect_app_rel')
     user = peewee.ForeignKeyField(CabMember, related_name='collect_user_rel')
     timestamp = peewee.IntegerField()
+
 
 class TabEvaluation(BaseModel):
     '''
     用户评价
     '''
     uid = peewee.CharField(max_length=36, null=False, unique=True, help_text='', primary_key=True)
-    app = peewee.ForeignKeyField(TabApp,  related_name='evaluation_app_rel')
+    app = peewee.ForeignKeyField(TabApp, related_name='evaluation_app_rel')
     user = peewee.ForeignKeyField(CabMember, related_name='evaluation_user_rel')
-    value = peewee.IntegerField() # 用户评价， 1 或 0, 作为计数
-
+    value = peewee.IntegerField()  # 用户评价， 1 或 0, 作为计数
 
 
 class TabUsage(BaseModel):
@@ -91,6 +84,7 @@ class TabUsage(BaseModel):
     count = peewee.IntegerField()
     catalog_id = peewee.IntegerField(null=True)
     timestamp = peewee.IntegerField()
+
 
 class TabAppRelation(BaseModel):
     '''
@@ -102,6 +96,7 @@ class TabAppRelation(BaseModel):
     app_t = peewee.ForeignKeyField(TabApp, related_name='app_t')
     count = peewee.IntegerField()
 
+
 class TabToolbox(BaseModel):
     uid = peewee.CharField(max_length=36, null=False, unique=True, help_text='', primary_key=True)
     title = peewee.CharField()
@@ -112,7 +107,7 @@ class TabToolbox(BaseModel):
 
 
 class TabApp2Reply(BaseModel):
-    uid =peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
+    uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
     post_id = peewee.ForeignKeyField(TabApp, related_name='app_post_reply_id')
     reply_id = peewee.ForeignKeyField(CabReply, related_name='app_reply_post_id')
     timestamp = peewee.IntegerField()
@@ -124,9 +119,9 @@ class RabPost2App(BaseModel):
     app_t = peewee.ForeignKeyField(TabApp, related_name='rel_post2app_app')
     count = peewee.IntegerField()
 
+
 class RabApp2Post(BaseModel):
     uid = peewee.CharField(max_length=36, null=False, unique=True, help_text='', primary_key=True)
     app_f = peewee.ForeignKeyField(TabApp, related_name='rel_app2post_app')
     app_t = peewee.ForeignKeyField(CabPost, related_name='rel_app2post_post')
     count = peewee.IntegerField()
-
