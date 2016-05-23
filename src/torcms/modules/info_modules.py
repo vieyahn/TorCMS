@@ -1,16 +1,13 @@
 # -*- coding:utf-8 -*-
 
 import random
-
 import torcms.model.app_model
 import tornado.web
 from torcms.model.app2label_model import MApp2Label
 from torcms.model.app_model import MApp
 from torcms.model.app_rel_model import *
 from torcms.model.mappcatalog import MAppCatalog
-
 import torcms.model.app2catalog_model
-
 from torcms.model.mpost import MPost
 
 
@@ -308,9 +305,6 @@ class UserInfo(tornado.web.UIModule):
 class VipInfo(tornado.web.UIModule):
     def render(self, uinfo, uvip):
         return self.render_string('infor/modules/vip_info.html', userinfo=uinfo, uservip=uvip)
-
-
-
 
 
 class BannerModule(tornado.web.UIModule):

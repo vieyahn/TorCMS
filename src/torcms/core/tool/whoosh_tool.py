@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 
-
 # from whoosh.fields import *
 from whoosh.index import open_dir
 from jieba.analyse import ChineseAnalyzer

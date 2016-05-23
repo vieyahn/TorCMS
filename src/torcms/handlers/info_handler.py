@@ -18,7 +18,6 @@ from torcms.model.usage_model import MUsage
 from torcms.model.app2catalog_model import MApp2Catalog
 
 
-
 class InfoHandler(BaseHandler):
     def initialize(self, hinfo=''):
         self.init()
@@ -30,8 +29,6 @@ class InfoHandler(BaseHandler):
         self.mcat = MAppCatalog()
         self.mrel = MAppRel()
         self.mreply = MApp2Reply()
-
-
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)

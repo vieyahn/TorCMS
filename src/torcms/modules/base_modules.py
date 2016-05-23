@@ -209,11 +209,6 @@ class category_menu(tornado.web.UIModule):
     def render(self):
         self.mcat = MCatalog()
         recs = self.mcat.query_all()
-        #out_str = ''
-        #for rec in recs:
-        #    tmp_str = '''<li><a href="/category/{0}" title="{1}">{1}</a></li>'''.format(rec.slug, rec.name)
-        #    out_str += tmp_str
-        #return out_str
         return self.render_string('doc/modules/showcat_list.html',
                                   recs=recs,
                                   unescape=tornado.escape.xhtml_unescape,
@@ -237,11 +232,11 @@ class post_catalogs(tornado.web.UIModule):
             '''.format(tag_info.catalog.slug, ii, tag_info.catalog.name)
             out_str += tmp_str
             ii += 1
-
         return out_str
 
 
 class post_tags(tornado.web.UIModule):
+    # Todo: 看起来与 post_catalogs是一样的。
     def render(self, signature):
         self.mapp2tag = MPost2Catalog()
         tag_infos = self.mapp2tag.query_by_app_uid(signature)
@@ -261,8 +256,7 @@ class userinfo_widget(tornado.web.UIModule, tornado.web.RequestHandler):
             self.render('doc/widget/loginfo.html',
                         username=self.get_secure_cookie("user"))
         else:
-            self.render('doc/widget/tologinfo.html',
-                        )
+            self.render('doc/widget/tologinfo.html')
 
 
 class ModuleCatMenu(tornado.web.UIModule):
@@ -275,9 +269,6 @@ class ModuleCatMenu(tornado.web.UIModule):
         }
         return self.render_string('doc/modules/menu_post.html',
                                   kwd=kwd)
-
-
-
 
 
 class TopMenu(tornado.web.UIModule):
