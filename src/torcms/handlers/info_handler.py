@@ -17,7 +17,6 @@ from torcms.model.mappcatalog import MAppCatalog
 from torcms.model.usage_model import MUsage
 from torcms.model.app2catalog_model import MApp2Catalog
 
-
 class InfoHandler(BaseHandler):
     def initialize(self, hinfo=''):
         self.init()
@@ -129,7 +128,6 @@ class InfoHandler(BaseHandler):
             'has_image': 0,
             'parentlist': self.mcat.get_parent_list(),
             'parentname': parentname,
-
             'catname': catname,
         }
         self.minfo.view_count_increase(info_id)

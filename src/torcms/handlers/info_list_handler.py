@@ -6,7 +6,7 @@ import redis
 import config
 # from torcms.claslite.model.catalog_model import MCatalog
 # from torcms.claslite.model.infor_model import MInfor
-
+import tornado.escape
 from torcms.model.mappcatalog import MAppCatalog as  MCatalog
 from torcms.model.app_model import MApp as  MInfor
 from torcms.core.base_handler import BaseHandler
@@ -15,6 +15,7 @@ from torcms.model.mappcatalog import MAppCatalog
 redisvr = redis.Redis(host='localhost', port=6379, db=0, password=None, socket_timeout=None, connection_pool=None,
                       charset='utf-8', errors='strict', unix_socket_path=None)
 
+from html2text import html2text
 '''
 关键词过滤，涉及到不同分类，使用  session 来处理。
 分类下面的过滤，则使用GET的url的参数。
@@ -114,6 +115,8 @@ class InfoListHandler(BaseHandler):
         self.render('autogen/infolist/infolist_{1}.html'.format(self.template_dir_name, list_type),
                     userinfo=self.userinfo,
                     kwd=kwd,
+                    html2text = html2text,
+                    unescape=tornado.escape.xhtml_unescape,
                     post_infos=infos,
                     widget_info=kwd)
 

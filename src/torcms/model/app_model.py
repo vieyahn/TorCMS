@@ -151,7 +151,6 @@ class MApp(MAppBase):
             entry = self.tab_app.update(
                 title=data_dic['title'][0],
                 keywords= ','.join([x.strip() for x in data_dic['keywords'][0].strip().strip(',').split(',')]),
-                desc=data_dic['desc'][0],
                 update_time=int(time.time()),
                 date=datetime.now(),
                 cnt_md=data_dic['cnt_md'][0],
@@ -195,7 +194,6 @@ class MApp(MAppBase):
                 uid=uid,
                 title=data_dic['title'][0],
                 keywords= ','.join([x.strip() for x in data_dic['keywords'][0].split(',')]),
-                desc=data_dic['desc'][0],
                 update_time=int(time.time()),
                 date=datetime.now(),
                 cnt_md=data_dic['cnt_md'][0],
@@ -237,7 +235,7 @@ class MApp(MAppBase):
     def addata_init(self, data_dic, ext_dic = {} ):
         if self.get_by_uid(data_dic['sig']):
             uu = self.get_by_uid(data_dic['sig'])
-            if data_dic['title'] == uu.title and data_dic['desc'] == uu.desc and data_dic['type'] == uu.type:
+            if data_dic['title'] == uu.title  and data_dic['type'] == uu.type:
                 pass
             else:
                 self.modify_init(data_dic['sig'], data_dic)
@@ -247,7 +245,6 @@ class MApp(MAppBase):
             entry = self.tab_app.create(
                 uid=data_dic['sig'],
                 title=data_dic['title'],
-                desc=data_dic['desc'],
                 # type=data_dic['type'],
                 create_time=time_stamp,
                 update_time=time_stamp,

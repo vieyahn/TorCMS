@@ -9,7 +9,7 @@ from torcms.model.app_rel_model import *
 from torcms.model.mappcatalog import MAppCatalog
 import torcms.model.app2catalog_model
 from torcms.model.mpost import MPost
-
+from html2text import html2text
 
 class app_catalog_of(tornado.web.UIModule):
     def render(self, uid_with_str):
@@ -377,4 +377,5 @@ class InfoList:
 
         return self.render_string('infor/infolist/infolist_{0}.html'.format(list_type),
                                   kwd=kwd,
+                                  html2text = html2text,
                                   post_info=info)

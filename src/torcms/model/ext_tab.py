@@ -13,7 +13,6 @@ class TabApp(BaseModel):
     uid = peewee.CharField(max_length=4, null=False, unique=True, help_text='', primary_key=True)
     title = peewee.CharField(null=False, help_text='标题', )
     keywords = peewee.CharField(null=True, default='')
-    desc = peewee.CharField(null=True, default='')
     logo = peewee.CharField(default='')
     date = peewee.DateTimeField(null=False, help_text='显示出来的日期时间')
     run_count = peewee.IntegerField(null=False, default=0, help_text='运行次数')
