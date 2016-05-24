@@ -25,7 +25,7 @@ class ReplyHandler(BaseHandler):
 
     def get_by_id(self, reply_id):
         reply = self.mreply.get_reply_by_uid(reply_id)
-        self.render('{0}/reply/show_reply.html'.format(self.tmpl_name),
+        self.render('doc/reply/show_reply.html',
                     cnt=reply.cnt_html,
                     username=reply.user_name,
                     date=reply.date,

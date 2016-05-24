@@ -53,7 +53,7 @@ class WikiHandler(BaseHandler):
             'unescape': tornado.escape.xhtml_unescape,
             'title': '最近文档',
         }
-        self.render('{0}/wiki/wiki_list.html'.format(self.tmpl_name),
+        self.render('doc/wiki/wiki_list.html',
                     view=self.mwiki.query_recent(),
                     format_date=tools.format_date,
                     cfg = config.cfg,
@@ -67,7 +67,7 @@ class WikiHandler(BaseHandler):
             'unescape': tornado.escape.xhtml_unescape,
             'title': '最近文档',
         }
-        self.render('{0}/wiki/wiki_list.html'.format(self.tmpl_name),
+        self.render('doc/wiki/wiki_list.html',
                     view=self.mwiki.query_dated(16),
                     format_date=tools.format_date,
                     kwd=kwd,
@@ -85,11 +85,10 @@ class WikiHandler(BaseHandler):
     @tornado.web.authenticated
     def to_add(self, title):
         kwd = {
-            # 'cats': self.cats,
             'title': title,
             'pager': '',
         }
-        self.render('{0}/wiki/wiki_add.html'.format(self.tmpl_name),
+        self.render('doc/wiki/wiki_add.html',
                     kwd=kwd,
                     cfg  = config.cfg,
                     userinfo = self.userinfo,
@@ -123,7 +122,7 @@ class WikiHandler(BaseHandler):
             'pager': '',
             # 'cats': self.cats,
         }
-        self.render('{0}/wiki/wiki_edit.html'.format(self.tmpl_name),
+        self.render('doc/wiki/wiki_edit.html',
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
                     # tag_infos=self.mcat.query_all(),
@@ -138,7 +137,7 @@ class WikiHandler(BaseHandler):
             'editable': self.editable(),
         }
 
-        self.render('{0}/wiki/wiki_view.html'.format(self.tmpl_name),
+        self.render('doc/wiki/wiki_view.html',
                     view=view,
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,

@@ -57,7 +57,7 @@ class MaintainCategoryHandler(BaseHandler):
             'unescape': tornado.escape.xhtml_unescape,
             'title': '最近文档',
         }
-        self.render('{0}/{1}/category_list.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('doc/{0}/category_list.html'.format( self.tmpl_router),
                     kwd=kwd,
                     view=self.mclass.query_all(by_order=True),
                     format_date=tools.format_date,
@@ -71,7 +71,7 @@ class MaintainCategoryHandler(BaseHandler):
             'pager': '',
             'uid': '',
         }
-        self.render('{0}/{1}/category_add.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('doc/{0}/category_add.html'.format( self.tmpl_router),
                     topmenu='',
                     kwd=kwd,
                     userinfo=self.userinfo,
@@ -117,7 +117,7 @@ class MaintainCategoryHandler(BaseHandler):
             'pager': '',
 
         }
-        self.render('{0}/{1}/category_edit.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('doc/{0}/category_edit.html'.format( self.tmpl_router),
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
                     dbrec=a,

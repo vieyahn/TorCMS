@@ -188,27 +188,27 @@ class UserHandler(BaseHandler):
     @tornado.web.authenticated
     def changepass(self):
 
-        self.render('{0}/{1}/changepass.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('doc/{0}/changepass.html'.format(self.tmpl_router),
                     userinfo=self.muser.get_by_id(self.user_name))
 
     @tornado.web.authenticated
     def change_info(self):
-        self.render('{0}/{1}/changeinfo.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('doc/{0}/changeinfo.html'.format(self.tmpl_router),
                     userinfo=self.muser.get_by_id(self.user_name))
 
     @tornado.web.authenticated
     def change_privilege(self, xg_username):
-        self.render('{0}/{1}/changeprivilege.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('doc/{0}/changeprivilege.html'.format(self.tmpl_router),
 
                     userinfo=self.muser.get_by_id(xg_username))
 
     @tornado.web.authenticated
     def show_info(self):
-        self.render('{0}/{1}/info.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('doc/{0}/info.html'.format(self.tmpl_router),
                     userinfo=self.muser.get_by_id(self.user_name), )
 
     def to_reset_password(self):
-        self.render('{0}/{1}/reset_password.html'.format(self.tmpl_name, self.tmpl_router))
+        self.render('doc/{0}/reset_password.html'.format(self.tmpl_router))
 
     def to_login(self):
         if self.get_current_user():
@@ -217,9 +217,9 @@ class UserHandler(BaseHandler):
             kwd = {
                 'pager': '',
             }
-            self.render('{0}/{1}/login.html'.format(self.tmpl_name, self.tmpl_router),
+            self.render('doc/{0}/login.html'.format(self.tmpl_router),
                         kwd=kwd,
-                        userinfo = None,
+                        userinfo=None,
                         )
 
     def register(self):
@@ -239,27 +239,27 @@ class UserHandler(BaseHandler):
                 }
                 self.set_status(400)
                 self.render('html/404.html',
-                            cfg = config.cfg,
+                            cfg=config.cfg,
                             kwd=kwd,
-                            userinfo = None,)
+                            userinfo=None, )
 
         else:
             kwd = {
-                    'info': '注册不成功',
-                }
+                'info': '注册不成功',
+            }
             self.set_status(400)
             self.render('html/404.html',
-                        cfg = config.cfg,
+                        cfg=config.cfg,
                         kwd=kwd,
-                        userinfo = None,)
+                        userinfo=None, )
 
     def __to_register__(self):
         kwd = {
             'pager': '',
         }
-        self.render('{0}/{1}/regist.html'.format(self.tmpl_name, self.tmpl_router),
-                    cfg = config.cfg,
-                    userinfo = None,
+        self.render('doc/{0}/regist.html'.format(self.tmpl_router),
+                    cfg=config.cfg,
+                    userinfo=None,
                     kwd=kwd)
 
     def login(self):
@@ -286,18 +286,18 @@ class UserHandler(BaseHandler):
                 'info': '密码验证出错，请<a href="/user/login">重新登陆</a>。'
             }
             self.render('html/404.html',
-                        cfg = config.cfg,
+                        cfg=config.cfg,
                         kwd=kwd,
-                        userinfo = self.userinfo,)
+                        userinfo=self.userinfo, )
         elif result == -1:
             self.set_status(401)
             kwd = {
                 'info': '没有这个用户'
             }
             self.render('html/404.html',
-                        cfg = config.cfg,
+                        cfg=config.cfg,
                         kwd=kwd,
-                        userinfo = self.userinfo,)
+                        userinfo=self.userinfo, )
         else:
             self.set_status(305)
             self.redirect("{0}".format(next_url))
@@ -306,10 +306,10 @@ class UserHandler(BaseHandler):
         kwd = {
             'pager': '',
         }
-        self.render('{0}/{1}/find.html'.format(self.tmpl_name, self.tmpl_router),
-                    cfg = config.cfg,
+        self.render('doc/{0}/find.html'.format(self.tmpl_router),
+                    cfg=config.cfg,
                     kwd=kwd,
-                    userinfo = self.userinfo,
+                    userinfo=self.userinfo,
                     )
 
     def p_to_find(self, ):
@@ -318,12 +318,12 @@ class UserHandler(BaseHandler):
             'pager': '',
 
         }
-        self.render('{0}/{1}/find_list.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('doc/{0}/find_list.html'.format(self.tmpl_router),
                     kwd=kwd,
                     view=self.muser.get_by_keyword(""),
-                    cfg = config.cfg,
-                    userinfo = self.userinfo,
-                        )
+                    cfg=config.cfg,
+                    userinfo=self.userinfo,
+                    )
 
     def find(self, keyword):
         kwd = {
@@ -332,14 +332,14 @@ class UserHandler(BaseHandler):
             'title': '查找结果',
         }
         if self.tmpl_router == "user":
-            self.render('{0}/{1}/find_list.html'.format(self.tmpl_name, self.tmpl_router),
+            self.render('doc/{0}/find_list.html'.format(self.tmpl_router),
                         kwd=kwd,
                         view=self.muser.get_by_keyword(keyword),
-                        cfg = config.cfg,
-                        userinfo  = self.userinfo,
+                        cfg=config.cfg,
+                        userinfo=self.userinfo,
                         )
         else:
-            result=self.muser.get_by_keyword(keyword)
+            result = self.muser.get_by_keyword(keyword)
             if result:
                 output = {
                     'find': result
@@ -389,7 +389,7 @@ class UserHandler(BaseHandler):
                 kwd = {
                     'info': '两次重置密码时间应该大于1分钟',
                 }
-                self.render('html/404.html', kwd=kwd, userinfo = self.userinfo)
+                self.render('html/404.html', kwd=kwd, userinfo=self.userinfo)
                 return False
 
             if userinfo:
@@ -437,7 +437,7 @@ class UserHandler(BaseHandler):
             self.set_status(400)
             self.render('html/404.html',
                         kwd=kwd,
-                        userinfo = self.userinfo)
+                        userinfo=self.userinfo)
 
         hash_str = tools.md5(userinfo.user_name + post_data['t'][0] + userinfo.user_pass)
         if hash_str == post_data['p'][0]:
@@ -449,7 +449,7 @@ class UserHandler(BaseHandler):
             self.set_status(400)
             self.render('html/404.html',
                         kwd=kwd,
-                        userinfo = self.userinfo,)
+                        userinfo=self.userinfo, )
 
         new_passwd = tools.get_uu8d()
         self.muser.update_pass(userinfo.user_name, new_passwd)
@@ -457,10 +457,10 @@ class UserHandler(BaseHandler):
             'user_name': userinfo.user_name,
             'new_pass': new_passwd,
         }
-        self.render('{0}/{1}/show_pass.html'.format(self.tmpl_name, self.tmpl_router),
-                    cfg = config.cfg,
+        self.render('doc/{0}/show_pass.html'.format(self.tmpl_router),
+                    cfg=config.cfg,
                     kwd=kwd,
-                    userinfo = self.userinfo,)
+                    userinfo=self.userinfo, )
 
 
 class UserAjaxHandler(UserHandler):

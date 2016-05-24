@@ -46,7 +46,7 @@ class SearchHandler(BaseHandler):
         kwd = {'title': '查找结果',
                'pager': '',
                }
-        self.render('{0}/search/search.html'.format(self.tmpl_name),
+        self.render('doc/search/search.html',
                     kwd=kwd,
                     srecs=results,
                     pager=tools.gen_pager_bootstrap_url('/search/{0}'.format(keyword), page_num, p_index),

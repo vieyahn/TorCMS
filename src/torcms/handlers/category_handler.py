@@ -49,7 +49,7 @@ class CategoryHandler(BaseHandler):
             'current_page': current_page_num
         }
 
-        self.render('{0}/catalog/list.html'.format(self.tmpl_name),
+        self.render('doc/catalog/list.html',
                     infos=self.mpost2catalog.query_pager_by_slug(cat_slug, current_page_num),
                     pager=tools.gen_pager_purecss('/category/{0}'.format(cat_slug), page_num, current_page_num),
                     userinfo=self.userinfo,

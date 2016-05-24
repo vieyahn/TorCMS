@@ -49,7 +49,7 @@ class LabelHandler(BaseHandler):
             'title': tag_name,
         }
 
-        self.render('{0}/label/list.html'.format(self.tmpl_name),
+        self.render('doc/label/list.html',
                     infos=self.mapp2tag.query_pager_by_slug(tag_slug, current_page_number),
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,

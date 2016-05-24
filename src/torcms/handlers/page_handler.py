@@ -23,13 +23,13 @@ class PageHandler(BaseHandler):
         if url_arr[0] == 'modify':
             self.to_modify(url_arr[1])
         elif url_str == 'list':
-           self.list()
+            self.list()
         elif url_arr[0] == 'ajax_count_plus':
             self.ajax_count_plus(url_arr[1])
         elif len(url_arr) == 1 and url_str.endswith('.html'):
             self.wiki(url_str.split('.')[0])
         else:
-            self.render('html/404.html', userinfo = self.userinfo, kwd = {})
+            self.render('html/404.html', userinfo=self.userinfo, kwd={})
 
     def post(self, url_str=''):
         url_arr = self.parse_url(url_str)
@@ -53,9 +53,9 @@ class PageHandler(BaseHandler):
             'slug': citiao,
             'pager': '',
         }
-        self.render('{0}/page/page_add.html'.format(self.tmpl_name),
+        self.render('doc/page/page_add.html',
                     kwd=kwd,
-                    userinfo = self.userinfo,)
+                    userinfo=self.userinfo, )
 
     @tornado.web.authenticated
     def update(self, slug):
@@ -79,12 +79,12 @@ class PageHandler(BaseHandler):
             'pager': '',
 
         }
-        self.render('{0}/page/page_edit.html'.format(self.tmpl_name),
+        self.render('doc/page/page_edit.html',
                     view=self.mpage.get_by_slug(slug),
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
-                    cfg  = config.cfg,
-                    userinfo = self.userinfo,
+                    cfg=config.cfg,
+                    userinfo=self.userinfo,
                     )
 
     def viewit(self, dbdata):
@@ -92,13 +92,13 @@ class PageHandler(BaseHandler):
             'pager': '',
             'editable': 1 if self.get_current_user() else 0,
         }
-        self.render('{0}/page/page_view.html'.format(self.tmpl_name),
+        self.render('doc/page/page_view.html',
                     view=dbdata,
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
                     format_date=tools.format_date,
                     userinfo=self.userinfo,
-                    cfg = config.cfg
+                    cfg=config.cfg
                     )
 
     def ajax_count_plus(self, slug):
@@ -110,11 +110,11 @@ class PageHandler(BaseHandler):
 
     def list(self):
         kwd = {
-                    'pager': '',
-                    'unescape': tornado.escape.xhtml_unescape,
-                    'title': '单页列表',
-                }
-        self.render('{0}/{1}/page_list.html'.format(self.tmpl_name, self.tmpl_router),
+            'pager': '',
+            'unescape': tornado.escape.xhtml_unescape,
+            'title': '单页列表',
+        }
+        self.render('doc/{0}/page_list.html'.format(self.tmpl_router),
                     kwd=kwd,
                     view=self.mpage.query_recent(),
                     view_all=self.mpage.query_all(),
@@ -142,6 +142,7 @@ class PageHandler(BaseHandler):
             return False
 
         self.redirect('/page/{0}.html'.format(post_data['slug'][0]))
+
 
 class PageAjaxHandler(PageHandler):
     def initialize(self):

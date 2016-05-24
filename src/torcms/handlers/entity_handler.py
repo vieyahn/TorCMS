@@ -14,7 +14,6 @@ class EntityHandler( BaseHandler ):
     def initialize(self):
         self.init()
         self.mpic = MEntry()
-        self.tmpl_name=  'doc'
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
@@ -41,7 +40,7 @@ class EntityHandler( BaseHandler ):
         kwd = {
             'pager': '',
         }
-        self.render('{0}/entry/entry_list.html'.format(self.tmpl_name),
+        self.render('doc/entry/entry_list.html',
                     imgs=recs,
                     cfg = config.cfg,
                     kwd=kwd,
@@ -52,7 +51,7 @@ class EntityHandler( BaseHandler ):
         kwd = {
             'pager': '',
         }
-        self.render('{0}/entry/entry_add.html'.format(self.tmpl_name),
+        self.render('doc/entry/entry_add.html',
                     cfg = config.cfg,
                     kwd=kwd,
                     userinfo  = self.userinfo)
@@ -88,7 +87,7 @@ class EntityHandler( BaseHandler ):
             'pager': '',
 
         }
-        self.render('{0}/entry/entry_view.html'.format(self.tmpl_name),
+        self.render('doc/entry/entry_view.html',
                     filename=outfilename,
                     cfg = config.cfg,
                     kwd=kwd,

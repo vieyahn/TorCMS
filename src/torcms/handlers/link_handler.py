@@ -68,7 +68,7 @@ class LinkHandler(BaseHandler):
             'unescape': tornado.escape.xhtml_unescape,
             'title': '最近文档',
         }
-        self.render('{0}/{1}/link_list.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('doc/{0}/link_list.html'.format(self.tmpl_router),
                     kwd=kwd,
                     view=self.mlink.query_recent(),
                     format_date=tools.format_date,
@@ -81,7 +81,7 @@ class LinkHandler(BaseHandler):
             'pager': '',
             'title': '最近文档',
         }
-        self.render('{0}/link/link_list.html'.format(self.tmpl_name),
+        self.render('doc/link/link_list.html',
                     kwd=kwd,
                     userinfo=self.userinfo,
                     view=self.mlink.query_dated(10),
@@ -106,7 +106,7 @@ class LinkHandler(BaseHandler):
             'pager': '',
             'uid': '',
         }
-        self.render('{0}/{1}/link_add.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('doc/{0}/link_add.html'.format(self.tmpl_router),
                     topmenu='',
                     kwd=kwd,
                     userinfo=self.userinfo,
@@ -119,7 +119,7 @@ class LinkHandler(BaseHandler):
             'uid': uid,
             'pager': '',
         }
-        self.render('{0}/{1}/link_add.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('doc/{0}/link_add.html'.format(self.tmpl_router),
                     kwd=kwd,
                     )
 
@@ -164,7 +164,7 @@ class LinkHandler(BaseHandler):
             'pager': '',
 
         }
-        self.render('{0}/{1}/link_edit.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('doc/{0}/link_edit.html'.format(self.tmpl_router),
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
                     dbrec=a,
@@ -189,7 +189,7 @@ class LinkHandler(BaseHandler):
 
         }
 
-        self.render('{0}/{1}/link_view.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('doc/{0}/link_view.html'.format(self.tmpl_router),
                     view=rec,
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,

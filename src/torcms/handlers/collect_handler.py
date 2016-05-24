@@ -37,7 +37,7 @@ class CollectHandler(BaseHandler, ):
 
     @tornado.web.authenticated
     def list(self):
-        self.render('tmpl_applite/collect/list.html',
+        self.render('user/collect/list.html',
                     recs_collect = self.mcollect.query_recent(self.userinfo.uid, 20),
                     userinfo = self.userinfo,
                     )

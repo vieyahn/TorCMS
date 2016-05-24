@@ -173,13 +173,9 @@ class next_post_link(tornado.web.UIModule):
 
 class the_category(tornado.web.UIModule):
     def render(self, post_id):
-        self.mpost2cat = MPost2Catalog()
-        current_record = self.mpost2cat.query_catalog(post_id)
-        outstr = ''
-        for uu in current_record:
-            tmp_str = '''<a href="/category/{0}">{1}</a>'''.format(uu.catalog.slug, uu.catalog.name)
-            outstr += tmp_str
-        return outstr
+        tmpl_str = '''<a href="/category/{0}">{1}</a>'''
+        format_arr = [tmpl_str.format(uu.catalog.slug, uu.catalog.name) for uu in MPost2Catalog().query_catalog(post_id)]
+        return ', '.join(format_arr)
 
 
 class list_categories(tornado.web.UIModule):

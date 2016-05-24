@@ -23,7 +23,6 @@ class MaintainPycateCategoryHandler(BaseHandler):
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
 
-
         if url_str == 'add':
             self.to_add_class()
         elif url_str == 'list':
@@ -60,7 +59,7 @@ class MaintainPycateCategoryHandler(BaseHandler):
             'unescape': tornado.escape.xhtml_unescape,
             'title': '最近文档',
         }
-        self.render('{0}/maintain/pycatecategory/category_list.html'.format(self.tmpl_name),
+        self.render('doc/maintain/pycatecategory/category_list.html',
                     kwd=kwd,
                     view=self.mclass.query_recent(),
                     format_date=tools.format_date,
@@ -73,7 +72,7 @@ class MaintainPycateCategoryHandler(BaseHandler):
             'pager': '',
             'title': '最近文档',
         }
-        self.render('{0}/maintain/pycatecategory/category_list.html'.format(self.tmpl_name),
+        self.render('doc/maintain/pycatecategory/category_list.html',
                     kwd=kwd,
                     userinfo=self.userinfo,
                     view=self.mclass.query_dated(10),
@@ -97,7 +96,7 @@ class MaintainPycateCategoryHandler(BaseHandler):
             'pager': '',
             'uid': '',
         }
-        self.render('{0}/maintain/pycatecategory/category_add.html'.format(self.tmpl_name),
+        self.render('doc/maintain/pycatecategory/category_add.html',
                     topmenu='',
                     kwd=kwd,
                     userinfo=self.userinfo,
@@ -113,7 +112,7 @@ class MaintainPycateCategoryHandler(BaseHandler):
             'uid': uid,
             'pager': '',
         }
-        self.render('{0}/maintain/pycatecategory/list.html'.format(self.tmpl_name),
+        self.render('doc/maintain/pycatecategory/list.html',
                     kwd=kwd,
                     )
 
@@ -147,7 +146,7 @@ class MaintainPycateCategoryHandler(BaseHandler):
             'pager': '',
 
         }
-        self.render('{0}/maintain/pycatecategory/category_edit.html'.format(self.tmpl_name),
+        self.render('doc/maintain/pycatecategory/category_edit.html',
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
                     dbrec=a,
@@ -172,7 +171,7 @@ class MaintainPycateCategoryHandler(BaseHandler):
 
         }
 
-        self.render('{0}/maintain/pycatecategory/category_view.html'.format(self.tmpl_name),
+        self.render('doc/maintain/pycatecategory/category_view.html',
                     view=rec,
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
