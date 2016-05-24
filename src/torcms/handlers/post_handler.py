@@ -86,7 +86,8 @@ class PostHandler(BaseHandler):
             'with_catalog': with_catalog,
             'with_date': with_date,
         }
-        self.render('{0}/{1}/post_list.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('{0}/{1}/post_list.html'.format(self.tmpl_name, 
+            self.tmpl_router),
                     kwd=kwd,
                     view=self.mpost.query_recent(),
                     view_all=self.mpost.query_all(),
@@ -101,7 +102,8 @@ class PostHandler(BaseHandler):
             'pager': '',
             'title': '最近文档',
         }
-        self.render('{0}/{1}/post_list.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('{0}/{1}/post_list.html'.format(self.tmpl_name, 
+            self.tmpl_router),
                     kwd=kwd,
                     userinfo=self.userinfo,
                     view=self.mpost.query_dated(10),
@@ -126,7 +128,8 @@ class PostHandler(BaseHandler):
             'uid': '',
 
         }
-        self.render('{0}/{1}/post_add.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('{0}/{1}/post_add.html'.format(self.tmpl_name, 
+            self.tmpl_router),
                     topmenu='',
                     kwd=kwd,
                     tag_infos=self.mcat.query_all(),
@@ -141,7 +144,8 @@ class PostHandler(BaseHandler):
             'uid': uid,
             'pager': '',
         }
-        self.render('{0}/{1}/post_add.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('{0}/{1}/post_add.html'.format(self.tmpl_name, 
+            self.tmpl_router),
                     kwd=kwd,
                     tag_infos=self.mcat.query_all(),
                     cfg=config.cfg,
@@ -216,7 +220,9 @@ class PostHandler(BaseHandler):
                 pass
             else:
                 new_tag_arr.append(post_data[key][0])
-                self.mpost2catalog.add_record(uid, post_data[key][0], int(key[-1]))
+                self.mpost2catalog.add_record(uid, 
+                        post_data[key][0], 
+                        int(key[-1]))
 
         for cur_info in current_infos:
             if str(cur_info.catalog.uid).strip() not in new_tag_arr:
@@ -238,7 +244,8 @@ class PostHandler(BaseHandler):
             'cats': self.cats,
 
         }
-        self.render('{0}/{1}/post_edit.html'.format(self.tmpl_name, self.tmpl_router),
+        self.render('{0}/{1}/post_edit.html'.format(self.tmpl_name, 
+            self.tmpl_router),
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
                     tag_infos=self.mcat.query_all(),
@@ -316,7 +323,7 @@ class PostHandler(BaseHandler):
                     )
 
     def add_relation(self, f_uid, t_uid):
-        if False == self.mpost.get_by_id(t_uid):
+        if self.mpost.get_by_id(t_uid) is False:
             return False
         if f_uid == t_uid:
             '''
