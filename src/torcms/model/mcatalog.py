@@ -26,7 +26,7 @@ class MCatalog(MSingleTable):
         return (a)
     
     def query_uid_starts_with(self, qian2):
-        return self.tab.select().where(self.tab.uid.startswith(qian2)).order_by(self.tab.uid)
+        return self.tab.select().where(self.tab.uid.startswith(qian2)).order_by(self.tab.order)
 
     def query_all(self, by_count=False, by_order=True):
         if by_count:
