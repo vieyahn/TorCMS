@@ -51,7 +51,7 @@ class InfoListHandler(BaseHandler):
         for x in redis_kw:
             kw_condition_arr.append(x.decode('utf-8'))
         if redis_kw:
-            condition['keywords'] = kw_condition_arr
+            condition['def_tag_arr'] = kw_condition_arr
         return condition
 
     def echo_html(self, input):
