@@ -31,7 +31,8 @@ from torcms.handlers.user_info_list_handler import UserListHandler
 from torcms.handlers.collect_handler import CollectHandler
 from torcms.handlers.evaluation_handler import EvaluationHandler
 from torcms.handlers.post_info_relation_handler import RelHandler
-from torcms.handlers.app2reply_handler import App2ReplyHandler
+from torcms.handlers.info2reply_handler import Info2ReplyHandler
+
 
 urls = [
 
@@ -60,6 +61,7 @@ urls = [
     ("/widget/(.*)", WidgetHandler, dict(hinfo={})),
 
     ('/meta/(.*)', MetaHandler, dict()),
+    ("/info/reply/(.*)", Info2ReplyHandler, dict()),
     ("/info/(.*)", torcms.handlers.info_handler.InfoHandler, dict(hinfo={})),
     ("/tag/(.*)", TagHandler, dict()),
 

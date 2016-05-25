@@ -6,7 +6,7 @@ from torcms.model.mreply import MReply
 from torcms.model.mreply2user import MReply2User
 
 
-class App2ReplyHandler(Post2ReplyHandler):
+class Info2ReplyHandler(Post2ReplyHandler):
     def initialize(self):
         self.init()
         self.mreply = MReply()

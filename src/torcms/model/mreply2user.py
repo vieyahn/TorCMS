@@ -10,6 +10,8 @@ import tornado.escape
 import config
 from torcms.core import tools
 from torcms.model.core_tab import CabPost2Catalog, CabVoter2Reply, CabReply
+from torcms.model.core_tab import CabPost2Reply
+from torcms.model.ext_tab import TabApp2Reply
 from torcms.model.msingle_table import MSingleTable
 
 
@@ -80,15 +82,22 @@ class MReply2User(MSingleTable):
             return False
 
     def delete(self, del_id):
-
         try:
+            del_count2 = CabVoter2Reply.delete().where(CabVoter2Reply.reply_id == del_id)
+            del_count2.execute()
+
+            del_count3 = CabPost2Reply.delete().where(CabPost2Reply.reply_id == del_id)
+            del_count3.execute()
+
+            del_count4 = TabApp2Reply.delete().where(TabApp2Reply.reply_id == del_id)
+            del_count4.execute()
+
             del_count = CabReply.delete().where(CabReply.uid == del_id)
             del_count.execute()
 
-            del_count2 = CabVoter2Reply.delete().where(CabVoter2Reply.reply_id == del_id)
-            del_count2.execute()
             return True
         except:
+
             return False
 
     def query_cat_random(self, cat_id, num=6):

@@ -19,20 +19,18 @@ class Post2ReplyHandler(BaseHandler):
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
-
-        if url_arr[0] == 'delete_reply':
+        if url_arr[0] == 'delete':
             self.delete(url_arr[1])
         elif url_arr[0] == 'zan':
             self.zan(url_arr[1])
 
     def post(self, url_str=''):
         url_arr = self.parse_url(url_str)
-
         if url_arr[0] == 'add':
-            self.add_comment(url_arr[1])
+            self.add_reply(url_arr[1])
 
     @tornado.web.authenticated
-    def add_comment(self, id_post):
+    def add_reply(self, id_post):
 
         post_data = {}
         for key in self.request.arguments:
@@ -84,5 +82,4 @@ class Post2ReplyHandler(BaseHandler):
             output = {
                 'del_zan': 0,
             }
-
         return json.dump(output, self)
