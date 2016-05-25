@@ -156,13 +156,7 @@ class MApp(MAppBase):
                 cnt_md=data_dic['cnt_md'][0],
                 logo=data_dic['logo'][0],
                 cnt_html=tools.markdown2html(data_dic['cnt_md'][0]),
-                # lat=data_dic['lat'][0],
-                # lon=data_dic['lon'][0],
-                # zoom_max=data_dic['zoom_max'][0],
-                # zoom_min=data_dic['zoom_min'][0],
-                # zoom_current=data_dic['zoom_current'][0],
                 extinfo= cur_extinfo
-
             ).where(self.tab_app.uid == uid)
             entry.execute()
         else:
@@ -175,9 +169,6 @@ class MApp(MAppBase):
         return self.tab_app.select().where(self.tab_app.extinfo['def_cat_uid'] == cat_id)
 
     def query_by_tagname(self, tag_name):
-
-        # condition = {'keywords': {'$elemMatch': {'$eq': tag_name}}}
-        # condition = {'def_tag_arr': [tag_name]}
 
         return self.tab_app.select().where(self.tab_app.extinfo['def_tag_arr'].contains(tag_name)).order_by(self.tab_app.time_update.desc())
 

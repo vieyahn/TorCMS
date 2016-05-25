@@ -198,7 +198,6 @@ class MetaHandler(BaseHandler):
             ext_dic['def_cat_uid'] = post_data['def_cat_uid'][0]
             ext_dic['def_cat_pid'] = '{0}00'.format(post_data['def_cat_uid'][0][:2])
         ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'][0].strip().strip(',').split(',')]
-        print(ext_dic)
         ext_dic = self.extra_data(ext_dic, post_data)
         self.mapp.modify_meta(uid,
                               post_data,
@@ -260,7 +259,6 @@ class MetaHandler(BaseHandler):
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)
         current_tag_infos = self.mapp2tag.get_by_id(signature)
-
         tags_arr = [x.strip() for x in post_data['tags'][0].split(',')]
         for tag_name in tags_arr:
             if tag_name == '':
