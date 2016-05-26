@@ -48,6 +48,10 @@ class PageHandler(BaseHandler):
 
     @tornado.web.authenticated
     def to_add(self, citiao):
+        if self.check_doc_priv(self.userinfo)['ADD']:
+            pass
+        else:
+            return False
         kwd = {
             'cats': self.cats,
             'slug': citiao,
@@ -59,7 +63,10 @@ class PageHandler(BaseHandler):
 
     @tornado.web.authenticated
     def update(self, slug):
-
+        if self.check_doc_priv(self.userinfo)['EDIT']:
+            pass
+        else:
+            return False
         post_data = {}
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)
@@ -75,6 +82,11 @@ class PageHandler(BaseHandler):
 
     @tornado.web.authenticated
     def to_modify(self, slug):
+        if self.check_doc_priv(self.userinfo)['EDIT']:
+            pass
+        else:
+            return False
+
         kwd = {
             'pager': '',
 
@@ -125,6 +137,11 @@ class PageHandler(BaseHandler):
 
     @tornado.web.authenticated
     def wikinsert(self):
+        if self.check_doc_priv(self.userinfo)['ADD']:
+            pass
+        else:
+            return False
+
         post_data = {}
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)

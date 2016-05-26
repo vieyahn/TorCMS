@@ -38,6 +38,18 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendring):
         url_arr = [] if len(url_str) == 0 else url_str.split('/')
         return url_arr
 
+    def check_doc_priv(self, userinfo):
+        priv_dic = {'ADD': False, 'EDIT': False, 'DELETE': False, 'ADMIN': False}
+        if userinfo.privilege[1] >= '1':
+            priv_dic['ADD'] = True
+        if userinfo.privilege[1] >= '2':
+            priv_dic['EDIT'] = True
+        if userinfo.privilege[1] >= '4':
+            priv_dic['DELETE'] = True
+        if userinfo.privilege[1] >= '8':
+            priv_dic['ADMIN'] = True
+        return priv_dic
+
     def get_current_user(self):
         return self.get_secure_cookie("user")
 

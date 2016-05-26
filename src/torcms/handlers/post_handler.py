@@ -120,6 +120,10 @@ class PostHandler(BaseHandler):
             self.to_add(uid)
 
     def to_add_document(self, ):
+        if self.check_doc_priv(self.userinfo)['ADD']:
+            pass
+        else:
+            return False
         kwd = {
             'pager': '',
             'cats': self.cats,
@@ -136,6 +140,10 @@ class PostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def to_add(self, uid):
+        if self.check_doc_priv(self.userinfo)['ADD']:
+            pass
+        else:
+            return False
         kwd = {
             'cats': self.cats,
             'uid': uid,
@@ -150,7 +158,8 @@ class PostHandler(BaseHandler):
     @tornado.web.authenticated
     def update(self, uid):
         raw_data = self.mpost.get_by_id(uid)
-        if self.userinfo.privilege[2] == '1' or raw_data.user_name == self.get_current_user():
+        if (self.check_doc_priv(self.userinfo)['EDIT'] or
+                    raw_data.user_name == self.get_current_user()):
             pass
         else:
             return False
@@ -167,7 +176,7 @@ class PostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def update_tag(self, signature):
-        if self.userinfo.privilege[4] == '1':
+        if self.check_doc_priv(self.userinfo)['ADD']:
             pass
         else:
             return False
@@ -198,7 +207,7 @@ class PostHandler(BaseHandler):
     @tornado.web.authenticated
     def update_catalog(self, uid):
         raw_data = self.mpost.get_by_id(uid)
-        if self.userinfo.privilege[4] == '1' or raw_data.user_name == self.get_current_user():
+        if self.check_doc_priv(self.userinfo)['ADD'] or raw_data.user_name == self.get_current_user():
             pass
         else:
             return False
@@ -230,7 +239,7 @@ class PostHandler(BaseHandler):
         # 用户具有管理权限，
         # 或
         # 文章是用户自己发布的。
-        if self.userinfo.privilege[2] == '1' or a.user_name == self.get_current_user():
+        if self.check_doc_priv(self.userinfo)['EDIT'] or a.user_name == self.get_current_user():
             pass
         else:
             return False
@@ -332,7 +341,7 @@ class PostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def add_post(self):
-        if self.userinfo.privilege[1] == '1':
+        if self.check_doc_priv(self.userinfo)['ADD']:
             pass
         else:
             return False
@@ -351,7 +360,7 @@ class PostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def user_add_post(self):
-        if self.userinfo.privilege[1] == '1':
+        if self.check_doc_priv(self.userinfo)['ADD']:
             pass
         else:
             return False
@@ -379,6 +388,10 @@ class PostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def delete(self, del_id):
+        if self.check_doc_priv(self.userinfo)['DELETE']:
+            pass
+        else:
+            return False
         is_deleted = self.mpost.delete(del_id)
         if self.tmpl_router == "post":
             if is_deleted:
