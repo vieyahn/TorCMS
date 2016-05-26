@@ -109,7 +109,7 @@ class InfoHandler(BaseHandler):
 
 
         parent_name = self.mcat.get_by_id(catid[:2] + '00').name if catid != '' else ''
-        if catid != ''
+        if catid != '':
             cat_rec = self.mappcat.get_by_uid(catid)
             priv_mask_idx = cat_rec.priv_mask.index('1')
             cat_name = cat_rec.name 
