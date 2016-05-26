@@ -24,7 +24,7 @@ class MCatalog(MSingleTable):
 
         a = self.tab.select().where(self.tab.uid.startswith(qian2)).order_by(self.tab.order)
         return (a)
-    
+
     def query_uid_starts_with(self, qian2):
         return self.tab.select().where(self.tab.uid.startswith(qian2)).order_by(self.tab.order)
 
@@ -40,9 +40,8 @@ class MCatalog(MSingleTable):
     def query_field_count(self, limit_num):
         return self.tab.select().order_by(self.tab.count.desc()).limit(limit_num)
 
-    def get_by_uid(self, uid):
-        return self.tab.get(uid = uid)
-        
+
+
     def get_by_slug(self, slug):
         return self.tab.get(slug=slug)
 
@@ -51,8 +50,6 @@ class MCatalog(MSingleTable):
             count=num,
         ).where(self.tab.uid == cat_id)
         entry.execute()
-
-
 
     def initial_db(self, post_data):
         entry = self.tab.create(
@@ -69,19 +66,21 @@ class MCatalog(MSingleTable):
             name=post_data['name'][0],
             slug=post_data['slug'][0],
             order=post_data['order'][0],
+            priv_mask=post_data['priv_mask'][0],
         ).where(self.tab.uid == uid)
         entry.execute()
 
     def insert_data(self, id_post, post_data):
 
         uu = self.get_by_id(id_post)
-        if uu :
-            self.update(id_post ,post_data)
+        if uu:
+            self.update(id_post, post_data)
         else:
             entry = self.tab.create(
-            name=post_data['name'][0],
-            slug=post_data['slug'][0],
-            order=post_data['order'][0],
-            uid= id_post,
-        )
+                name=post_data['name'][0],
+                slug=post_data['slug'][0],
+                order=post_data['order'][0],
+                uid=id_post,
+                priv_mask=post_data['priv_mask'][0],
+            )
             return (entry.uid)

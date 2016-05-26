@@ -89,10 +89,6 @@ class MetaHandler(BaseHandler):
 
     @tornado.web.authenticated
     def user_to_add(self, catid):
-        if self.is_admin():
-            pass
-        else:
-            return
 
         uid = tools.get_uu4d()
         while self.mapp.get_by_uid(uid):
@@ -104,9 +100,23 @@ class MetaHandler(BaseHandler):
             'parentname': self.mtag.get_by_id(catid[:2] + '00').name,
             'catname': self.mtag.get_by_id(catid).name,
         }
-        self.render('autogen/add/add_{0}.html'.format(catid), 
-                userinfo = self.userinfo,
-                kwd=kwd)
+        self.render('autogen/add/add_{0}.html'.format(catid),
+                    userinfo=self.userinfo,
+                    kwd=kwd)
+
+    def check_priv(self, userinfo, cat_id):
+        cat_rec = self.mappcat.get_by_uid(cat_id)
+        priv_mask_idx = cat_rec.priv_mask.index('1')
+        priv_dic = {'ADD': False, 'EDIT': False, 'DELETE': False, 'ADMIN': False}
+        if userinfo.privilege[priv_mask_idx] >= '1':
+            priv_dic['ADD'] = True
+        if userinfo.privilege[priv_mask_idx] >= '2':
+            priv_dic['EDIT'] = True
+        if userinfo.privilege[priv_mask_idx] >= '4':
+            priv_dic['DELETE'] = True
+        if userinfo.privilege[priv_mask_idx] >= '8':
+            priv_dic['ADMIN'] = True
+        return priv_dic
 
     @tornado.web.authenticated
     def to_add_app(self, uid):
@@ -121,10 +131,6 @@ class MetaHandler(BaseHandler):
 
     @tornado.web.authenticated
     def to_edit_app(self, infoid):
-        if self.is_admin():
-            pass
-        else:
-            return False
 
         rec_info = self.mapp.get_by_uid(infoid)
 
@@ -133,7 +139,7 @@ class MetaHandler(BaseHandler):
         else:
             self.render('html/404.html')
             return
-        if 'def_cat_uid' in rec_info.extinfo :
+        if 'def_cat_uid' in rec_info.extinfo:
             catid = rec_info.extinfo['def_cat_uid']
         else:
             catid = ''
@@ -144,7 +150,6 @@ class MetaHandler(BaseHandler):
             'catname': self.mtag.get_by_id(catid).name if catid != '' else '',
             'parentlist': self.mtag.get_parent_list(),
             'userip': self.request.remote_ip
-
         }
 
         if catid:
@@ -154,37 +159,17 @@ class MetaHandler(BaseHandler):
 
         self.render(tmpl,
                     kwd=kwd,
-                    calc_info = rec_info,
+                    calc_info=rec_info,
                     post_info=rec_info,
                     userinfo=self.userinfo,
                     app_info=rec_info,
                     unescape=tornado.escape.xhtml_unescape,
-                    cat_enum = self.mappcat.get_qian2(catid[:2]),
+                    cat_enum=self.mappcat.get_qian2(catid[:2]),
                     tag_infos=[],
                     app2label_info=self.mapp2tag.get_by_id(infoid), )
 
-    # @tornado.web.authenticated
-    # def to_edit_app(self, app_id):
-    #     if self.userinfo.privilege[4] == '1':
-    #         info = self.mapp.get_by_uid(app_id)
-    #         self.render('tmpl_applite/app/edit.html',
-    #                     userinfo = self.userinfo,
-    #                     app_info=info,
-    #                     unescape=tornado.escape.xhtml_escape,
-    #                     tag_infos=self.mtag.query_all(),
-    #                     app2tag_info=self.mapp2catalog.query_by_app_uid(app_id),
-    #                     app2label_info=self.mapp2tag.get_by_id(app_id),
-    #                     )
-    #     else:
-    #         return False
-
     @tornado.web.authenticated
     def update(self, uid):
-        if self.is_admin():
-            pass
-        else:
-            return
-
         post_data = {}
         ext_dic = {}
         for key in self.request.arguments:
@@ -192,6 +177,16 @@ class MetaHandler(BaseHandler):
                 ext_dic[key] = self.get_argument(key)
             else:
                 post_data[key] = self.get_arguments(key)
+
+        post_data['user_name'] = self.userinfo.user_name
+
+        current_info = self.mapp.get_by_uid(uid)
+
+        if (current_info.user_name == self.userinfo.user_name or
+                self.check_priv(self.userinfo, post_data['def_cat_uid'][0])['EDIT']):
+            pass
+        else:
+            return False
 
         ext_dic['def_uid'] = str(uid)
         if 'def_cat_uid' in post_data:
@@ -208,10 +203,7 @@ class MetaHandler(BaseHandler):
 
     @tornado.web.authenticated
     def add(self, uid=''):
-        if self.userinfo.privilege[4] == '1':
-            pass
-        else:
-            return False
+
         ext_dic = {}
         post_data = {}
         for key in self.request.arguments:
@@ -220,11 +212,18 @@ class MetaHandler(BaseHandler):
             else:
                 post_data[key] = self.get_arguments(key)
 
+        if self.check_priv(self.userinfo, post_data['def_cat_uid'][0])['ADD']:
+            pass
+        else:
+            return False
+
         if uid == '':
             uid = tools.get_uu4d()
             while self.mapp.get_by_uid(uid):
                 uid = tools.get_uu4d()
             post_data['uid'][0] = uid
+
+        post_data['user_name'] = self.userinfo.user_name
 
         ext_dic['def_uid'] = str(uid)
         ext_dic['def_cat_pid'] = '{0}00'.format(post_data['def_cat_uid'][0][:2])
@@ -232,7 +231,8 @@ class MetaHandler(BaseHandler):
         ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'][0].strip().strip(',').split(',')]
 
         ext_dic = self.extra_data(ext_dic, post_data)
-        self.mapp.modify_meta( ext_dic['def_uid'],
+        print(post_data)
+        self.mapp.modify_meta(ext_dic['def_uid'],
                               post_data,
                               extinfo=ext_dic)
         self.update_catalog(ext_dic['def_uid'])
@@ -251,10 +251,7 @@ class MetaHandler(BaseHandler):
 
     @tornado.web.authenticated
     def update_tag(self, signature):
-        if self.userinfo.privilege[4] == '1':
-            pass
-        else:
-            return False
+
         post_data = {}
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)
@@ -274,10 +271,7 @@ class MetaHandler(BaseHandler):
 
     @tornado.web.authenticated
     def update_catalog(self, signature):
-        if self.userinfo.privilege[4] == '1':
-            pass
-        else:
-            return False
+
         post_data = {}
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)
@@ -316,8 +310,6 @@ class MetaHandler(BaseHandler):
                 'pinglun': 0,
             }
         return json.dump(output, self)
-
-
 
     def add_relation(self, f_uid, t_uid):
         if False == self.mapp.get_by_uid(t_uid):

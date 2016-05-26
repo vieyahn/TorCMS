@@ -191,7 +191,7 @@ class MApp(MAppBase):
                 logo=data_dic['logo'][0],
                 cnt_html=tools.markdown2html(data_dic['cnt_md'][0]),
                 extinfo=extinfo,
-
+                user_name=data_dic['user_name'],
                 # lat=data_dic['lat'][0],
                 #lon=data_dic['lon'][0],
                 #zoom_max=data_dic['zoom_max'][0],

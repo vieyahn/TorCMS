@@ -2,18 +2,16 @@
 
 import peewee
 from playhouse.postgres_ext import BinaryJSONField
-
 from torcms.core.base_model import BaseModel
 from torcms.model.core_tab import CabMember
 from torcms.model.core_tab import CabPost
 from torcms.model.core_tab import CabReply
 
-
 class TabApp(BaseModel):
     uid = peewee.CharField(max_length=4, null=False, unique=True, help_text='', primary_key=True)
     title = peewee.CharField(null=False, help_text='标题', )
     keywords = peewee.CharField(null=True, default='')
-    # user_name = peewee.CharField(null=False, max_length=36, help_text='UserName', )
+    user_name = peewee.CharField(null=False, default = '', max_length=36, help_text='UserName', )
     logo = peewee.CharField(default='')
     date = peewee.DateTimeField(null=False, help_text='显示出来的日期时间')
     run_count = peewee.IntegerField(null=False, default=0, help_text='运行次数')
@@ -34,6 +32,7 @@ class TabCatalog(BaseModel):
     slug = peewee.CharField(null=False, index=True, unique=True, max_length=36, help_text='', )
     name = peewee.CharField(null=False, max_length=255, help_text='', )
     order = peewee.IntegerField()
+    priv_mask = peewee.CharField(null=False, default='00400', help_text='Member Privilege')
     count = peewee.IntegerField(default=0)
 
 

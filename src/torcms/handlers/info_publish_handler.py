@@ -43,33 +43,33 @@ class InfoPublishHandler(BaseHandler):
         for rec in dbdata:
             if rec.uid.endswith('00'):
                 continue
-            outstr += '''
+            priv_mask_idx = rec.priv_mask.index('1')
+            if self.userinfo.privilege[priv_mask_idx] >= '1':
+                outstr += '''
             <a href="/meta/cat_add/{0}" class="btn btn-primary" style="display: inline-block;margin:3px;" >{1}</a>
             '''.format(rec.uid, rec.name)
         outstr += '</ul>'
         return (outstr)
 
     @tornado.web.authenticated
-    def view_class1(self, fatherid=''):
-        if self.is_admin():
-            pass
-        else:
-            return False
+    def view_class1(self):
         dbdata = self.mcat.get_parent_list()
         class1str = ''
         for rec in dbdata:
-            class1str += '''
+            priv_mask_idx = rec.priv_mask.index('1')
+            if self.userinfo.privilege[priv_mask_idx] >= '1':
+                class1str += '''
              <a onclick="select('/publish/2{0}');" class="btn btn-primary" style="display: inline-block;margin:3px;" >{1}</a>
             '''.format(rec.uid, rec.name)
 
         kwd = {
             'class1str': class1str,
-            # 'cityname': self.mcity.get_cityname_by_id(self.city_name),
             'parentid': '0',
             'parentlist': self.mcat.get_parent_list(),
         }
         self.render('infor/publish/publish.html',
-           userinfo = self.userinfo,
+                    userinfo=self.userinfo,
+
                     kwd=kwd)
 
     @tornado.web.authenticated
@@ -90,5 +90,5 @@ class InfoPublishHandler(BaseHandler):
             'parentlist': self.mcat.get_parent_list(),
         }
         self.render('infor/publish/publish2.html',
-                userinfo = self.userinfo,
+                    userinfo=self.userinfo,
                     kwd=kwd)
