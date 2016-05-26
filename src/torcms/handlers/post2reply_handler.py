@@ -1,9 +1,7 @@
 # -*- coding:utf-8 -*-
 import json
-
 import tornado.escape
 import tornado.web
-
 from torcms.core.base_handler import BaseHandler
 from torcms.model.mpost2reply import MPost2Reply
 from torcms.model.mreply import MReply
@@ -59,8 +57,9 @@ class Post2ReplyHandler(BaseHandler):
             post_data[key] = self.get_arguments(key)
         post_data['user_id'] = self.userinfo.uid
 
+        # 先在外部表中更新，然后更新内部表字段的值。
+        # 有冗余，但是查看的时候避免了联合查询
         cur_count = self.mreply2user.insert_data(self.userinfo.uid, id_reply)
-
         if cur_count:
             self.mreply.update_vote(id_reply, cur_count)
             output = {

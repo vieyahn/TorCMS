@@ -1,9 +1,4 @@
 # -*- coding:utf-8 -*-
-'''
-Author: Bu Kun
-E-mail: bukun@osgeo.cn
-CopyRight: http://www.yunsuan.org
-'''
 
 from torcms.model.ext_tab import TabApp2Reply
 from torcms.model.mpost2reply import MPost2Reply
@@ -16,7 +11,3 @@ class MApp2Reply(MPost2Reply):
             TabApp2Reply.create_table()
         except:
             pass
-
-
-
-

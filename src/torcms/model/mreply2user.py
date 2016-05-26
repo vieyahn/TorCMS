@@ -1,19 +1,16 @@
 # -*- coding:utf-8 -*-
 
-
 import datetime
 import time
 
 import peewee
 import tornado.escape
-
 import config
 from torcms.core import tools
 from torcms.model.core_tab import CabPost2Catalog, CabVoter2Reply, CabReply
 from torcms.model.core_tab import CabPost2Reply
 from torcms.model.ext_tab import TabApp2Reply
 from torcms.model.msingle_table import MSingleTable
-
 
 class MReply2User(MSingleTable):
     def __init__(self):

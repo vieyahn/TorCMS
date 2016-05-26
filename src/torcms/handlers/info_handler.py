@@ -17,6 +17,7 @@ from torcms.model.mappcatalog import MAppCatalog
 from torcms.model.usage_model import MUsage
 from torcms.model.app2catalog_model import MApp2Catalog
 
+
 class InfoHandler(BaseHandler):
     def initialize(self, hinfo=''):
         self.init()
@@ -31,30 +32,26 @@ class InfoHandler(BaseHandler):
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
-
         if len(url_arr) == 1 and len(url_str) == 4:
             self.view_info(url_str)
-
         else:
             kwd = {
                 'title': '',
                 'info': '',
             }
-            self.render('html/404.html', kwd=kwd,
+            self.render('html/404.html',
+                        kwd=kwd,
                         userinfo=self.userinfo, )
 
     def post(self, url_str=''):
-
         url_arr = self.parse_url(url_str)
-
         if url_arr[0] == 'rel':
             if self.get_current_user():
-                self.add_relation(url_arr[1])
+                self.add_relation(url_arr[1], url_arr[2])
             else:
                 self.redirect('/user/login')
         elif url_arr[0] == 'comment_add':
             self.add_comment(url_arr[1])
-
         else:
             return False
 
@@ -102,21 +99,20 @@ class InfoHandler(BaseHandler):
         self.chuli_cookie_relation(info_id)
         cookie_str = tools.get_uuid()
 
-        if 'def_cat_uid' in rec.extinfo :
+        if 'def_cat_uid' in rec.extinfo:
             catid = rec.extinfo['def_cat_uid']
         else:
             catid = ''
-
 
         parent_name = self.mcat.get_by_id(catid[:2] + '00').name if catid != '' else ''
         if catid != '':
             cat_rec = self.mcat.get_by_uid(catid)
             priv_mask_idx = cat_rec.priv_mask.index('1')
-            cat_name = cat_rec.name 
+            cat_name = cat_rec.name
         else:
             priv_mask_idx = 0
             cat_name = ''
-            
+
         parentname = '<a href="/list/{0}">{1}</a>'.format(catid[:2] + '00', parent_name)
 
         catname = '<a href="/list/{0}">{1}</a>'.format(catid, cat_name)
@@ -155,8 +151,8 @@ class InfoHandler(BaseHandler):
                     recent_apps=self.musage.query_recent(self.get_current_user(), 6)[1:],
                     post_info=rec,
                     replys=replys,
-                    cat_enum = self.mcat.get_qian2(catid[:2]) if catid else [],
-                    priv_mask_idx = priv_mask_idx,
+                    cat_enum=self.mcat.get_qian2(catid[:2]) if catid else [],
+                    priv_mask_idx=priv_mask_idx,
                     )
 
     def extra_kwd(self, info_rec):
