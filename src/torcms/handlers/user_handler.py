@@ -28,7 +28,7 @@ class UserHandler(BaseHandler):
         self.init()
         self.muser = MUser()
         self.user_name = self.get_current_user()
-        self.tmpl_router = 'user'
+        self.tmpl_router = 'info'
 
     def get(self, url_str):
         url_arr = self.parse_url(url_str)
@@ -188,27 +188,27 @@ class UserHandler(BaseHandler):
     @tornado.web.authenticated
     def changepass(self):
 
-        self.render('doc/{0}/changepass.html'.format(self.tmpl_router),
+        self.render('user/{0}/changepass.html'.format(self.tmpl_router),
                     userinfo=self.muser.get_by_id(self.user_name))
 
     @tornado.web.authenticated
     def change_info(self):
-        self.render('doc/{0}/changeinfo.html'.format(self.tmpl_router),
+        self.render('user/{0}/changeinfo.html'.format(self.tmpl_router),
                     userinfo=self.muser.get_by_id(self.user_name))
 
     @tornado.web.authenticated
     def change_privilege(self, xg_username):
-        self.render('doc/{0}/changeprivilege.html'.format(self.tmpl_router),
+        self.render('user/{0}/changeprivilege.html'.format(self.tmpl_router),
 
                     userinfo=self.muser.get_by_id(xg_username))
 
     @tornado.web.authenticated
     def show_info(self):
-        self.render('doc/{0}/info.html'.format(self.tmpl_router),
+        self.render('user/{0}/info.html'.format(self.tmpl_router),
                     userinfo=self.muser.get_by_id(self.user_name), )
 
     def to_reset_password(self):
-        self.render('doc/{0}/reset_password.html'.format(self.tmpl_router))
+        self.render('user/{0}/reset_password.html'.format(self.tmpl_router))
 
     def to_login(self):
         if self.get_current_user():
@@ -217,7 +217,7 @@ class UserHandler(BaseHandler):
             kwd = {
                 'pager': '',
             }
-            self.render('doc/{0}/login.html'.format(self.tmpl_router),
+            self.render('user/{0}/login.html'.format(self.tmpl_router),
                         kwd=kwd,
                         userinfo=None,
                         )
@@ -257,7 +257,7 @@ class UserHandler(BaseHandler):
         kwd = {
             'pager': '',
         }
-        self.render('doc/{0}/regist.html'.format(self.tmpl_router),
+        self.render('user/{0}/regist.html'.format(self.tmpl_router),
                     cfg=config.cfg,
                     userinfo=None,
                     kwd=kwd)
@@ -306,7 +306,7 @@ class UserHandler(BaseHandler):
         kwd = {
             'pager': '',
         }
-        self.render('doc/{0}/find.html'.format(self.tmpl_router),
+        self.render('user/{0}/find.html'.format(self.tmpl_router),
                     cfg=config.cfg,
                     kwd=kwd,
                     userinfo=self.userinfo,
@@ -318,7 +318,7 @@ class UserHandler(BaseHandler):
             'pager': '',
 
         }
-        self.render('doc/{0}/find_list.html'.format(self.tmpl_router),
+        self.render('user/{0}/find_list.html'.format(self.tmpl_router),
                     kwd=kwd,
                     view=self.muser.get_by_keyword(""),
                     cfg=config.cfg,
@@ -332,7 +332,7 @@ class UserHandler(BaseHandler):
             'title': '查找结果',
         }
         if self.tmpl_router == "user":
-            self.render('doc/{0}/find_list.html'.format(self.tmpl_router),
+            self.render('user/{0}/find_list.html'.format(self.tmpl_router),
                         kwd=kwd,
                         view=self.muser.get_by_keyword(keyword),
                         cfg=config.cfg,
@@ -457,7 +457,7 @@ class UserHandler(BaseHandler):
             'user_name': userinfo.user_name,
             'new_pass': new_passwd,
         }
-        self.render('doc/{0}/show_pass.html'.format(self.tmpl_router),
+        self.render('user/{0}/show_pass.html'.format(self.tmpl_router),
                     cfg=config.cfg,
                     kwd=kwd,
                     userinfo=self.userinfo, )

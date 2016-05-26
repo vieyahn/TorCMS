@@ -13,7 +13,7 @@ from torcms.model.evaluation_model import MEvaluation
 from torcms.model.mappcatalog import MAppCatalog
 from torcms.model.usage_model import MUsage
 
-import config
+from  config import cfg
 from torcms.core import tools
 from torcms.core.base_handler import BaseHandler
 from torcms.model.app2catalog_model import MApp2Catalog
@@ -31,6 +31,10 @@ class MetaHandler(BaseHandler):
         self.mtag = MAppCatalog()
         self.mrel = MAppRel()
         self.mreply = MApp2Reply()
+        if 'app_url_name' in cfg:
+            self.app_url_name = cfg['app_url_name']
+        else:
+            self.app_url_name = 'info'
 
     def get(self, url_str=''):
 
@@ -41,7 +45,7 @@ class MetaHandler(BaseHandler):
         elif url_arr[0] == 'catalog':
             self.catalog()
         elif len(url_arr) == 1 and len(url_str) == 4:
-            self.redirect('/info/{0}'.format(url_arr[0]))
+            self.redirect('/{0}/{1}'.format(self.app_url_name, url_arr[0]))
         elif len(url_arr) == 2:
             if url_arr[0] == 'edit':
                 self.to_edit_app(url_arr[1])
@@ -52,7 +56,7 @@ class MetaHandler(BaseHandler):
                 从相关计算中过来的。
                 '''
                 self.mrel.update_relation(url_arr[1], url_arr[0])
-                self.redirect('/{0}/{1}'.format(config.app_url_name, url_arr[0]))
+                self.redirect('/{0}/{1}'.format(self.app_url_name, url_arr[0]))
         else:
             kwd = {
                 'title': '',
@@ -82,7 +86,7 @@ class MetaHandler(BaseHandler):
             return False
 
     def catalog(self):
-        self.render('tmpl_applite/app/catalog.html',
+        self.render('infor/app/catalog.html',
                     userinfo=self.userinfo,
                     kwd={'uid': '',}
                     )
@@ -121,9 +125,9 @@ class MetaHandler(BaseHandler):
     @tornado.web.authenticated
     def to_add_app(self, uid):
         if self.mapp.get_by_uid(uid):
-            self.redirect('/info/edit/{0}'.format(uid))
+            self.redirect('/{0}/edit/{1}'.format(self.app_url_name, uid))
         else:
-            self.render('tmpl_applite/app/add.html',
+            self.render('infor/app/add.html',
                         tag_infos=self.mtag.query_all(),
                         userinfo=self.userinfo,
                         kwd={'uid': uid,}
@@ -155,7 +159,7 @@ class MetaHandler(BaseHandler):
         if catid:
             tmpl = 'autogen/edit/edit_{0}.html'.format(catid)
         else:
-            tmpl = 'tmpl_applite/app/edit.html'
+            tmpl = 'infor/app/edit.html'
 
         self.render(tmpl,
                     kwd=kwd,
@@ -165,7 +169,8 @@ class MetaHandler(BaseHandler):
                     app_info=rec_info,
                     unescape=tornado.escape.xhtml_unescape,
                     cat_enum=self.mappcat.get_qian2(catid[:2]),
-                    tag_infos=[],
+                    tag_infos=self.mappcat.query_all(by_order=True),
+                    app2tag_info = self.mapp2catalog.query_by_app_uid(infoid),
                     app2label_info=self.mapp2tag.get_by_id(infoid), )
 
     @tornado.web.authenticated
@@ -182,8 +187,11 @@ class MetaHandler(BaseHandler):
 
         current_info = self.mapp.get_by_uid(uid)
 
-        if (current_info.user_name == self.userinfo.user_name or
-                self.check_priv(self.userinfo, post_data['def_cat_uid'][0])['EDIT']):
+        if current_info.user_name == self.userinfo.user_name:
+            pass
+        elif self.userinfo.privilege[4] >= '1':
+            pass
+        elif 'def_cat_uid' in post_data and self.check_priv(self.userinfo, post_data['def_cat_uid'][0])['EDIT']:
             pass
         else:
             return False
@@ -192,6 +200,7 @@ class MetaHandler(BaseHandler):
         if 'def_cat_uid' in post_data:
             ext_dic['def_cat_uid'] = post_data['def_cat_uid'][0]
             ext_dic['def_cat_pid'] = '{0}00'.format(post_data['def_cat_uid'][0][:2])
+
         ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'][0].strip().strip(',').split(',')]
         ext_dic = self.extra_data(ext_dic, post_data)
         self.mapp.modify_meta(uid,
@@ -199,7 +208,7 @@ class MetaHandler(BaseHandler):
                               extinfo=ext_dic)
         self.update_catalog(uid)
         self.update_tag(uid)
-        self.redirect('/info/{0}'.format(uid))
+        self.redirect('/{0}/{1}'.format(self.app_url_name,uid))
 
     @tornado.web.authenticated
     def add(self, uid=''):
@@ -226,10 +235,11 @@ class MetaHandler(BaseHandler):
         post_data['user_name'] = self.userinfo.user_name
 
         ext_dic['def_uid'] = str(uid)
-        ext_dic['def_cat_pid'] = '{0}00'.format(post_data['def_cat_uid'][0][:2])
-        ext_dic['def_cat_uid'] = post_data['def_cat_uid'][0]
-        ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'][0].strip().strip(',').split(',')]
+        if 'def_cat_uid' in post_data:
+            ext_dic['def_cat_pid'] = '{0}00'.format(post_data['def_cat_uid'][0][:2])
+            ext_dic['def_cat_uid'] = post_data['def_cat_uid'][0]
 
+        ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'][0].strip().strip(',').split(',')]
         ext_dic = self.extra_data(ext_dic, post_data)
         print(post_data)
         self.mapp.modify_meta(ext_dic['def_uid'],
@@ -271,22 +281,24 @@ class MetaHandler(BaseHandler):
 
     @tornado.web.authenticated
     def update_catalog(self, signature):
-
         post_data = {}
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)
         current_catalog_infos = self.mapp2catalog.query_by_app_uid(signature)
 
         new_tag_arr = []
-        for key in ['cat_1', 'cat_2', 'cat_3', 'cat_4', 'cat_5']:
+        for idx, key in enumerate(['cat_1', 'cat_2', 'cat_3', 'cat_4', 'cat_5', 'def_cat_uid']):
             if key in post_data:
-                if post_data[key][0] == '':
+                vv = post_data[key][0]
+                if vv == '':
                     pass
                 else:
-                    new_tag_arr.append(post_data[key][0])
-                    self.mapp2catalog.add_record(signature, post_data[key][0], int(key[-1]))
+                    new_tag_arr.append(vv)
+                    self.mapp2catalog.add_record(signature, vv, idx)
             else:
                 pass
+
+
         for cur_info in current_catalog_infos:
             if str(cur_info.catalog.uid).strip() in new_tag_arr:
                 pass

@@ -1,26 +1,23 @@
 # -*- coding:utf-8 -*-
-
 import tornado.escape
-from torcms.model.app_model import MApp
-from torcms.model.mappcatalog import MAppCatalog
+from torcms.model.app2label_model import MAppLabel, MApp2Label
 
-import config
 from torcms.core.base_handler import BaseHandler
-from torcms.model.app2catalog_model import MApp2Catalog
+from torcms.model.app_model import MApp
 
 
-class TagHandler(BaseHandler):
-    '''
-    List the infos by the slug of the catalog.
-    '''
+class InfoLabelHandler(BaseHandler):
     def initialize(self):
         self.init()
 
         self.mequa = MApp()
-        self.mtag = MAppCatalog()
-        self.mapp2tag = MApp2Catalog()
+        self.mtag = MAppLabel()
+        self.mapp2tag = MApp2Label()
+
+
 
     def get(self, url_str=''):
+
         if len(url_str) > 0:
             url_arr = url_str.split(r'/')
 
@@ -45,65 +42,28 @@ class TagHandler(BaseHandler):
             current_page_number = 1
         else:
             current_page_number = int(cur_p)
-        taginfo = self.mtag.get_by_slug(tag_slug)
-        num_of_tag = self.mapp2tag.catalog_record_number(taginfo.uid)
-        page_num = int(num_of_tag / config.page_num) + 1
-        tag_name = taginfo.name
+        # taginfo = self.mtag.get_by_slug(tag_slug)
+        # num_of_tag = self.mapp2tag.catalog_record_number(taginfo.uid)
+        # page_num = int(num_of_tag / config.page_num ) + 1
+        # tag_name = taginfo.name
 
+        tag_name = 'fd'
         kwd = {
             'tag_name': tag_name,
             'tag_slug': tag_slug,
 
             'title': tag_name,
+
         }
 
-        # infos = self.mapp2tag.query_by_slug(tag_slug)
-        self.render('infor/tag/list.html',
-                    tag_name=tag_name,
+        self.render('infor/label/list.html',
                     infos=self.mapp2tag.query_pager_by_slug(tag_slug, current_page_number),
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
-                    pager=self.gen_pager_bootstrap(tag_slug, page_num, current_page_number),
+                    pager='',
                     userinfo=self.userinfo,
+                    # self.gen_pager(tag_slug, page_num, current_page_number),
                     )
-
-    def gen_pager_bootstrap(self, cat_slug, page_num, current):
-        # cat_slug 分类
-        # page_num 页面总数
-        # current 当前页面
-        if page_num == 1:
-            return ''
-
-        pager_shouye = '''
-        <li class=" {0}">
-        <a  href="/tag/{1}">&lt;&lt; 首页</a>
-                    </li>'''.format('hidden' if current <= 1 else '', cat_slug)
-
-        pager_pre = '''
-                    <li class=" {0}">
-                    <a  href="/tag/{1}/{2}">&lt; 前页</a>
-                    </li>
-                    '''.format('hidden' if current <= 1 else '', cat_slug, current - 1)
-        pager_mid = ''
-        for ind in range(0, page_num):
-            tmp_mid = '''
-                    <li class="{0}">
-                    <a  href="/tag/{1}/{2}">{2}</a></li>
-                    '''.format('active' if ind + 1 == current else '', cat_slug, ind + 1)
-            pager_mid += tmp_mid
-        pager_next = '''
-                    <li class=" {0}">
-                    <a  href="/tag/{1}/{2}">后页 &gt;</a>
-                    </li>
-                    '''.format('hidden' if current >= page_num else '', cat_slug, current + 1)
-        pager_last = '''
-                    <li class=" {0}">
-                    <a  href="/tag/{1}/{2}">末页
-                        &gt;&gt;</a>
-                    </li>
-                    '''.format('hidden' if current >= page_num else '', cat_slug, page_num)
-        pager = pager_shouye + pager_pre + pager_mid + pager_next + pager_last
-        return (pager)
 
     def gen_pager(self, cat_slug, page_num, current):
         # cat_slug 分类
