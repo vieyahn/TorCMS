@@ -109,7 +109,14 @@ class InfoHandler(BaseHandler):
 
 
         parent_name = self.mcat.get_by_id(catid[:2] + '00').name if catid != '' else ''
-        cat_name = self.mcat.get_by_id(catid).name if catid != '' else ''
+        if catid != ''
+            cat_rec = self.mappcat.get_by_uid(catid)
+            priv_mask_idx = cat_rec.priv_mask.index('1')
+            cat_name = cat_rec.name 
+        else:
+            priv_mask_idx = 0
+            cat_name = ''
+            
         parentname = '<a href="/list/{0}">{1}</a>'.format(catid[:2] + '00', parent_name)
 
         catname = '<a href="/list/{0}">{1}</a>'.format(catid, cat_name)
@@ -149,7 +156,7 @@ class InfoHandler(BaseHandler):
                     post_info=rec,
                     replys=replys,
                     cat_enum = self.mcat.get_qian2(catid[:2]) if catid else [],
-
+                    priv_mask_idx = priv_mask_idx,
                     )
 
     def extra_kwd(self, info_rec):
