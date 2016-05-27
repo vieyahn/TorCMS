@@ -20,7 +20,7 @@ class PageHandler(BaseHandler):
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
-        if url_arr[0] == 'modify':
+        if url_arr[0] in ['modify', 'edit']:
             self.to_modify(url_arr[1])
         elif url_str == 'list':
             self.list()
@@ -34,7 +34,7 @@ class PageHandler(BaseHandler):
     def post(self, url_str=''):
         url_arr = self.parse_url(url_str)
 
-        if url_arr[0] == 'modify':
+        if url_arr[0] in ['modify', 'edit']:
             self.update(url_arr[1])
         else:
             self.wikinsert()
