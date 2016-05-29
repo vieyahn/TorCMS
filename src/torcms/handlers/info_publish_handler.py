@@ -4,18 +4,13 @@ import tornado
 import tornado.web
 
 from torcms.core.base_handler import BaseHandler
-from torcms.model.mappcatalog import MAppCatalog as  MCatalog
+from torcms.model.minforcatalog import MInforCatalog
 
 
 class InfoPublishHandler(BaseHandler):
     def initialize(self, hinfo=''):
         self.init()
-        self.template_dir_name = 'infor'
-        self.mcat = MCatalog()
-
-    def to_login(self):
-        self.redirect('/member/login')
-        return (True)
+        self.minforcatalog = MInforCatalog()
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
@@ -38,7 +33,7 @@ class InfoPublishHandler(BaseHandler):
 
     @tornado.web.authenticated
     def format_class2(self, fatherid):
-        dbdata = self.mcat.get_qian2(fatherid[:2])
+        dbdata = self.minforcatalog.get_qian2(fatherid[:2])
         outstr = '<ul class="list-group">'
         for rec in dbdata:
             if rec.uid.endswith('00'):
@@ -53,7 +48,7 @@ class InfoPublishHandler(BaseHandler):
 
     @tornado.web.authenticated
     def view_class1(self):
-        dbdata = self.mcat.get_parent_list()
+        dbdata = self.minforcatalog.get_parent_list()
         class1str = ''
         for rec in dbdata:
             priv_mask_idx = rec.priv_mask.index('1')
@@ -65,11 +60,10 @@ class InfoPublishHandler(BaseHandler):
         kwd = {
             'class1str': class1str,
             'parentid': '0',
-            'parentlist': self.mcat.get_parent_list(),
+            'parentlist': self.minforcatalog.get_parent_list(),
         }
         self.render('infor/publish/publish.html',
                     userinfo=self.userinfo,
-
                     kwd=kwd)
 
     @tornado.web.authenticated
@@ -87,7 +81,7 @@ class InfoPublishHandler(BaseHandler):
         kwd = {
             'class1str': self.format_class2(fatherid),
             'parentid': '0',
-            'parentlist': self.mcat.get_parent_list(),
+            'parentlist': self.minforcatalog.get_parent_list(),
         }
         self.render('infor/publish/publish2.html',
                     userinfo=self.userinfo,

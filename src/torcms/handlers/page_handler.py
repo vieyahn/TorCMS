@@ -27,7 +27,7 @@ class PageHandler(BaseHandler):
         elif url_arr[0] == 'ajax_count_plus':
             self.ajax_count_plus(url_arr[1])
         elif len(url_arr) == 1 and url_str.endswith('.html'):
-            self.wiki(url_str.split('.')[0])
+            self.to_view(url_str.split('.')[0])
         else:
             self.render('html/404.html', userinfo=self.userinfo, kwd={})
 
@@ -37,12 +37,12 @@ class PageHandler(BaseHandler):
         if url_arr[0] in ['modify', 'edit']:
             self.update(url_arr[1])
         else:
-            self.wikinsert()
+            self.add_page()
 
-    def wiki(self, slug):
-        dbdate = self.mpage.get_by_slug(slug)
-        if dbdate:
-            self.viewit(dbdate)
+    def to_view(self, slug):
+        rec_page = self.mpage.get_by_slug(slug)
+        if rec_page:
+            self.viewit(rec_page)
         else:
             self.to_add(slug)
 
@@ -61,9 +61,19 @@ class PageHandler(BaseHandler):
                     kwd=kwd,
                     userinfo=self.userinfo, )
 
+    def __could_edit(self, slug):
+        page_rec = self.mpage.get_by_slug(slug)
+        if not page_rec:
+
+            return False
+        if self.check_doc_priv(self.userinfo)['EDIT'] or page_rec.id_user == self.userinfo.user_name:
+            return True
+        else:
+            return False
+
     @tornado.web.authenticated
     def update(self, slug):
-        if self.check_doc_priv(self.userinfo)['EDIT']:
+        if self.__could_edit(slug):
             pass
         else:
             return False
@@ -82,7 +92,7 @@ class PageHandler(BaseHandler):
 
     @tornado.web.authenticated
     def to_modify(self, slug):
-        if self.check_doc_priv(self.userinfo)['EDIT']:
+        if self.__could_edit(slug):
             pass
         else:
             return False
@@ -99,13 +109,13 @@ class PageHandler(BaseHandler):
                     userinfo=self.userinfo,
                     )
 
-    def viewit(self, dbdata):
+    def viewit(self, rec):
         kwd = {
             'pager': '',
-            'editable': 1 if self.get_current_user() else 0,
         }
+        rec.user_name = rec.id_user
         self.render('doc/page/page_view.html',
-                    view=dbdata,
+                    view=rec,
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
                     format_date=tools.format_date,
@@ -126,7 +136,7 @@ class PageHandler(BaseHandler):
             'unescape': tornado.escape.xhtml_unescape,
             'title': '单页列表',
         }
-        self.render('doc/{0}/page_list.html'.format(self.tmpl_router),
+        self.render('doc/page/page_list.html',
                     kwd=kwd,
                     view=self.mpage.query_recent(),
                     view_all=self.mpage.query_all(),
@@ -136,7 +146,7 @@ class PageHandler(BaseHandler):
                     )
 
     @tornado.web.authenticated
-    def wikinsert(self):
+    def add_page(self):
         if self.check_doc_priv(self.userinfo)['ADD']:
             pass
         else:
@@ -145,6 +155,7 @@ class PageHandler(BaseHandler):
         post_data = {}
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)
+        post_data['user_name'] = self.userinfo.user_name
 
         if 'slug' in post_data:
             pass
@@ -152,13 +163,12 @@ class PageHandler(BaseHandler):
             self.set_status(400)
             return False
 
-        if self.mpage.get_by_slug(post_data['slug'][0]) is None:
-            self.mpage.insert_data(post_data)
-        else:
+        if self.mpage.get_by_slug(post_data['slug'][0]):
             self.set_status(400)
             return False
-
-        self.redirect('/page/{0}.html'.format(post_data['slug'][0]))
+        else:
+            self.mpage.insert_data(post_data)
+            self.redirect('/page/{0}.html'.format(post_data['slug'][0]))
 
 
 class PageAjaxHandler(PageHandler):

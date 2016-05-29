@@ -4,7 +4,7 @@ import tornado.escape
 import tornado.web
 
 from torcms.core.base_handler import BaseHandler
-from torcms.model.mappcatalog import MAppCatalog as   MPycateCatalog
+from torcms.model.minforcatalog import MInforCatalog as   MPycateCatalog
 
 from torcms.core import tools
 from torcms.model.muser import MUser

@@ -26,10 +26,7 @@ class MPost2Catalog(MSingleTable):
     def query_by_catid(self, catid):
         return self.tab_post2catalog.select().where(self.tab_post2catalog.catalog == catid)
 
-    def query_by_id(self, idd):
-        return self.tab_post2catalog.select().join(self.tab_catalog).where(self.tab_post2catalog.post == idd)
-
-    def get_by_info(self, post_id, catalog_id):
+    def __get_by_info(self, post_id, catalog_id):
         recs = self.tab_post2catalog.select().where(
             (self.tab_post2catalog.post == post_id) & (self.tab_post2catalog.catalog == catalog_id))
         if recs.count() > 1:
@@ -49,7 +46,7 @@ class MPost2Catalog(MSingleTable):
         return (recs)
 
     def add_record(self, post_id, catalog_id, order=1):
-        tt = self.get_by_info(post_id, catalog_id)
+        tt = self.__get_by_info(post_id, catalog_id)
         if tt:
             entry = self.tab_post2catalog.update(
                 order=order,
@@ -68,24 +65,28 @@ class MPost2Catalog(MSingleTable):
             except:
                 return False
 
-    def catalog_record_number(self, cat_id):
+    def count_of_certain_catalog(self, cat_id):
         return self.tab_post2catalog.select().where(self.tab_post2catalog.catalog == cat_id).count()
 
-    def query_catalog(self, post_id):
-        return self.tab_post2catalog.select().where(self.tab_post2catalog.post == post_id)
+
 
     def query_pager_by_slug(self, slug, current_page_num=1):
         return self.tab_post.select().join(self.tab_post2catalog).join(self.tab_catalog).where(
             self.tab_catalog.slug == slug).order_by(
             self.tab_post.time_update.desc()).paginate(current_page_num, config.page_num)
 
-    def query_by_app_uid(self, idd):
+    def query_by_entry_uid(self, idd):
         return self.tab_post2catalog.select().join(self.tab_catalog).where(self.tab_post2catalog.post == idd).order_by(
             self.tab_post2catalog.order)
 
-    def get_app_catalog(self, app_uid):
-        uu = self.tab_post2catalog.select().where(
-            (self.tab_post2catalog.post == app_uid) & (self.tab_post2catalog.order == 1))
+    def query_by_id(self, idd):
+        return self.query_by_entry_uid(idd)
+
+    def query_entry_catalog(self, post_id):
+        return self.tab_post2catalog.select().where(self.tab_post2catalog.post == post_id).order_by(self.tab_post2catalog.order)
+
+    def get_entry_catalog(self, app_uid):
+        uu = self.query_entry_catalog(app_uid)
         if uu.count() > 0:
             return uu.get()
         else:

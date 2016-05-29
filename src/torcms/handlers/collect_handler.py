@@ -4,7 +4,6 @@ import tornado.web
 from torcms.model.app_model import MApp
 from torcms.model.app_rel_model import MAppRel
 from torcms.model.usage_model import MUsage
-
 from torcms.core.base_handler import BaseHandler
 from torcms.model.collect_model import MCollect
 
@@ -19,9 +18,10 @@ class CollectHandler(BaseHandler, ):
 
     def get(self, url_str=''):
         if len(url_str) > 0:
-            url_arr = url_str.split('/')
+            url_arr = self.parse_url(url_str)
         else:
             return False
+
         if url_str == 'list':
             self.list()
         elif len(url_arr) == 1 and len(url_str) == 4 :

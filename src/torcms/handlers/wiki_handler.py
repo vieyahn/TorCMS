@@ -27,7 +27,7 @@ class WikiHandler(BaseHandler):
             self.ajax_count_plus(url_arr[1])
         elif url_str == 'refresh':
             self.refresh()
-        elif (url_arr[0] == 'edit'):
+        elif url_arr[0] == 'edit':
             self.to_modify(url_arr[1])
         elif len(url_arr) == 1:
             self.wiki(url_str)
@@ -39,7 +39,6 @@ class WikiHandler(BaseHandler):
 
     def post(self, url_str=''):
         url_arr = self.parse_url(url_str)
-
         if url_arr[0] == 'edit':
             self.update(url_arr[1])
         elif url_arr[0] == 'add':
@@ -126,7 +125,6 @@ class WikiHandler(BaseHandler):
 
         kwd = {
             'pager': '',
-            # 'cats': self.cats,
         }
         self.render('doc/wiki/wiki_edit.html',
                     kwd=kwd,

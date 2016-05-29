@@ -7,10 +7,10 @@ from torcms.handlers.admin_handler import AdminHandler
 from torcms.handlers.category_handler import CategoryHandler
 from torcms.handlers.entity_handler import EntityHandler
 from torcms.handlers.index import IndexHandler
-from torcms.handlers.tag_hanlder import TagHandler
+from torcms.handlers.infor_tag_hanlder import InfoTagHandler
 
 from torcms.handlers.info_tag_hanler import InfoTagHandler
-from torcms.handlers.label_handler import LabelHandler
+from torcms.handlers.post_label_handler import PostLabelHandler
 from torcms.handlers.link_handler import LinkHandler, LinkAjaxHandler
 from torcms.handlers.maintain_handler import MaintainCategoryHandler,MaintainCategoryAjaxHandler
 from torcms.handlers.maintain_info_handler import MaintainPycateCategoryHandler
@@ -36,7 +36,7 @@ from torcms.handlers.info2reply_handler import Info2ReplyHandler
 
 urls = [
 
-    ("/label/(.*)", LabelHandler, dict()),
+    ("/label/(.*)", PostLabelHandler, dict()),
     ("/admin/(.*)", AdminHandler, dict()),
     ("/post/toreply/(.*)", Post2ReplyHandler, dict()),
     ("/entry/(.*)", EntityHandler, dict()),
@@ -63,7 +63,7 @@ urls = [
     ('/meta/(.*)', MetaHandler, dict()),
     ("/info/reply/(.*)", Info2ReplyHandler, dict()),
     ("/info/(.*)", torcms.handlers.info_handler.InfoHandler, dict(hinfo={})),
-    ("/tag/(.*)", TagHandler, dict()),
+    ("/tag/(.*)", InfoTagHandler, dict()),
 
     ("/maintain/claslitecategory/(.*)", MaintainPycateCategoryHandler, dict()),
     ("/list/(.*)", torcms.handlers.info_list_handler.InfoListHandler, dict(hinfo={})),

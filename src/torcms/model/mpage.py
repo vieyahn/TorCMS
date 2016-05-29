@@ -4,7 +4,7 @@ import datetime
 import time
 
 import tornado
-
+import tornado.escape
 from torcms.core import tools
 from torcms.model.core_tab import CabPage
 from torcms.model.msingle_table import MSingleTable
@@ -19,17 +19,20 @@ class MPage(MSingleTable):
             pass
 
     def update(self, slug, post_data):
+        if len(post_data['title'][0].strip()) == 0:
+            return False
         entry = CabPage.update(
             title=post_data['title'][0],
             date=datetime.datetime.now(),
             cnt_html=tools.markdown2html(post_data['cnt_md'][0]),
-            id_user='',
             cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
             time_update=time.time(),
         ).where(CabPage.slug == slug)
         entry.execute()
 
     def insert_data(self, post_data):
+        if len(post_data['title'][0].strip()) == 0:
+            return False
         slug = post_data['slug'][0]
         uu = self.get_by_slug(slug)
         if uu is None:
@@ -44,7 +47,7 @@ class MPage(MSingleTable):
                 slug=slug,
                 cnt_html=tools.markdown2html(post_data['cnt_md'][0]),
                 time_create=time.time(),
-                id_user='',
+                id_user= post_data['user_name'],
                 cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
                 time_update=time.time(),
                 view_count=1,

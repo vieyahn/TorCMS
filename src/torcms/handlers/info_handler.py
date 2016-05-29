@@ -13,7 +13,7 @@ from torcms.model.app_model import MApp
 from torcms.model.app_rel_model import MAppRel
 from torcms.model.app_reply_model import MApp2Reply
 from torcms.model.evaluation_model import MEvaluation
-from torcms.model.mappcatalog import MAppCatalog
+from torcms.model.minforcatalog import MInforCatalog
 from torcms.model.usage_model import MUsage
 from torcms.model.app2catalog_model import MApp2Catalog
 
@@ -26,7 +26,7 @@ class InfoHandler(BaseHandler):
         self.mapp2tag = MApp2Label()
         self.minfo = MApp()
         self.musage = MUsage()
-        self.mcat = MAppCatalog()
+        self.mcat = MInforCatalog()
         self.mrel = MAppRel()
         self.mreply = MApp2Reply()
 

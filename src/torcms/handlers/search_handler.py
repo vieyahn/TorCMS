@@ -33,7 +33,7 @@ class SearchHandler(BaseHandler):
             }
             self.render('html/404.html',
                         kwd=kwd,
-                        userinfo=  self.userinfo)
+                        userinfo=self.userinfo)
 
     def post(self, url_str=''):
         keyword = self.get_argument('keyword')
@@ -50,6 +50,6 @@ class SearchHandler(BaseHandler):
                     kwd=kwd,
                     srecs=results,
                     pager=tools.gen_pager_bootstrap_url('/search/{0}'.format(keyword), page_num, p_index),
-                    userinfo = self.userinfo,
-                    cfg = config.cfg,
+                    userinfo=self.userinfo,
+                    cfg=config.cfg,
                     )

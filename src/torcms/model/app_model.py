@@ -73,8 +73,8 @@ class MAppBase(object):
         equation_info = self.get_by_uid(uid)
         entry = self.tab_app.update(
             view_count=equation_info.view_count + 1,
-            run_time=time.time(),
-            title=equation_info.title
+            # run_time=time.time(),
+            # title=equation_info.title
         ).where(self.tab_app.uid == uid)
         entry.execute()
 
@@ -142,6 +142,8 @@ class MApp(MAppBase):
         :param data_dic:
         :return:
         '''
+        if len(data_dic['title'][0].strip()) == 0:
+            return False
         cur_info = self.get_by_uid(uid)
         if cur_info:
             cur_extinfo = cur_info.extinfo
@@ -180,24 +182,25 @@ class MApp(MAppBase):
         return (all_list)
 
     def add_meta(self, uid,  data_dic, extinfo = {}):
-
-            entry = self.tab_app.create(
-                uid=uid,
-                title=data_dic['title'][0],
-                keywords= ','.join([x.strip() for x in data_dic['keywords'][0].split(',')]),
-                update_time=int(time.time()),
-                date=datetime.now(),
-                cnt_md=data_dic['cnt_md'][0],
-                logo=data_dic['logo'][0],
-                cnt_html=tools.markdown2html(data_dic['cnt_md'][0]),
-                extinfo=extinfo,
-                user_name=data_dic['user_name'],
-                # lat=data_dic['lat'][0],
-                #lon=data_dic['lon'][0],
-                #zoom_max=data_dic['zoom_max'][0],
-                #zoom_min=data_dic['zoom_min'][0],
-                # zoom_current=data_dic['zoom_current'][0],
-            )
+        if len(data_dic['title'][0].strip()) == 0:
+            return False
+        entry = self.tab_app.create(
+            uid=uid,
+            title=data_dic['title'][0],
+            keywords= ','.join([x.strip() for x in data_dic['keywords'][0].split(',')]),
+            update_time=int(time.time()),
+            date=datetime.now(),
+            cnt_md=data_dic['cnt_md'][0],
+            logo=data_dic['logo'][0],
+            cnt_html=tools.markdown2html(data_dic['cnt_md'][0]),
+            extinfo=extinfo,
+            user_name=data_dic['user_name'],
+            # lat=data_dic['lat'][0],
+            #lon=data_dic['lon'][0],
+            #zoom_max=data_dic['zoom_max'][0],
+            #zoom_min=data_dic['zoom_min'][0],
+            # zoom_current=data_dic['zoom_current'][0],
+        )
 
     def get_list(self, condition):
         db_data = self.tab_app.select().where(self.tab_app.extinfo.contains(condition))

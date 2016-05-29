@@ -5,7 +5,6 @@ from torcms.core.base_handler import BaseHandler
 
 
 class RedirectHandler(BaseHandler):
-
     def initialize(self):
         self.init()
 
@@ -22,14 +21,10 @@ class RedirectHandler(BaseHandler):
         if os.path.exists(static_html_file) and os.path.isfile(static_html_file):
             kwd['pager'] = ''
             self.render('html/{0}'.format(url_str),
-                        userinfo = self.userinfo,
+                        userinfo=self.userinfo,
                         kwd=kwd)
         else:
             kwd['info'] = '您要找的文件不存在！'
             self.render('html/404.html',
-                        userinfo = self.userinfo,
+                        userinfo=self.userinfo,
                         kwd=kwd)
-
-
-
-

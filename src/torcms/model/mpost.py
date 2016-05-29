@@ -48,6 +48,8 @@ class MPost(MSingleTable):
             return False
 
     def insert_data(self, id_post, post_data):
+        if len(post_data['title'][0].strip()) == 0:
+            return False
 
         cur_rec = self.get_by_id(id_post)
         if cur_rec :

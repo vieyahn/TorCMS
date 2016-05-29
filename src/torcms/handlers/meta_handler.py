@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 
 import json
-import random
 
 import tornado.escape
 import tornado.web
@@ -10,7 +9,7 @@ from torcms.model.app_model import MApp
 from torcms.model.app_rel_model import MAppRel
 from torcms.model.app_reply_model import MApp2Reply
 from torcms.model.evaluation_model import MEvaluation
-from torcms.model.mappcatalog import MAppCatalog
+from torcms.model.minforcatalog import MInforCatalog
 from torcms.model.usage_model import MUsage
 
 from  config import cfg
@@ -22,13 +21,13 @@ from torcms.model.app2catalog_model import MApp2Catalog
 class MetaHandler(BaseHandler):
     def initialize(self):
         self.init()
-        self.mappcat = MAppCatalog()
+        self.mappcat = MInforCatalog()
         self.mevaluation = MEvaluation()
         self.mapp2catalog = MApp2Catalog()
         self.mapp2tag = MApp2Label()
         self.mapp = MApp()
         self.musage = MUsage()
-        self.mtag = MAppCatalog()
+        self.mtag = MInforCatalog()
         self.mrel = MAppRel()
         self.mreply = MApp2Reply()
         if 'app_url_name' in cfg:
@@ -170,7 +169,7 @@ class MetaHandler(BaseHandler):
                     unescape=tornado.escape.xhtml_unescape,
                     cat_enum=self.mappcat.get_qian2(catid[:2]),
                     tag_infos=self.mappcat.query_all(by_order=True),
-                    app2tag_info = self.mapp2catalog.query_by_app_uid(infoid),
+                    app2tag_info=self.mapp2catalog.query_by_entry_uid(infoid),
                     app2label_info=self.mapp2tag.get_by_id(infoid), )
 
     @tornado.web.authenticated
@@ -208,7 +207,7 @@ class MetaHandler(BaseHandler):
                               extinfo=ext_dic)
         self.update_catalog(uid)
         self.update_tag(uid)
-        self.redirect('/{0}/{1}'.format(self.app_url_name,uid))
+        self.redirect('/{0}/{1}'.format(self.app_url_name, uid))
 
     @tornado.web.authenticated
     def add(self, uid=''):
@@ -284,7 +283,7 @@ class MetaHandler(BaseHandler):
         post_data = {}
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)
-        current_catalog_infos = self.mapp2catalog.query_by_app_uid(signature)
+        current_catalog_infos = self.mapp2catalog.query_by_entry_uid(signature)
 
         new_tag_arr = []
         for idx, key in enumerate(['cat_1', 'cat_2', 'cat_3', 'cat_4', 'cat_5', 'def_cat_uid']):
@@ -297,7 +296,6 @@ class MetaHandler(BaseHandler):
                     self.mapp2catalog.add_record(signature, vv, idx)
             else:
                 pass
-
 
         for cur_info in current_catalog_infos:
             if str(cur_info.catalog.uid).strip() in new_tag_arr:

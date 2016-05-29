@@ -1,15 +1,10 @@
 # -*- coding:utf-8 -*-
 
 import json
-
 import redis
 import tornado.web
-
 import config
-# from torcms.claslite.model.catalog_model import MCatalog
-# from torcms.claslite.model.infor_model import MInfor
-
-from torcms.model.mappcatalog import MAppCatalog as  MCatalog
+from torcms.model.minforcatalog import MInforCatalog as  MCatalog
 from torcms.model.app_model import MApp as  MInfor
 from torcms.core.base_handler import BaseHandler
 

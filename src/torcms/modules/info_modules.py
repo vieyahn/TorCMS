@@ -6,14 +6,14 @@ import tornado.web
 from torcms.model.app2label_model import MApp2Label
 from torcms.model.app_model import MApp
 from torcms.model.app_rel_model import *
-from torcms.model.mappcatalog import MAppCatalog
+from torcms.model.minforcatalog import MInforCatalog
 import torcms.model.app2catalog_model
 from torcms.model.mpost import MPost
 from html2text import html2text
 
 class app_catalog_of(tornado.web.UIModule):
     def render(self, uid_with_str):
-        self.mcat = MAppCatalog()
+        self.mcat = MInforCatalog()
         recs = self.mcat.query_uid_starts_with( uid_with_str )
 
         return self.render_string('infor/modules/catalog_of.html',
@@ -103,7 +103,7 @@ class app_random_choose(tornado.web.UIModule):
 class app_tags(tornado.web.UIModule):
     def render(self, signature):
         self.mapp2tag = torcms.model.app2catalog_model.MApp2Catalog()
-        tag_infos = self.mapp2tag.query_by_app_uid(signature)
+        tag_infos = self.mapp2tag.query_by_entry_uid(signature)
         out_str = ''
         ii = 1
         for tag_info in tag_infos:
@@ -125,7 +125,7 @@ class label_count(tornado.web.UIModule):
 
 class app_menu(tornado.web.UIModule):
     def render(self, limit):
-        self.mcat = MAppCatalog()
+        self.mcat = MInforCatalog()
         all_cats = self.mcat.query_field_count(limit)
         kwd = {
             'cats': all_cats,
@@ -312,7 +312,7 @@ class BannerModule(tornado.web.UIModule):
         self.parentid = parentid
 
     def render(self):
-        self.mcat = MAppCatalog()
+        self.mcat = MInforCatalog()
         parentlist = self.mcat.get_parent_list()
         kwd = {
             'parentlist': parentlist,

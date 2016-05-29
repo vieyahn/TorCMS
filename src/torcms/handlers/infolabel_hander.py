@@ -14,23 +14,17 @@ class InfoLabelHandler(BaseHandler):
         self.mtag = MAppLabel()
         self.mapp2tag = MApp2Label()
 
-
-
     def get(self, url_str=''):
 
-        if len(url_str) > 0:
-            url_arr = url_str.split(r'/')
+        if len(url_str.strip()) == 0:
+            return False
+
+        url_arr = self.parse_url(url_str)
 
         if len(url_arr) == 1:
             self.list(url_str)
         elif len(url_arr) == 2:
             self.list(url_arr[0], url_arr[1])
-
-    def post(self, url_str=''):
-        if len(url_str) > 0:
-            url_arr = url_str.split('/')
-        if url_arr[0] == 'edit':
-            self.edit(url_arr[1])
 
     def list(self, tag_slug, cur_p=''):
         '''

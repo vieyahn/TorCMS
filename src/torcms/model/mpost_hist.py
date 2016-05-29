@@ -35,3 +35,5 @@ class MPostHist(MSingleTable):
             return False
 
 
+    # def update(self, uid, post_data, update_time=False):
+    #

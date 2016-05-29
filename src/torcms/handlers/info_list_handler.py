@@ -1,21 +1,18 @@
 # -*- coding:utf-8 -*-
 import math
-
 import redis
-
 import config
-# from torcms.claslite.model.catalog_model import MCatalog
-# from torcms.claslite.model.infor_model import MInfor
 import tornado.escape
-from torcms.model.mappcatalog import MAppCatalog as  MCatalog
+from torcms.model.minforcatalog import MInforCatalog as  MCatalog
 from torcms.model.app_model import MApp as  MInfor
 from torcms.core.base_handler import BaseHandler
-from torcms.model.mappcatalog import MAppCatalog
+from torcms.model.minforcatalog import MInforCatalog
 
 redisvr = redis.Redis(host='localhost', port=6379, db=0, password=None, socket_timeout=None, connection_pool=None,
                       charset='utf-8', errors='strict', unix_socket_path=None)
 
 from html2text import html2text
+
 '''
 关键词过滤，涉及到不同分类，使用  session 来处理。
 分类下面的过滤，则使用GET的url的参数。
@@ -28,7 +25,7 @@ class InfoListHandler(BaseHandler):
         self.template_dir_name = 'infor'
         self.minfo = MInfor()
         self.mcat = MCatalog()
-        self.mappcat = MAppCatalog()
+        self.mappcat = MInforCatalog()
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
@@ -38,7 +35,7 @@ class InfoListHandler(BaseHandler):
         elif len(url_str) > 4:
             self.echo_html(url_str)
         else:
-            self.render('html/404.html', kwd = {})
+            self.render('html/404.html', kwd={})
 
     def gen_redis_kw(self):
         condition = {}
@@ -54,12 +51,11 @@ class InfoListHandler(BaseHandler):
             condition['def_tag_arr'] = kw_condition_arr
         return condition
 
-    def echo_html(self, input):
+    def echo_html(self, url_str):
 
         condition = self.gen_redis_kw()
 
-
-        url_arr = input.split('/')
+        url_arr = self.parse_url(url_str)
         sig = url_arr[0]
 
         num = (len(url_arr) - 2) // 2
@@ -90,7 +86,6 @@ class InfoListHandler(BaseHandler):
             ckey = 'tag_' + ckey
             condition[ckey] = cval
 
-        print(condition)
 
         if url_arr[1] == 'con':
             infos = self.minfo.get_list_fenye(condition, fenye_num)
@@ -115,7 +110,7 @@ class InfoListHandler(BaseHandler):
         self.render('autogen/infolist/infolist_{1}.html'.format(self.template_dir_name, list_type),
                     userinfo=self.userinfo,
                     kwd=kwd,
-                    html2text = html2text,
+                    html2text=html2text,
                     unescape=tornado.escape.xhtml_unescape,
                     post_infos=infos,
                     widget_info=kwd)
@@ -152,7 +147,7 @@ class InfoListHandler(BaseHandler):
         condition = self.gen_redis_kw()
 
         sig = input
-        bread_title=''
+        bread_title = ''
         bread_crumb_nav_str = '<li>当前位置：<a href="/">信息</a></li>'
 
         if input.endswith('00'):
@@ -176,11 +171,10 @@ class InfoListHandler(BaseHandler):
 
         num = self.minfo.get_num_condition(condition)
 
-
         kwd = {
             'catid': input,
             'daohangstr': bread_crumb_nav_str,
-            'breadtilte':bread_title,
+            'breadtilte': bread_title,
             'parentid': parent_id,
             'parentlist': self.mcat.get_parent_list(),
             'condition': condition,
@@ -200,4 +194,4 @@ class InfoListHandler(BaseHandler):
                     kwd=kwd,
                     widget_info=kwd,
                     condition_arr=kw_condition_arr,
-                    cat_enum = self.mappcat.get_qian2(parent_id[:2]),)
+                    cat_enum=self.mappcat.get_qian2(parent_id[:2]), )

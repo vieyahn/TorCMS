@@ -174,7 +174,7 @@ class next_post_link(tornado.web.UIModule):
 class the_category(tornado.web.UIModule):
     def render(self, post_id):
         tmpl_str = '''<a href="/category/{0}">{1}</a>'''
-        format_arr = [tmpl_str.format(uu.catalog.slug, uu.catalog.name) for uu in MPost2Catalog().query_catalog(post_id)]
+        format_arr = [tmpl_str.format(uu.catalog.slug, uu.catalog.name) for uu in MPost2Catalog().query_entry_catalog(post_id)]
         return ', '.join(format_arr)
 
 
@@ -217,25 +217,14 @@ class copyright(tornado.web.UIModule):
         return (out_str)
 
 
-class post_catalogs(tornado.web.UIModule):
-    def render(self, signature):
-        self.mapp2tag = MPost2Catalog()
-        tag_infos = self.mapp2tag.query_by_id(signature)
-        out_str = ''
-        ii = 1
-        for tag_info in tag_infos:
-            tmp_str = '''<a href="/category/{0}" class="tag{1}">{2}</a>
-            '''.format(tag_info.catalog.slug, ii, tag_info.catalog.name)
-            out_str += tmp_str
-            ii += 1
-        return out_str
+
 
 
 class post_tags(tornado.web.UIModule):
     # Todo: 看起来与 post_catalogs是一样的。
     def render(self, signature):
         self.mapp2tag = MPost2Catalog()
-        tag_infos = self.mapp2tag.query_by_app_uid(signature)
+        tag_infos = self.mapp2tag.query_by_entry_uid(signature)
         out_str = ''
         ii = 1
         for tag_info in tag_infos:
@@ -245,6 +234,8 @@ class post_tags(tornado.web.UIModule):
             ii += 1
         return out_str
 
+
+post_catalogs = post_tags
 
 class userinfo_widget(tornado.web.UIModule, tornado.web.RequestHandler):
     def render(self, signature):
@@ -298,7 +289,7 @@ class catalog_pager(tornado.web.UIModule):
         # current 当前页面
 
         cat_rec = self.mcat.get_by_slug(cat_slug)
-        num_of_cat = self.mpost2catalog.catalog_record_number(cat_rec.uid)
+        num_of_cat = self.mpost2catalog.count_of_certain_catalog(cat_rec.uid)
 
         tmp_page_num = int(num_of_cat / config.page_num)
 

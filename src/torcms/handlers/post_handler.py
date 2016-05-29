@@ -25,7 +25,7 @@ class PostHandler(BaseHandler):
         self.mpost_hist = MPostHist()
         self.mpost2catalog = MPost2Catalog()
         self.mpost2reply = MPost2Reply()
-        self.mapp2tag = MPost2Label()
+        self.mpost2label = MPost2Label()
         self.mrel = MRelation()
         self.tmpl_router = 'post'
 
@@ -95,6 +95,15 @@ class PostHandler(BaseHandler):
                     cfg=config.cfg,
                     )
 
+    def __could_edit(self, postid):
+        post_rec = self.mpost.get_by_uid(postid)
+        if not post_rec:
+            return False
+        if self.check_doc_priv(self.userinfo)['EDIT'] or post_rec.user_name == self.userinfo.user_name:
+            return True
+        else:
+            return False
+
     def refresh(self):
 
         kwd = {
@@ -157,38 +166,32 @@ class PostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def update(self, uid):
-        raw_data = self.mpost.get_by_id(uid)
-        if (self.check_doc_priv(self.userinfo)['EDIT'] or
-                    raw_data.user_name == self.get_current_user()):
+        if self.__could_edit(uid):
             pass
         else:
             return False
+
         post_data = {}
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)
         post_data['user_name'] = self.get_current_user()
         is_update_time = True if post_data['is_update_time'][0] == '1' else False
-        self.update_tag(uid)
         self.mpost.update(uid, post_data, update_time=is_update_time)
         self.update_catalog(uid)
-        self.mpost_hist.insert_data(raw_data)
+        self.update_tag(uid)
+        self.mpost_hist.insert_data(self.mpost.get_by_id(uid))
         self.redirect('/post/{0}.html'.format(uid))
 
     @tornado.web.authenticated
     def update_tag(self, signature):
-        if self.check_doc_priv(self.userinfo)['ADD']:
-            pass
-        else:
-            return False
+        current_tag_infos = self.mpost2label.get_by_id(signature)
         post_data = {}
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)
-
         if 'tags' in post_data:
             pass
         else:
             return False
-        current_tag_infos = self.mapp2tag.get_by_id(signature)
 
         tags_arr = [x.strip() for x in post_data['tags'][0].split(',')]
 
@@ -196,21 +199,17 @@ class PostHandler(BaseHandler):
             if tag_name == '':
                 pass
             else:
-                self.mapp2tag.add_record(signature, tag_name, 1)
+                self.mpost2label.add_record(signature, tag_name, 1)
 
         for cur_info in current_tag_infos:
             if cur_info.tag.name in tags_arr:
                 pass
             else:
-                self.mapp2tag.remove_relation(signature, cur_info.tag)
+                self.mpost2label.remove_relation(signature, cur_info.tag)
 
     @tornado.web.authenticated
     def update_catalog(self, uid):
-        raw_data = self.mpost.get_by_id(uid)
-        if self.check_doc_priv(self.userinfo)['ADD'] or raw_data.user_name == self.get_current_user():
-            pass
-        else:
-            return False
+
         post_data = {}
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)
@@ -235,11 +234,7 @@ class PostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def to_modify(self, id_rec):
-        a = self.mpost.get_by_id(id_rec)
-        # 用户具有管理权限，
-        # 或
-        # 文章是用户自己发布的。
-        if self.check_doc_priv(self.userinfo)['EDIT'] or a.user_name == self.get_current_user():
+        if self.__could_edit(id_rec):
             pass
         else:
             return False
@@ -253,9 +248,9 @@ class PostHandler(BaseHandler):
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
                     tag_infos=self.mcat.query_all(),
-                    app2label_info=self.mapp2tag.get_by_id(id_rec),
+                    app2label_info=self.mpost2label.get_by_id(id_rec),
                     app2tag_info=self.mpost2catalog.query_by_id(id_rec),
-                    dbrec=a,
+                    dbrec=self.mpost.get_by_id(id_rec),
                     userinfo=self.userinfo,
                     cfg=config.cfg,
                     )
@@ -285,9 +280,9 @@ class PostHandler(BaseHandler):
         if last_post_id and self.mpost.get_by_id(last_post_id):
             self.add_relation(last_post_id, post_id)
 
-        cats = self.mpost2catalog.query_catalog(post_id)
+        cats = self.mpost2catalog.query_entry_catalog(post_id)
         replys = self.mpost2reply.get_by_id(post_id)
-        tag_info = self.mapp2tag.get_by_id(post_id)
+        tag_info = self.mpost2label.get_by_id(post_id)
 
         rec = self.mpost.get_by_id(post_id)
 
@@ -349,7 +344,7 @@ class PostHandler(BaseHandler):
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)
 
-        post_data['user_name'] = self.get_current_user()
+        post_data['user_name'] = self.userinfo.user_name
         id_post = post_data['uid'][0]
         cur_post_rec = self.mpost.get_by_id(id_post)
         if cur_post_rec is None:
@@ -416,10 +411,9 @@ class PostAjaxHandler(PostHandler):
         self.mpost = MPost()
         self.mcat = MCatalog()
         self.cats = self.mcat.query_all()
-
         self.mpost_hist = MPostHist()
         self.mpost2catalog = MPost2Catalog()
         self.mpost2reply = MPost2Reply()
-        self.mapp2tag = MPost2Label()
+        self.mpost2label = MPost2Label()
         self.mrel = MRelation()
         self.tmpl_router = 'post_ajax'
