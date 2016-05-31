@@ -81,7 +81,7 @@ class TabUsage(BaseModel):
     signature = peewee.ForeignKeyField(TabApp, related_name='equa_id')
     user = peewee.ForeignKeyField(CabMember, related_name='user_id')
     count = peewee.IntegerField()
-    catalog_id = peewee.IntegerField(null=True)
+    catalog_id = peewee.CharField(null=True)
     timestamp = peewee.IntegerField()
 
 
