@@ -139,6 +139,7 @@ class InfoHandler(BaseHandler):
         self.set_cookie('user_pass', cookie_str)
         tmpl = self.ext_tmpl_name(rec) if self.ext_tmpl_name(rec) else self.get_tmpl_name(rec)
         catid = rec.extinfo['def_cat_uid'] if 'def_cat_uid' in rec.extinfo else None
+        print(rec.extinfo)
         self.render(tmpl,
                     kwd=dict(kwd, **self.extra_kwd(rec)),
                     calc_info=rec,

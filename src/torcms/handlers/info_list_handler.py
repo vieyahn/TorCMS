@@ -65,6 +65,7 @@ class InfoListHandler(BaseHandler):
         else:
             condition['def_cat_uid'] = sig
 
+
         fenye_num = 1
         for ii in range(num):
             ckey = url_arr[ii * 2 + 2]
@@ -76,17 +77,13 @@ class InfoListHandler(BaseHandler):
                 # 分页参数。单独处理。
                 fenye_num = int(tval)
                 continue
-            if ckey == 'fabiaoshijian':
-                if tval == '1':
-                    cval = 1
-                elif tval == '2':
-                    cval = 2
+
             else:
                 cval = tval
             ckey = 'tag_' + ckey
             condition[ckey] = cval
 
-
+        print(condition)
         if url_arr[1] == 'con':
             infos = self.minfo.get_list_fenye(condition, fenye_num)
             self.echo_html_list_str(sig, infos)
