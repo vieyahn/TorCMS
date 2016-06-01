@@ -56,8 +56,9 @@ class MAppBase(object):
         '''
         entry = self.tab_app.update(
             update_time=int(time.time()),
-            html_path=data_dic['html_path'],
+            # html_path=data_dic['html_path'],
             date=datetime.now(),
+            keywords = data_dic['keywords'],
             type=data_dic['type'],
         ).where(self.tab_app.uid == uid)
         entry.execute()
@@ -246,6 +247,7 @@ class MApp(MAppBase):
                 cnt_md=data_dic['cnt_md'],
                 cnt_html=data_dic['cnt_html'],
                 date=datetime.now(),
+                keywords = data_dic['keywords'],
                 extinfo = ext_dic
 
             )
