@@ -32,11 +32,11 @@ class MAppBase(object):
         entry.execute()
         return (uid)
     def delete(self, del_id):
-        try:
-            self.tab_app.delete().where(self.tab_app.uuid == del_id)
-            return (True)
-        except:
-            return (False)
+        # Todo: 
+        return False
+        # uu = self.tab_app.delete().where(self.tab_app.uid == del_id)
+        # uu.execute()
+        # return (True)
 
     def modify_meta(self, app_id,  data_dic):
         '''

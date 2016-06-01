@@ -50,6 +50,10 @@ class MetaHandler(BaseHandler):
                 self.to_edit_app(url_arr[1])
             elif url_arr[0] == 'add':
                 self.to_add_app(url_arr[1])
+            elif url_arr[0] == 'delete':
+                self.to_del_app(url_arr[1])
+
+
             else:
                 '''
                 从相关计算中过来的。
@@ -131,6 +135,14 @@ class MetaHandler(BaseHandler):
                         userinfo=self.userinfo,
                         kwd={'uid': uid,}
                         )
+
+    @tornado.web.authenticated
+    def to_del_app(self, uid):
+        uu = self.mapp.delete(uid)
+        if uu:
+            self.redirect('/')
+        else:
+            self.redirect('/info/{0}'.format( uid))    
 
     @tornado.web.authenticated
     def to_edit_app(self, infoid):
