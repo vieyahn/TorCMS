@@ -13,6 +13,9 @@ class MAppBase(object):
     def __init__(self):
         self.tab_app = TabApp
         self.tab_app2catalog = TabApp2Catalog
+        self.tab_relation = TabAppRelation
+        self.tab_app2label = TabApp2Label
+        self.tab_usage = TabUsage
         try:
             TabApp.create_table()
         except:
@@ -23,22 +26,30 @@ class MAppBase(object):
 
     def update_jsonb(self, uid, extinfo):
         cur_extinfo = self.get_by_uid(uid).extinfo
-        # Update the extinfo, Not replace
         for key in extinfo:
             cur_extinfo[key] = extinfo[key]
         entry = self.tab_app.update(
-            extinfo = cur_extinfo,
+            extinfo=cur_extinfo,
         ).where(self.tab_app.uid == uid)
         entry.execute()
         return (uid)
-    def delete(self, del_id):
-        # Todo: 
-        return False
-        # uu = self.tab_app.delete().where(self.tab_app.uid == del_id)
-        # uu.execute()
-        # return (True)
 
-    def modify_meta(self, app_id,  data_dic):
+    def delete(self, del_id):
+        u1 = self.tab_app2catalog.delete().where(self.tab_app2catalog.post == del_id)
+        u1.execute()
+        u2 = self.tab_relation.delete().where(self.tab_relation.app_f == del_id)
+        u2.execute()
+        u3 = self.tab_relation.delete().where(self.tab_relation.app_t == del_id)
+        u3.execute()
+        u4 = self.tab_app2label.delete().where(self.tab_app2label.app == del_id)
+        u4.execute()
+        u5 = self.tab_usage.delete().where(self.tab_usage.signature == del_id)
+        u5.execute()
+        uu = self.tab_app.delete().where(self.tab_app.uid == del_id)
+        uu.execute()
+        return True
+
+    def modify_meta(self, app_id, data_dic):
         '''
         手工修改的。
         :param uid:
@@ -58,7 +69,7 @@ class MAppBase(object):
             update_time=int(time.time()),
             # html_path=data_dic['html_path'],
             date=datetime.now(),
-            keywords = data_dic['keywords'],
+            keywords=data_dic['keywords'],
             type=data_dic['type'],
         ).where(self.tab_app.uid == uid)
         entry.execute()
@@ -74,8 +85,6 @@ class MAppBase(object):
         equation_info = self.get_by_uid(uid)
         entry = self.tab_app.update(
             view_count=equation_info.view_count + 1,
-            # run_time=time.time(),
-            # title=equation_info.title
         ).where(self.tab_app.uid == uid)
         entry.execute()
 
@@ -131,6 +140,9 @@ class MApp(MAppBase):
     def __init__(self):
         self.tab_app = TabApp
         self.tab_app2catalog = TabApp2Catalog
+        self.tab_relation = TabAppRelation
+        self.tab_app2label = TabApp2Label
+        self.tab_usage = TabUsage
         try:
             TabApp.create_table()
         except:
@@ -153,13 +165,13 @@ class MApp(MAppBase):
                 cur_extinfo[key] = extinfo[key]
             entry = self.tab_app.update(
                 title=data_dic['title'][0],
-                keywords= ','.join([x.strip() for x in data_dic['keywords'][0].strip().strip(',').split(',')]),
+                keywords=','.join([x.strip() for x in data_dic['keywords'][0].strip().strip(',').split(',')]),
                 update_time=int(time.time()),
                 date=datetime.now(),
                 cnt_md=data_dic['cnt_md'][0],
                 logo=data_dic['logo'][0],
                 cnt_html=tools.markdown2html(data_dic['cnt_md'][0]),
-                extinfo= cur_extinfo
+                extinfo=cur_extinfo
             ).where(self.tab_app.uid == uid)
             entry.execute()
         else:
@@ -169,11 +181,12 @@ class MApp(MAppBase):
         return (uid)
 
     def query_extinfo_by_cat(self, cat_id):
-        return self.tab_app.select().where(self.tab_app.extinfo['def_cat_uid'] == cat_id).order_by(self.tab_app.update_time.desc())
-
+        return self.tab_app.select().where(self.tab_app.extinfo['def_cat_uid'] == cat_id).order_by(
+            self.tab_app.update_time.desc())
 
     def query_by_tagname(self, tag_name):
-        return self.tab_app.select().where(self.tab_app.extinfo['def_tag_arr'].contains(tag_name)).order_by(self.tab_app.update_time.desc())
+        return self.tab_app.select().where(self.tab_app.extinfo['def_tag_arr'].contains(tag_name)).order_by(
+            self.tab_app.update_time.desc())
 
     def get_label_fenye(self, tag_slug, page_num):
         all_list = self.query_by_tagname(tag_slug)
@@ -182,13 +195,13 @@ class MApp(MAppBase):
         current_list = all_list[(page_num - 1) * cfg['info_per_page']: (page_num) * cfg['info_per_page']]
         return (all_list)
 
-    def add_meta(self, uid,  data_dic, extinfo = {}):
+    def add_meta(self, uid, data_dic, extinfo={}):
         if len(data_dic['title'][0].strip()) == 0:
             return False
         entry = self.tab_app.create(
             uid=uid,
             title=data_dic['title'][0],
-            keywords= ','.join([x.strip() for x in data_dic['keywords'][0].split(',')]),
+            keywords=','.join([x.strip() for x in data_dic['keywords'][0].split(',')]),
             update_time=int(time.time()),
             date=datetime.now(),
             cnt_md=data_dic['cnt_md'][0],
@@ -197,14 +210,15 @@ class MApp(MAppBase):
             extinfo=extinfo,
             user_name=data_dic['user_name'],
             # lat=data_dic['lat'][0],
-            #lon=data_dic['lon'][0],
-            #zoom_max=data_dic['zoom_max'][0],
-            #zoom_min=data_dic['zoom_min'][0],
+            # lon=data_dic['lon'][0],
+            # zoom_max=data_dic['zoom_max'][0],
+            # zoom_min=data_dic['zoom_min'][0],
             # zoom_current=data_dic['zoom_current'][0],
         )
 
     def get_list(self, condition):
-        db_data = self.tab_app.select().where(self.tab_app.extinfo.contains(condition)).order_by(self.tab_app.update_time.desc())
+        db_data = self.tab_app.select().where(self.tab_app.extinfo.contains(condition)).order_by(
+            self.tab_app.update_time.desc())
         return (db_data)
 
     def get_num_condition(self, con):
@@ -227,10 +241,10 @@ class MApp(MAppBase):
         entry.execute()
         return (uid)
 
-    def addata_init(self, data_dic, ext_dic = {} ):
+    def addata_init(self, data_dic, ext_dic={}):
         if self.get_by_uid(data_dic['sig']):
             uu = self.get_by_uid(data_dic['sig'])
-            if data_dic['title'] == uu.title  and data_dic['type'] == uu.type:
+            if data_dic['title'] == uu.title and data_dic['type'] == uu.type:
                 pass
             else:
                 self.modify_init(data_dic['sig'], data_dic)
@@ -240,27 +254,21 @@ class MApp(MAppBase):
             entry = self.tab_app.create(
                 uid=data_dic['sig'],
                 title=data_dic['title'],
-                # type=data_dic['type'],
                 create_time=time_stamp,
                 update_time=time_stamp,
-                # html_path=,
                 cnt_md=data_dic['cnt_md'],
                 cnt_html=data_dic['cnt_html'],
                 date=datetime.now(),
-                keywords = data_dic['keywords'],
-                extinfo = ext_dic
+                keywords=data_dic['keywords'],
+                extinfo=ext_dic
 
             )
 
-
     def get_list_fenye(self, tag_slug, page_num):
-        # 所有的记录
 
         all_list = self.get_list(tag_slug)
-        # 当前分页的记录
         current_list = all_list[(page_num - 1) * cfg['info_per_page']: (page_num) * cfg['info_per_page']]
         return (current_list)
-
 
     def get_cat_recs_count(self, catid):
         '''

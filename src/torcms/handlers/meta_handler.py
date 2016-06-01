@@ -138,11 +138,16 @@ class MetaHandler(BaseHandler):
 
     @tornado.web.authenticated
     def to_del_app(self, uid):
-        uu = self.mapp.delete(uid)
-        if uu:
-            self.redirect('/')
+        current_infor = self.mapp.get_by_uid(uid)
+        if self.check_priv(self.userinfo, current_infor.extinfo['def_cat_uid'])['DELETE']:
+            pass
         else:
-            self.redirect('/info/{0}'.format( uid))    
+            return False
+
+        if self.mapp.delete(uid):
+            self.redirect('/list/{0}'.format(current_infor.extinfo['def_cat_uid']))
+        else:
+            self.redirect('/info/{0}'.format(uid))
 
     @tornado.web.authenticated
     def to_edit_app(self, infoid):
