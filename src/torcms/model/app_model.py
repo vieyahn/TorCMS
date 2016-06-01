@@ -16,6 +16,8 @@ class MAppBase(object):
         self.tab_relation = TabAppRelation
         self.tab_app2label = TabApp2Label
         self.tab_usage = TabUsage
+        self.tab_app2reply = TabApp2Reply
+        self.cab_reply = CabReply
         try:
             TabApp.create_table()
         except:
@@ -45,6 +47,18 @@ class MAppBase(object):
         u4.execute()
         u5 = self.tab_usage.delete().where(self.tab_usage.signature == del_id)
         u5.execute()
+
+
+        reply_arr = []
+        for reply in self.tab_app2reply.select().where(self.tab_app2reply.post_id == del_id):
+            reply_arr.append(reply.reply_id.uid)
+
+        u6 = self.tab_app2reply.delete().where(self.tab_app2reply.post_id == del_id)
+        u6.execute()
+
+        for replyid in reply_arr:
+            self.cab_reply.delete().where(self.cab_reply.uid == replyid ).execute()
+
         uu = self.tab_app.delete().where(self.tab_app.uid == del_id)
         uu.execute()
         return True
@@ -143,6 +157,8 @@ class MApp(MAppBase):
         self.tab_relation = TabAppRelation
         self.tab_app2label = TabApp2Label
         self.tab_usage = TabUsage
+        self.tab_app2reply = TabApp2Reply
+        self.cab_reply = CabReply
         try:
             TabApp.create_table()
         except:
