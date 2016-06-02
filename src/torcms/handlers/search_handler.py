@@ -2,7 +2,9 @@
 
 import config
 from torcms.core.base_handler import BaseHandler
-from torcms.core.tool.whoosh_tool import yunsearch
+# from torcms.core.tool.whoosh_tool import yunsearch
+from torcms.core.tool.whoosh_tool import search_cat as  yunsearch
+
 from torcms.core import tools
 from torcms.model.mcatalog import MCatalog
 from torcms.model.mpost import MPost
