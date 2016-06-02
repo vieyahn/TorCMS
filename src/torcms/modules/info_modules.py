@@ -156,7 +156,9 @@ class site_ad(tornado.web.UIModule):
 
 class widget_search(tornado.web.UIModule):
     def render(self, ):
-        return self.render_string('infor/modules/widget_search.html')
+        self.mcat = MInforCatalog()
+
+        return self.render_string('widget/widget_search.html', cat_enum = self.mcat.query_pcat())
 
 
 
