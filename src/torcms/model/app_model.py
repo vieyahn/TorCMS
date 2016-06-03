@@ -225,11 +225,6 @@ class MApp(MAppBase):
             cnt_html=tools.markdown2html(data_dic['cnt_md'][0]),
             extinfo=extinfo,
             user_name=data_dic['user_name'],
-            # lat=data_dic['lat'][0],
-            # lon=data_dic['lon'][0],
-            # zoom_max=data_dic['zoom_max'][0],
-            # zoom_min=data_dic['zoom_min'][0],
-            # zoom_current=data_dic['zoom_current'][0],
         )
 
     def get_list(self, condition):
@@ -277,7 +272,6 @@ class MApp(MAppBase):
                 date=datetime.now(),
                 keywords=data_dic['keywords'],
                 extinfo=ext_dic
-
             )
 
     def get_list_fenye(self, tag_slug, page_num):
