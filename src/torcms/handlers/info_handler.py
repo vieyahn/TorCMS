@@ -194,7 +194,7 @@ class InfoHandler(BaseHandler):
         if cat_id:
             tmpl = 'autogen/view/view_{0}.html'.format(cat_id)
         else:
-            tmpl = 'tmpl_applite/app/show_map.html'
+            tmpl = 'infor/app/show_map.html'
         return tmpl
 
     def add_relation(self, f_uid, t_uid):
