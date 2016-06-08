@@ -15,9 +15,8 @@ class app_catalog_of(tornado.web.UIModule):
     def render(self, uid_with_str):
         self.mcat = MInforCatalog()
         recs = self.mcat.query_uid_starts_with( uid_with_str )
-
-        return self.render_string('infor/modules/catalog_of.html',
-                                  recs=recs)
+        # return ''
+        return self.render_string('infor/modules/catalog_of.html', recs=recs)
 
 class app_user_most(tornado.web.UIModule):
     def render(self, user_name, num, with_tag=False):

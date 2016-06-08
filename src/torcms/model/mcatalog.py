@@ -27,7 +27,7 @@ class MCatalog(MSingleTable):
     def query_pcat(self):
         return  self.tab.select().where(self.tab.uid.endswith('00')).order_by(self.tab.order)
     def query_uid_starts_with(self, qian2):
-        return self.tab.select().where(self.tab.uid.startswith(qian2)).order_by(self.tab.order)
+        return self.tab.select().where(self.tab.uid.startswith(qian2)).group_by(self.tab.uid).order_by(self.tab.order)
 
     def query_all(self, by_count=False, by_order=True):
         if by_count:
@@ -41,10 +41,12 @@ class MCatalog(MSingleTable):
     def query_field_count(self, limit_num):
         return self.tab.select().order_by(self.tab.count.desc()).limit(limit_num)
 
-
-
     def get_by_slug(self, slug):
-        return self.tab.get(slug=slug)
+        uu = self.tab.select().where(self.tab.slug ==  slug)
+        if uu.count() > 0:
+            return uu.get()
+        else:
+            return None
 
     def update_count(self, cat_id, num):
         entry = self.tab.update(

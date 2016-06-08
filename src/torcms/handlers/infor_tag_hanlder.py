@@ -9,7 +9,7 @@ from torcms.core.base_handler import BaseHandler
 from torcms.model.app2catalog_model import MApp2Catalog
 
 
-class InfoTagHandler(BaseHandler):
+class InforTagHandler(BaseHandler):
     '''
     List the infos by the slug of the catalog.
     '''
@@ -45,6 +45,7 @@ class InfoTagHandler(BaseHandler):
         taginfo = self.mtag.get_by_slug(tag_slug)
         num_of_tag = self.mapp2tag.count_of_certain_catalog(taginfo.uid)
         page_num = int(num_of_tag / config.page_num) + 1
+        print(page_num)
         tag_name = taginfo.name
 
         kwd = {
