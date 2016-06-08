@@ -116,21 +116,41 @@ class InfoListHandler(BaseHandler):
         '''
         生成分页的导航
         '''
+
         pagination_num = int(math.ceil(rec_num * 1.0 / 10))
 
         if pagination_num == 1 or pagination_num == 0:
             fenye_str = ''
+
         elif pagination_num > 1:
+            pager_mid = ''
+            pager_pre = ''
+            pager_next = ''
             fenye_str = '<ul class="pagination">'
-            for num in range(1, pagination_num + 1):
+            if fenye_num > 1:
+                pager_pre = ''' <li class="{0}" name='fenye' onclick='change(this);'
+                  value='{1}'><a>上一页</a></li>'''.format('', fenye_num - 1)
+
+            for num in range(fenye_num, pagination_num + 1):
                 if num == fenye_num:
                     checkstr = 'active'
                 else:
                     checkstr = ''
+
                 tmp_str_df = '''
+
                   <li class="{0}" name='fenye' onclick='change(this);'
                   value='{1}'><a>{1}</a></li>'''.format(checkstr, num)
-                fenye_str += tmp_str_df
+
+                pager_mid += tmp_str_df
+            if fenye_num < pagination_num:
+                pager_next = '''
+
+                  <li class="{0}" name='fenye' onclick='change(this);'
+                  value='{1}'><a>下一页</a></li>'''.format('', fenye_num + 1)
+
+
+            fenye_str += pager_pre + pager_mid + pager_next
             fenye_str += '</ul>'
 
         else:
@@ -195,4 +215,6 @@ class InfoListHandler(BaseHandler):
                     widget_info=kwd,
                     condition_arr=kw_condition_arr,
                     cat_enum=self.mappcat.get_qian2(parent_id[:2]),
-                    priv_mask_idx=priv_mask_idx)
+                    priv_mask_idx=priv_mask_idx,
+
+                    )

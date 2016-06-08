@@ -101,8 +101,8 @@ def gen_pager_bootstrap_url(cat_slug, page_num, current):
 
     pager_shouye = '''
     <li class="{0}">
-    <a href="{1}">&lt;&lt; 首页</a>
-                </li>'''.format('hidden' if current <= 1 else '', cat_slug)
+    <a href="{1}/{2}">&lt;&lt; 首页</a>
+                </li>'''.format('hidden' if current <= 1 else '', cat_slug,current)
 
     pager_pre = '''
                 <li class="{0}">
