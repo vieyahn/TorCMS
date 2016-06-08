@@ -130,8 +130,17 @@ class InfoListHandler(BaseHandler):
             if fenye_num > 1:
                 pager_pre = ''' <li class="{0}" name='fenye' onclick='change(this);'
                   value='{1}'><a>上一页</a></li>'''.format('', fenye_num - 1)
+            if fenye_num > 5:
+                cur_num = fenye_num-4
+            else:
+                cur_num = 1
 
-            for num in range(fenye_num, pagination_num + 1):
+            if pagination_num > 10:
+                show_num = cur_num + 10
+            else:
+                show_num = pagination_num
+
+            for num in range(cur_num,show_num):
                 if num == fenye_num:
                     checkstr = 'active'
                 else:
