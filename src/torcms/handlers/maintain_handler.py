@@ -40,11 +40,11 @@ class MaintainCategoryHandler(BaseHandler):
     def post(self, url_str=''):
 
         url_arr = self.parse_url(url_str)
-
+        print(url_str)
         if url_arr[0] == 'modify':
             self.update(url_arr[1])
         elif url_str == 'add':
-            self.add_catalog()
+            self.p_add_catalog()
         elif url_arr[0] == 'add':
 
             self.p_add_catalog()
@@ -173,7 +173,7 @@ class MaintainCategoryHandler(BaseHandler):
         while self.mclass.get_by_id(cur_uid):
             cur_uid = tools.get_uudd(2)
 
-        if self.mclass.insert_data(post_data['uid'], post_data):
+        if self.mclass.insert_data(post_data['uid'][0], post_data):
 
             output = {
                 'addinfo ': 1,
