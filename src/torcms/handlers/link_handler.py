@@ -46,14 +46,14 @@ class LinkHandler(BaseHandler):
     def post(self, url_str=''):
         if url_str == '':
             return
-
+        print(url_str)
         url_arr = url_str.split('/')
 
         if url_arr[0] == 'modify':
             self.update(url_arr[1])
 
         elif url_str == 'add_link':
-            self.user_add_link()
+            self.p_user_add_link()
 
         elif url_arr[0] == 'add_link':
             self.p_user_add_link()
@@ -101,7 +101,10 @@ class LinkHandler(BaseHandler):
             self.to_add(uid)
 
     def to_add_link(self, ):
-
+        if self.check_doc_priv(self.userinfo)['ADD']:
+            pass
+        else:
+            return False
         kwd = {
             'pager': '',
             'uid': '',
@@ -123,10 +126,19 @@ class LinkHandler(BaseHandler):
                     kwd=kwd,
                     )
 
+    def __could_edit(self, uid):
+        raw_data = self.mlink.get_by_id(uid)
+        if not raw_data:
+
+            return False
+        if self.check_doc_priv(self.userinfo)['EDIT'] or raw_data.id_user == self.userinfo.user_name:
+            return True
+        else:
+            return False
+
     @tornado.web.authenticated
     def update(self, uid):
-        raw_data = self.mlink.get_by_id(uid)
-        if self.userinfo.privilege[2] == '1' or raw_data.user_name == self.get_current_user():
+        if self.__could_edit(uid):
             pass
         else:
             return False
@@ -151,14 +163,15 @@ class LinkHandler(BaseHandler):
 
     @tornado.web.authenticated
     def to_modify(self, id_rec):
-        a = self.mlink.get_by_id(id_rec)
+
         # 用户具有管理权限，
         # 或
         # 文章是用户自己发布的。
-        if self.userinfo.privilege[2] == '1' or a.user_name == self.get_current_user():
+        if self.__could_edit(id_rec):
             pass
         else:
             return False
+        a = self.mlink.get_by_id(id_rec)
 
         kwd = {
             'pager': '',
@@ -199,7 +212,7 @@ class LinkHandler(BaseHandler):
 
     @tornado.web.authenticated
     def p_user_add_link(self):
-        if self.userinfo.privilege[1] == '1':
+        if self.check_doc_priv(self.userinfo)['ADD']:
             pass
         else:
             return False
@@ -228,7 +241,7 @@ class LinkHandler(BaseHandler):
     @tornado.web.authenticated
     def user_add_link(self):
 
-        if self.userinfo.privilege[1] == '1':
+        if self.check_doc_priv(self.userinfo)['ADD']:
             pass
         else:
             return False
@@ -248,7 +261,10 @@ class LinkHandler(BaseHandler):
 
     @tornado.web.authenticated
     def delete(self, del_id):
-
+        if self.check_doc_priv(self.userinfo)['DELETE']:
+            pass
+        else:
+            return False
         if self.tmpl_router == "link":
 
             is_deleted = self.mlink.delete(del_id)
