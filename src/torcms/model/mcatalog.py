@@ -69,7 +69,7 @@ class MCatalog(MSingleTable):
             name=post_data['name'][0],
             slug=post_data['slug'][0],
             order=post_data['order'][0],
-            priv_mask=post_data['priv_mask'][0],
+
         ).where(self.tab.uid == uid)
         entry.execute()
 
@@ -84,6 +84,6 @@ class MCatalog(MSingleTable):
                 slug=post_data['slug'][0],
                 order=post_data['order'][0],
                 uid=id_post,
-                priv_mask=post_data['priv_mask'][0],
+
             )
             return (entry.uid)

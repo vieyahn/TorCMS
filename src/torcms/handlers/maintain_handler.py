@@ -67,6 +67,10 @@ class MaintainCategoryHandler(BaseHandler):
 
     @tornado.web.authenticated
     def to_add(self):
+        if self.check_doc_priv(self.userinfo)['ADD']:
+            pass
+        else:
+            return False
         kwd = {
             'pager': '',
             'uid': '',
@@ -78,10 +82,19 @@ class MaintainCategoryHandler(BaseHandler):
                     cfg=config.cfg
                     )
 
+    def __could_edit(self, uid):
+        raw_data = self.mclass.get_by_id(uid)
+        if not raw_data:
+
+            return False
+        if self.check_doc_priv(self.userinfo)['EDIT'] or raw_data.id_user == self.userinfo.user_name:
+            return True
+        else:
+            return False
+
     @tornado.web.authenticated
     def update(self, uid):
-        raw_data = self.mclass.get_by_id(uid)
-        if self.userinfo.privilege[2] == '1' or raw_data.user_name == self.get_current_user():
+        if self.__could_edit(uid):
             pass
         else:
             return False
@@ -107,12 +120,11 @@ class MaintainCategoryHandler(BaseHandler):
 
     @tornado.web.authenticated
     def to_modify(self, id_rec):
-        a = self.mclass.get_by_id(id_rec)
-        if self.userinfo.privilege[4] == '1':
+        if self.__could_edit(id_rec):
             pass
         else:
             return False
-
+        a=self.mclass.get_by_id(id_rec)
         kwd = {
             'pager': '',
 
@@ -127,7 +139,7 @@ class MaintainCategoryHandler(BaseHandler):
 
     @tornado.web.authenticated
     def add_post(self):
-        if self.userinfo.privilege[1] == '1':
+        if self.check_doc_priv(self.userinfo)['ADD']:
             pass
         else:
             return False
@@ -147,7 +159,7 @@ class MaintainCategoryHandler(BaseHandler):
     def p_add_catalog(self):
 
 
-        if self.userinfo.privilege[1] == '1':
+        if self.check_doc_priv(self.userinfo)['ADD']:
             pass
         else:
             return False
@@ -174,7 +186,7 @@ class MaintainCategoryHandler(BaseHandler):
 
     @tornado.web.authenticated
     def add_catalog(self):
-        if self.userinfo.privilege[1] == '1':
+        if self.check_doc_priv(self.userinfo)['ADD']:
             pass
         else:
             return False
@@ -194,6 +206,10 @@ class MaintainCategoryHandler(BaseHandler):
 
     @tornado.web.authenticated
     def delete_by_uid(self, del_id):
+        if self.check_doc_priv(self.userinfo)['DELETE']:
+            pass
+        else:
+            return False
         if self.tmpl_router == "maintain_category":
             is_deleted = self.mclass.delete(del_id)
 
