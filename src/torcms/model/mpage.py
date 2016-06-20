@@ -60,7 +60,9 @@ class MPage(MSingleTable):
         tt = CabPage.select().where((CabPage.id_cats.contains(str(cat_str))) & ((CabPage.type == 1))).order_by(
             'time_update')
         return tt
+    def query_all(self):
 
+        return self.tab.select()
     def view_count_plus(self, slug):
 
         entry = CabPage.update(

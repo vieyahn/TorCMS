@@ -32,7 +32,7 @@ class TabCatalog(BaseModel):
     slug = peewee.CharField(null=False, index=True, unique=True, max_length=36, help_text='', )
     name = peewee.CharField(null=False, max_length=255, help_text='', )
     order = peewee.IntegerField()
-    priv_mask = peewee.CharField(null=False, default='00400', help_text='Member Privilege')
+    priv_mask = peewee.CharField(null=False, default='00100', help_text='Member Privilege')
     count = peewee.IntegerField(default=0)
 
 
