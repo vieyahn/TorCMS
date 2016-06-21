@@ -57,11 +57,77 @@ class SearchHandler(BaseHandler):
         self.render('doc/search/search.html',
                     kwd=kwd,
                     srecs=results,
-                    pager=tools.gen_pager_bootstrap_url('/search/{0}'.format(keyword), page_num, p_index),
+                    pager=self.gen_pager_bootstrap_url('/search/{0}'.format(keyword), page_num, p_index),
                     userinfo=self.userinfo,
                     cfg=config.cfg,
                     )
 
+    def gen_pager_bootstrap_url(self,cat_slug, page_num, current):
+        # cat_slug 分类
+        # page_num 页面总数
+        # current 当前页面
+
+        if page_num == 1 or page_num == 0:
+            pager = ''
+
+
+        elif page_num > 1:
+                pager_mid = ''
+                pager_pre = ''
+                pager_next = ''
+                pager_last = ''
+                pager_home = ''
+
+                pager = '<ul class="pagination">'
+
+                if current > 1:
+                    pager_home = '''
+
+                      <li class="{0}" name='fenye' onclick='change(this);'
+                      ><a href="{1}/{2}">首页</a></li>'''.format( '', cat_slug,1)
+
+                    pager_pre = ''' <li class="{0}" name='fenye' onclick='change(this);'>
+                    <a href="{1}/{2}">上一页</a></li>'''.format(  '',  cat_slug, current - 1)
+                if current > 5:
+                    cur_num = current - 4
+                else:
+                    cur_num = 1
+
+                if page_num > 10 and cur_num < page_num - 10:
+                    show_num = cur_num + 10
+
+                else:
+                    show_num = page_num + 1
+
+                for num in range(cur_num,show_num):
+                    if num == current:
+                        checkstr = 'active'
+                    else:
+                        checkstr = ''
+
+                    tmp_str_df = '''
+
+                      <li class="{0}" name='fenye' onclick='change(this);'>
+                      <a href="{1}/{2}">{2}</a></li>'''.format( checkstr, cat_slug, num)
+
+                    pager_mid += tmp_str_df
+                if current < page_num:
+                    pager_next = '''
+
+                      <li class="{0}" name='fenye' onclick='change(this);'
+                      ><a href="{1}/{2}">下一页</a></li>'''.format( '',  cat_slug, current + 1)
+                    pager_last = '''
+
+                      <li class="{0}" name='fenye' onclick='change(this);'
+                     ><a href="{1}/{2}">末页</a></li>'''.format(  '', cat_slug, page_num)
+
+
+                pager += pager_home + pager_pre + pager_mid + pager_next + pager_last
+                pager += '</ul>'
+        else:
+            pass
+
+        return (pager)
 
     def search_cat(self, catid,  keyword, p_index=1):
         res_all = self.ysearch.get_all_num(keyword, catid=catid)
@@ -76,7 +142,7 @@ class SearchHandler(BaseHandler):
         self.render('doc/search/search.html',
                     kwd=kwd,
                     srecs=results,
-                    pager=tools.gen_pager_bootstrap_url('/search/{0}/{1}'.format(catid, keyword), page_num, p_index),
+                    pager=self.gen_pager_bootstrap_url('/search/{0}/{1}'.format(catid, keyword), page_num, p_index),
                     userinfo=self.userinfo,
                     cfg=config.cfg,
 
