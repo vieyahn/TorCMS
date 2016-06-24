@@ -41,4 +41,3 @@ class CollectHandler(BaseHandler, ):
                     recs_collect = self.mcollect.query_recent(self.userinfo.uid, 20),
                     userinfo = self.userinfo,
                     )
-
