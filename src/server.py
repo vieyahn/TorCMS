@@ -3,46 +3,18 @@
 import os
 import sys
 import config
-from torcms.torlite.modules.modef import core_modules as modules
-from torcms.claslite.module.modules import *
 from urls import urls
-
-cur_modues = {'Topline': ToplineModule,
-              'Banner': BannerModule,
-              'BreadCrumb': BreadCrumb,
-              'ContactInfo': ContactInfo,
-              'BreadcrumbPublish': BreadcrumbPublish,
-              'ImgSlide': ImgSlide,
-              'user_info': UserInfo,
-              'vip_info': VipInfo,
-
-              }
-
-from torcms.applite.modules.extends import *
-
-modules['rel_post2app'] = rel_post2app
-modules['rel_app2post'] = rel_app2post
-modules['app_most_used'] = app_most_used
-modules['app_random_choose'] = app_random_choose
-modules['app_tags'] = app_tags
-modules['app_menu'] = app_menu
-modules['app_user_recent'] = app_user_recent
-modules['app_user_most'] = app_user_most
-modules['app_recent_used'] = app_recent_used
-modules['label_count'] = label_count
+import tornado.locale
+import tornado.web
 
 
-modules['amazon_ad'] = amazon_ad
-modules['baidu_search'] = baidu_search
-modules['site_ad'] = site_ad
-modules['widget_search'] = widget_search
-modules['app_most_used_by_cat'] = app_most_used_by_cat
-modules['app_least_used_by_cat'] = app_least_use_by_cat
-modules['app_user_recent_by_cat'] = app_user_recent_by_cat
+from torcms.modules.modef import core_modules
 
-modules['app_catalog_of'] = app_catalog_of
+cur_modues = { }
 
-modules = dict(modules, **cur_modues)
+modules = dict(core_modules, **cur_modues)
+
+
 
 SETTINGS = {
     "template_path": os.path.join(os.path.dirname(__file__), "templates"),
@@ -53,7 +25,7 @@ SETTINGS = {
     'ui_modules': modules,
 }
 
-PORT = '8246'
+PORT = config.PORT
 
 if __name__ == "__main__":
     tornado.locale.set_default_locale('zh_CN')

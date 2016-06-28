@@ -1,0 +1,93 @@
+{% extends "../../tmpldoc/tmpldoc.html" %}
+
+{% block head %}
+<title>{{ view.title }} OSGeo中国中心 开放地理空间实验室</title>
+<meta name="keywords" content="{{ view.keywords }},OSGeo中国中心,开放地理空间实验室,开源GIS">
+<meta name="description" content="{% module generate_description(view.cnt_html) %}">
+
+
+{% end %}
+
+{% block content %}
+<ol class="breadcrumb">
+  <li>当前位置: <a href="http://www.osgeo.cn">首页</a> >
+        {% module the_category(view.uid) %} </li>
+  <li class="active">{{ view.title }}</li>
+</ol>
+<div class="panel panel-default">
+
+
+    <div class="panel-heading">
+
+
+            <h2>{{ view.title }}</h2>
+<span>{{ str(view.date)[:10] }}</span>
+                <span>作者: <a href="http://www.osgeo.cn/">OSGeo中国中心</a></span>
+                <span>浏览: {{ view.view_count }} 次</span>
+                {% if userinfo  and userinfo.privilege[2] == '1' %}
+                <span class="cmts"><a href="/post/modify/{{ view.uid }}">编辑</a></span>
+
+                {% end %}
+    </div>
+    <div class="panel-body">
+
+
+
+
+
+
+            <div class="entry">
+                <p class="summary"><strong>摘要</strong>: {% module generate_abstract(view.cnt_html) %} </p>
+
+                <div class="entrycontent">
+
+
+                    {% raw unescape(view.cnt_html) %}
+
+                </div>
+            </div>
+
+            <div class="postmeta">
+                <div class="wpyouvote"></div>
+                <div class="clear"></div>
+                <br>
+                <strong>本文链接:</strong>
+                <a href="http://osgeo.cn/post/{{view.uid}}.html" class="underline"> {{ view.title }}</a>
+                <br/>
+                <strong>版权所有:</strong> 非特殊声明均为本站原创文章，转载请注明出处：
+                <a href="http://osgeo.cn" class="underline">OSGeo中国中心</a><br>
+
+
+            </div>
+<bR>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    相关阅读
+                </div>
+                <ul class="list-group">
+                    {% for s in relations %}
+                    <li class="list-group-item">
+                        <a href="/post/{{ s.app_t.uid }}.html">
+                            <span class="glyphicon glyphicon-list-alt"></span> {{ s.app_t.title }}
+                        </a>
+                    </li>
+                    {% end %}
+                </ul>
+            </div>
+
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+        <div class="col-sm-6">
+            <div class="btn btn-primary">{% module previous_post_link(view.uid) %}</div>
+            <div class="btn btn-primary">{% module next_post_link(view.uid) %}</div>
+        </div>
+        <div class="col-sm-6">
+            {% module baidu_share() %}
+        </div>
+    </div>
+        </div>
+</div>
+{% end %}
+
+

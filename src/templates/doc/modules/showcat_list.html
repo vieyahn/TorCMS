@@ -1,0 +1,8 @@
+<li class="list-group-item">
+{% for x in recs %}
+
+
+<a href="/category/{{ x.slug }}" title="{{ x.name }}" class="btn btn-default" style="margin-bottom: 5px">{{ x.name }}</a>
+
+{% end %}
+</li>

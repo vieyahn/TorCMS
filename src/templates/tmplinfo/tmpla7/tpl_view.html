@@ -1,0 +1,164 @@
+{% extends "../tmplinfo.html" %}
+
+{% block head %}
+<title>{{ post_info.title }} 地球系统科学数据共享网</title>
+<meta name="keywords" content="{{ post_info.keywords }}">
+<meta name="description" content="地球系统科学数据共享网">
+
+<script type="text/javascript" src="{{ static_url('lunbo/js/jquery.js') }}"></script>
+
+<link rel="stylesheet" type="text/css" href="{{ static_url('lunbo/css/style.css') }}" media="screen"/>
+
+<script type="text/javascript" src="{{ static_url('lunbo/js/jquery.cssAnimate.mini.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('lunbo/js/jquery.waitforimages.js') }}"></script>
+
+<script type="text/javascript" src="{{ static_url('lunbo/js/jquery.themepunch.paradigm.js') }}"></script>
+
+<link rel="stylesheet" type="text/css" href="{{ static_url('lunbo/css/settings.css') }}" media="screen"/>
+
+
+{% end %}
+
+{% block typebody %}
+
+
+<div class="row">
+
+    <div class="col-sm-8">
+        <ol class="breadcrumb">
+            <li>Current location：<a href="/">information</a></li>
+            <li> {% module parentname(kwd['parentname']) %}</li>
+            <li> {% module catname(kwd['catname']) %}</li>
+            <li><a href="/info/{{ post_info.uid }}"> {{ post_info.title }}</a></li>
+
+        </ol>
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+
+                <div class="panel-title">{{ post_info.title }}</div>
+            </div>
+
+            <div class="panel-body">
+
+                {% if post_info.logo != ''%}
+                <div class="row bor_bottom">
+                    <!-- 根据有没有图，分成两部分显示 -->
+                    <!-- 下面代码有重复部分，但为清晰起见，都保留。 -->
+
+                    <div class="col-sm-6">
+                        <img src="{{ post_info.logo }}" width="300px">
+                    </div>
+                    <div class="col-sm-6">
+                        <p>
+                        <span><a onclick="js_show_page('/user/shoucang/{{ post_info.uid }}')"
+                                 class="btn btn-sm btn-primary">Collection</a></span>
+                           {% if userinfo and( userinfo.privilege[priv_mask_idx] >= '2' or userinfo.user_name == post_info.user_name) %}
+                            <a href="/meta/edit/{{ post_info.uid }}" class="btn btn-sm btn-primary">Modify</a>
+                            <a href="/meta/delete/{{  post_info.uid }}" class="btn btn-sm btn-primary">Delete</a>
+                            {% end %}
+                        </p>
+
+
+                        <p><b>Tags:</b><span class="post_cat">
+                         {% if 'def_tag_arr' in post_info.extinfo %}
+                        {% for x in post_info.extinfo['def_tag_arr'] %}
+                            <a href="/info_tag/{{ x }}" class="btn btn-primary btn-xs">{{ x }}</a>
+                            {% end %} {% end %}
+                </span>
+                        </p>
+
+                        <p><b>Author:</b> <a href="/">Geodata</a></p>
+
+                        <p><b>Release time：</b> {{ str(post_info.date)[:10] }}</p>
+
+                        <p><b>Browsing times：</b> {% raw post_info.view_count %}</p>
+
+
+                    </div>
+                </div>
+                <div class="row bor_bottom">
+
+                    <div class="col-sm-12">
+                        {% block extrainfo %} {% end %}
+                    </div>
+
+
+                </div>
+                {% else %}
+                <div class="row bor_bottom">
+                    <div class="col-sm-12">
+                      <p><b>Author:</b> <a href="/">Geodata</a>&nbsp;&nbsp;&nbsp;&nbsp; <b>Release time：</b> {{ str(post_info.date)[:10] }}&nbsp;&nbsp;&nbsp;&nbsp;
+                          <b>Browsing times：</b> {% raw post_info.view_count %}&nbsp;&nbsp;&nbsp;&nbsp;
+                      <b>Tags:</b><span class="post_cat">
+                         {% if 'def_tag_arr' in post_info.extinfo %}
+                        {% for x in post_info.extinfo['def_tag_arr'] %}
+                            <a href="/info_tag/{{ x }}" class="btn btn-primary btn-xs">{{ x }}</a>
+                            {% end %} {% end %}
+                              </span>
+                      </p>
+                        <p><span><a onclick="js_show_page('/user/shoucang/{{ post_info.uid }}')"
+                                 class="btn btn-sm btn-primary">Collection</a>
+                            {% if userinfo and( userinfo.privilege[priv_mask_idx] >= '2' or userinfo.user_name == post_info.user_name) %}
+                            <a href="/meta/edit/{{ post_info.uid }}" class="btn btn-sm btn-primary">Modify</a>
+                            <a href="/meta/delete/{{  post_info.uid }}" class="btn btn-sm btn-primary">Delete</a>
+                            {% end %}
+                            </span>
+                        </p>
+
+
+
+
+
+
+
+                    </div>
+                    <div class="col-sm-12">
+
+                        {% block extrainfo %} {% end %}
+                    </div>
+
+                </div>
+
+                {% end %}
+
+
+                <div class="col-sm-12 bor_bottom">
+
+                    {{ post_info.cnt_md }}
+                </div>
+
+
+                <div class="col-sm-12">
+                    <span id="showCnt"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading"> {% for taginfo in cat_enum %}
+                {% if taginfo.uid.endswith('00') %}
+                {{ taginfo.name }}
+                {% end %}
+                {% end %}
+            </div>
+
+
+            <ul class="list-group">
+                {% for taginfo in cat_enum %}
+                {% if not taginfo.uid.endswith('00') %}
+                <li class="list-group-item"><a href="/list/{{ taginfo.uid }}">{{ taginfo.name }}</a></li>
+                {% end %}
+                {% end %}
+
+            </ul>
+        </div>
+    </div>
+</div>
+{% end %}
+
+

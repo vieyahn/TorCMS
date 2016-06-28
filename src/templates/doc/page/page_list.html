@@ -1,0 +1,36 @@
+{% extends "../../tmpldoc/tmpldoc.html" %}
+
+{% block headinfo %}
+<title>OSGeo中国中心 | 开放地理空间实验室</title>
+<meta name="keywords" content="GIS,地理信息系统,开源GIS,OSGeo,OpenLayers,MapServer,GDAL,GIS教程,WebGIS">
+<meta name="description" content="OSGeo中国中心实验室，关注开源GIS，开放数据">
+{% end %}
+{% block content %}
+
+
+<div class="listBox clear">
+    <ul class="title">
+
+
+        {% for x in view %}
+        <li class="clear ">
+
+
+            <h2>
+                <p class="y">
+                    <span class="date">{{ format_date(x.date) }}</span>
+                </p>
+                <a href="/{{x.title}}" class="title">
+                    {% raw kwd['unescape'](x.title) %}
+                </a>
+            </h2>
+
+        </li>
+        {% end %}
+
+
+    </ul>
+</div>
+
+
+{% end %}

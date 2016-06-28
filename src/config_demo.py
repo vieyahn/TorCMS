@@ -8,7 +8,7 @@ menu_arr = [['首页', '/'],
             ['专题', '/spec/'],
             ]
 
-page_num = 2
+page_num = 10
 
 site_name = 'TorCMS网站'
 site_url = 'http://127.0.0.1:8088'
@@ -29,12 +29,8 @@ smtp_cfg = {
     'postfix': 'yunsuan.org',
 }
 
-# Used in HTML render files.
-cfg = {
-}
-
 Email_site_name = '云算笔记'
-PORT = 8088
+PORT = '8088'
 
 dbconnect = PostgresqlExtDatabase(
     'torcms',
@@ -46,3 +42,17 @@ dbconnect = PostgresqlExtDatabase(
 )
 
 app_url_name = 'map'
+
+template_dir_name = 'templates'
+
+torlite_template_name = 'tplite'
+app_template_name = 'pycate'
+
+lang = 'en_US'
+
+# Used in HTML render files.
+
+cfg = {
+    'info_per_page': 10,
+    'debug': False,
+}
