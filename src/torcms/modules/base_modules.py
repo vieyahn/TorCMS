@@ -11,6 +11,7 @@ import tornado.web
 from torcms.model.mcatalog import MCatalog
 from config import menu_arr
 
+
 class reply_panel(tornado.web.UIModule):
     def render(self, sig, uid, userinfo, replys):
         return self.render_string('doc/modules/reply_panel.html',
@@ -90,13 +91,15 @@ class post_recent_most_view(tornado.web.UIModule):
         }
         return self.render_string('doc/modules/post_list.html', recs=recs, kwd=kwd)
 
+
 class catalog_of(tornado.web.UIModule):
     def render(self, uid_with_str):
         self.mcat = MCatalog()
-        recs = self.mcat.query_uid_starts_with( uid_with_str )
+        recs = self.mcat.query_uid_starts_with(uid_with_str)
 
         return self.render_string('doc/modules/catalog_of.html',
                                   recs=recs)
+
 
 class post_recent(tornado.web.UIModule):
     def render(self, num=10, with_catalog=True, with_date=True):
@@ -174,7 +177,8 @@ class next_post_link(tornado.web.UIModule):
 class the_category(tornado.web.UIModule):
     def render(self, post_id):
         tmpl_str = '''<a href="/category/{0}">{1}</a>'''
-        format_arr = [tmpl_str.format(uu.catalog.slug, uu.catalog.name) for uu in MPost2Catalog().query_entry_catalog(post_id)]
+        format_arr = [tmpl_str.format(uu.catalog.slug, uu.catalog.name) for uu in
+                      MPost2Catalog().query_entry_catalog(post_id)]
         return ', '.join(format_arr)
 
 
@@ -217,9 +221,6 @@ class copyright(tornado.web.UIModule):
         return (out_str)
 
 
-
-
-
 class post_tags(tornado.web.UIModule):
     # Todo: 看起来与 post_catalogs是一样的。
     def render(self, signature):
@@ -236,6 +237,7 @@ class post_tags(tornado.web.UIModule):
 
 
 post_catalogs = post_tags
+
 
 class userinfo_widget(tornado.web.UIModule, tornado.web.RequestHandler):
     def render(self, signature):
@@ -272,11 +274,13 @@ class ToplineModule(tornado.web.UIModule):
     def render(self):
         return self.render_string('doc/modules/topline.html')
 
+
 class baidu_share(tornado.web.UIModule):
     def render(self):
         out_str = '''<div class="bdsharebuttonbox"><a class="bds_more" href="#" data-cmd="more"></a><a title="分享到QQ空间" class="bds_qzone" href="#" data-cmd="qzone"></a><a title="分享到新浪微博" class="bds_tsina" href="#" data-cmd="tsina"></a><a title="分享到腾讯微博" class="bds_tqq" href="#" data-cmd="tqq"></a><a title="分享到人人网" class="bds_renren" href="#" data-cmd="renren"></a><a title="分享到微信" class="bds_weixin" href="#" data-cmd="weixin"></a></div>
        <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>'''
         return out_str
+
 
 class catalog_pager(tornado.web.UIModule):
     def render(self, *args, **kwargs):
@@ -295,7 +299,6 @@ class catalog_pager(tornado.web.UIModule):
 
         page_num = tmp_page_num if abs(tmp_page_num - num_of_cat / config.page_num) < 0.1 else  tmp_page_num + 1
 
-
         kwd = {
             'page_home': False if current <= 1 else True,
             'page_end': False if current >= page_num else True,
@@ -304,8 +307,8 @@ class catalog_pager(tornado.web.UIModule):
         }
 
         return self.render_string('doc/modules/catalog_pager.html',
-                                  kwd = kwd,
-                                  cat_slug = cat_slug,
-                                  pager_num = page_num,
-                                  page_current = current,
+                                  kwd=kwd,
+                                  cat_slug=cat_slug,
+                                  pager_num=page_num,
+                                  page_current=current,
                                   )

@@ -3,9 +3,6 @@
 
 from torcms.model.core_tab import *
 
-
-
-
 try:
     CabReply.create_table()
 except:
@@ -15,9 +12,6 @@ try:
     CabPost2Reply.create_table()
 except:
     pass
-
-
-
 
 try:
     CabPage.create_table()
@@ -37,4 +31,3 @@ except:
 # print('=' * 20)
 # for kew in vars(CabPost):
 #     print(kew)
-
