@@ -46,7 +46,7 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendring):
             priv_dic['EDIT'] = True
         if userinfo.privilege[1] >= '4':
             priv_dic['DELETE'] = True
-        if userinfo.privilege[1] >= '8':
+        if userinfo.privilege[1] >= '7':
             priv_dic['ADMIN'] = True
         return priv_dic
 
@@ -54,9 +54,12 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendring):
         return self.get_secure_cookie("user")
 
     def is_admin(self):
-        if self.userinfo and self.userinfo.privilege[4] == '1':
+        if self.check_doc_priv(self.userinfo)['ADMIN']:
+            print('uu')
             return True
-        return False
+        else:
+            print('vv')
+            return False
 
     def editable(self):
         # Deprecated.
