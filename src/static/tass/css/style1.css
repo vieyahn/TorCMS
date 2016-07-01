@@ -870,9 +870,25 @@ a.btn_closelayer {
   border: 1px solid #dddddd;
 }
 
-
-
-
+/* Footer */
+.footer {
+  float: left;
+  margin: 10px 0px;
+  width: 980px;
+  color: #454545;
+  text-align: center;
+  overflow: hidden;
+}
+.footer p {
+  margin: 10px 0px 5px;
+  text-align: center;
+}
+.footer p a {
+  color: #454545;
+}
+.footer p a:hover {
+  color: #bb0000;
+}
 
 .footpage {
   margin-bottom: 15px;
@@ -1383,6 +1399,30 @@ a.btn_closelayer {
   cursor: pointer;
 }
 
-a.btn-primary{
-  color: #fff;
+.line-height25{
+  line-height: 30px;
+}
+
+
+
+.pakage-cat li{width:200px; margin-right:60px; float: left; text-align: center; list-style-type: none}
+.pakage-cat li i{width:120px; height: 120px; display: block; background: url(../images/icon-pakage.png) no-repeat 0 0; margin: 0 auto;}
+.pakage-cat li .cat-name{line-height: 30px; padding: 13px 0; font-size: 24px;}
+.pakage-cat li .cat-des{line-height: 24px; color: #999; padding-bottom: 20px;}
+.pakage-cat li a{width: 118px; height: 38px; background: #fff; border:1px solid #ccc; color: #666; display: block; margin: 0 auto; line-height: 38px;}
+.pakage-cat li.economic i{background-position: 0 0;}
+.pakage-cat li.standard i{background-position: 0 -140px;}
+.pakage-cat li.marketing i{background-position: 0 -280px;}
+.pakage-cat li.high-end i{background-position: 0 -420px;}
+.pakage-cat li.economic a:hover{background:#f76e00; color: #fff;}
+.pakage-cat li.standard a:hover{background:#9bcc00; color: #fff;}
+.pakage-cat li.marketing a:hover{background:#0088cb; color: #fff;}
+.pakage-cat li.high-end a:hover{background:#0dc9be; color: #fff;}
+
+a.flbt{
+  color: #ffffff;
+}
+
+body{
+  line-height: 24px;
 }

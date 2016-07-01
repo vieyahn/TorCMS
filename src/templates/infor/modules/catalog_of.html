@@ -1,22 +1,16 @@
-
-<ul class="list-group">
+<div class="list-group">
     {% for rec in recs %}
 
     {% if rec.uid.endswith('00') %}
-    <li class="list-group-item active">
-        {% if rec.uid.startswith('88') %}
-        <span class="glyphicon glyphicon-map-marker"></span>
-        {% elif rec.uid.startswith('66') %}
-
-        {% end %}
-   {{ rec.name }} </li>
+    <p class="list-group-item"> <a href="/list/{{ rec.uid }}">{{ rec.name }}</a> </p>
     {% else %}
-     <li class="list-group-item">
-    <a href="/list/{{ rec.uid }}"> {{ rec.name }} <span style="font-size:0.8em;background-color:#00adef;color:#fff;padding:1px;"> ({{ rec.count }})</span></a>
-    </li>
+    <p class="list-group-item">
+        <a href="/list/{{ rec.uid }}"> {{ rec.name }} <span
+                style="font-size:0.8em;background-color:#00adef;color:#fff;padding:1px;"> ({{ rec.count }})</span></a>
+    </p>
 
 
     {% end %}
 
     {% end %}
-</ul>
+</div>
