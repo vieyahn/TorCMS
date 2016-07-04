@@ -73,13 +73,34 @@
 
         <ol class="breadcrumb">
             {% module BreadCrumb(kwd['daohangstr']) %}
-
+ {% if userinfo and( userinfo.privilege[priv_mask_idx] >= '2') %}
+            <li><a href="/publish/{{ widget_info['parentid'] }}" class="btn btn-primary btn-sm">Published
+                {{ widget_info['catname'] }} Data</a></li>
+{% end %}
         </ol>
 
-        <ul class="list-group">
-            {% block infolist %} {% end %}
-        </ul>
+        <div class="row">
+            <div class="col-sm-6">
+                <a href="http://www.geodata.cn" target="_blank" class="thumbnail">
+                    <img src="{{ static_url('fixed/geodata.png') }}" alt="国家科技基础平台地球系统科学数据共享网" width="300px">
+                </a>
+            </div>
+            <div class="col-sm-6">
+                <ul class="nav nav-pills">
+                    <li><a href="/page/geodata_apply.html">数据申请</a></li>
+                    <li><a href="/page/geodata_agreement.html">共享协议</a></li>
+                    <li><a href="/page/geodata_main.html">核心数据</a></li>
+                </ul>
+            </div>
+        </div>
 
+        <ul class="list-group">
+            {% block infolist %}
+
+            {% end %}
+
+
+        </ul>
 
         <div class="clear"></div>
 
@@ -87,12 +108,18 @@
 
             <span id="resultFenye"></span>
         </div>
-        <div class="clear"></div>
 
+        <div class="clear"></div>
+        <div class="row">
+            <div class="col-sm-12">
+            {% module baidu_share() %}
+                </div>
+        </div>
+        <br>
     </div>
     <div class="col-sm-4">
 
-        <div class="alert alert-warning">Keywords filtration：
+        <div class="alert alert-warning">关键词过滤：
             {% set ii = 0 %}
 
             {% for x in condition_arr %}
@@ -104,20 +131,17 @@
             {% set ii = ii + 1 %}
             {% end %}
         </div>
-        <div class="panel panel-default">
+        <ul class="list-group">
+            {% block infoselect %} {% end %}
+        </ul>
 
-            <ul class="list-group">
-                {% block infoselect %} {% end %}
-
-            </ul>
-        </div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">{% for taginfo in cat_enum %}
-                    {% if taginfo.uid.endswith('00') %}
-                    {{ taginfo.name }}
-                    {% end %}
-                    {% end %}</h3>
+                <span class="title colorme">{% for taginfo in cat_enum %}
+                {% if taginfo.uid.endswith('00') %}
+               {{ taginfo.name }}
+                {% end %}
+                {% end %}</span>
             </div>
 
             <ul class="list-group">
@@ -131,7 +155,7 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Recent documents</h3>
+                <span class="title colorme">最近文档</span>
             </div>
             <ul class="list-group">
                 {% module post_recent(8) %}

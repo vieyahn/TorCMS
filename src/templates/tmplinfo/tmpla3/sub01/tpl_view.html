@@ -1,0 +1,190 @@
+{% extends "../../tmplinfo.html" %}
+
+{% block head %}
+<title>{{ post_info.title }} OSGeo中国中心 | 开放地理空间实验室</title>
+<meta name="keywords" content="{{ post_info.keywords }}">
+<meta name="description" content="{% module generate_description(post_info.cnt_html) %}">
+
+
+{% end %}
+
+{% block typebody %}
+
+<script>
+
+var post_uid = "{{ post_info.uid }}";
+
+
+var login = {{ kwd['login'] }};
+</script>
+<div class="row">
+
+    <div class="col-sm-12">
+        <ol class="breadcrumb">
+            <li>当前位置：<a href="/">信息</a></li>
+            <li> {% module parentname(kwd['parentname']) %}</li>
+            <li> {% module catname(kwd['catname']) %}</li>
+            <li><a href="/info/{{ post_info.uid }}"> {{ post_info.title }}</a></li>
+        </ol>
+
+        <div class="panel panel-default">
+
+
+            <div class="panel-body">
+
+                <div class="col-sm-9">
+
+                <h3 class="title colorme">{{ post_info.title }}</h3>
+                    {% if userinfo and( userinfo.privilege[priv_mask_idx] >= '2' or userinfo.user_name == post_info.user_name) %}
+                    <a href="/meta/edit/{{ post_info.uid }}" class="btn btn-sm btn-primary">修改</a>
+                    <a href="/meta/delete/{{ post_info.uid }}" class="btn btn-sm btn-primary">删除</a>
+                    {% end %}
+
+<div class="row bor_bottom">
+    <div class="col-sm-5"><b>标签:</b><span class="post_cat">
+                         {% if 'def_tag_arr' in post_info.extinfo %}
+                        {% for x in post_info.extinfo['def_tag_arr'] %}
+                            <a href="/info_tag/{{ x }}" class="btn btn-primary btn-xs">{{ x }}</a>
+                            {% end %} {% end %}
+                </span></div>
+    <div class="col-sm-3"><b>发布时间：</b> {{ str(post_info.date)[:10] }}</div>
+    <div class="col-sm-2"><b>浏览次数：</b> {% raw post_info.view_count %}</div>
+
+    <div class="col-sm-2"><button id="act_collect" class="btn btn-primary btn-sm">
+                        <span class="glyphicon glyphicon-heart-empty"></span>
+                        <span id="text_collect">收藏</span>
+                    </button>
+
+</div>
+</div>
+
+
+
+                    <div class="row bor_bottom">
+
+                        <div class="col-sm-6">
+
+                            {% block extrainfo %} {% end %}
+                        </div>
+
+                        <div class="col-sm-6">
+
+
+                            <p><strong>贡献者 : </strong>
+                                {{ post_info.extinfo['ext_contributor'] if 'ext_contributor' in post_info.extinfo else '' }}
+                            </p>
+
+                            <p>
+
+                                <strong>单位 : </strong>
+
+                                {{ post_info.extinfo['ext_company'] if 'ext_company' in post_info.extinfo else '' }}
+                            </p>
+                             <p>
+
+                                <strong>地址 : </strong>
+
+                                {{ post_info.extinfo['ext_address'] if 'ext_address' in post_info.extinfo else '' }}
+                            </p>
+                              <p>
+
+                                <strong>电话 : </strong>
+
+                                {{ post_info.extinfo['ext_tel'] if 'ext_tel' in post_info.extinfo else '' }}
+                            </p>
+                               <p>
+
+                                <strong>邮箱 : </strong>
+
+                                {{ post_info.extinfo['ext_email'] if 'ext_email' in post_info.extinfo else '' }}
+                            </p>
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-12 "> {% raw unescape(post_info.cnt_html) %}</div>
+
+                    <div class="col-sm-12">
+                        <span id="showCnt"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-3">
+
+                    {% if post_info.logo != ''%}
+                    <div class="row">
+
+                        <div class="col-sm-12">
+                            <img src="{{ post_info.logo }}" width="100%">
+                        </div>
+
+                    </div>
+                    <br>
+                    {% end %}
+                    <div class="panel panel-primary">
+                       <div class="panel-heading" style="background: #069"> 数据获取方式--离线申请</div>
+                        <div class="panel-body">
+                            <p><b>请用户耐心阅读 <a href="/page/geodata_use_statement.html" target="_blank">数据使用声明</a> ，并填写以下内容： </b></p>
+                            <p>[1] 填写离线申请表与使用说明 <a href="/static/沼泽湿地数据资源点离线数据申请表.doc">下载</a></p>
+                            <p>[2] 填写数据共享协议 <a href="/static/沼泽湿地数据资源点数据共享协议.doc">下载</a></p>
+                            <p>[3] 填写数据应用成效说明 <a href="/static/沼泽湿地数据资源点数据应用成效说明.doc">下载</a></p>
+                            <p>将以上3项文件填写完毕后，纸质 <a href="/page/contact.html">邮寄</a> 到本资源点，待我们工作人员审核完成后，即可申请本数据。</p>
+                        </div>
+
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"> 相关文档 </h3>
+                        </div>
+                        {% module rel_app2post(calc_info.uid, 4) %}
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading"> {% for taginfo in cat_enum %}
+                            {% if taginfo.uid.endswith('00') %}
+                            {{ taginfo.name }}
+                            {% end %}
+                            {% end %}
+                        </div>
+
+
+                        <ul class="list-group">
+                            {% for taginfo in cat_enum %}
+                            {% if not taginfo.uid.endswith('00') %}
+                            <li class="list-group-item"><a href="/list/{{ taginfo.uid }}">{{ taginfo.name }}</a></li>
+                            {% end %}
+                            {% end %}
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel-footer">
+
+                <div class="row">
+                    <div class="col-md-9">
+                        本文链接： <a href="/info/{{ post_info.uid }}" style="color: #003366">{{ post_info.title }}</a>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="widget_baidu_share"> {% module baidu_share() %}</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script src="{{ static_url('jslib/mapshowm.js') }}"></script>
+
+{% end %}
+
+
+

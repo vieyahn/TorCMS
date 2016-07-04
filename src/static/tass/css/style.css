@@ -6569,3 +6569,38 @@ body{
   color:#036;
 
 }
+
+
+#list-group .panel-heading{
+
+
+ border-bottom: 1px solid #c0171f;
+  border-bottom-width: 2px;
+
+
+}
+#list-group .panel-heading2{
+    border-bottom: 1px solid #334fa0;
+  border-bottom-width: 2px;
+}
+#list-group .panel-heading a,#list-group .panel-heading2 a{
+  color: #333;
+  font-weight: bold;
+
+}
+#list-group .list-group-item{
+border-left: 0;
+  border-right: 0;
+
+}
+
+#list-group h3,#list-group .panel-heading2{
+  padding-bottom: 10px;
+}
+
+a.btn-primary{
+  color:#fff
+}
+.btn-primary a{
+  color: #fff;
+}
