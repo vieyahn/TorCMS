@@ -21,7 +21,7 @@ var login = {{ kwd['login'] }};
 
     <div class="col-sm-12">
         <ol class="breadcrumb">
-            <li>当前位置：<a href="/">信息</a></li>
+            <li>Current location：<a href="/">Info</a></li>
             <li> {% module parentname(kwd['parentname']) %}</li>
             <li> {% module catname(kwd['catname']) %}</li>
             <li><a href="/info/{{ post_info.uid }}"> {{ post_info.title }}</a></li>
@@ -41,14 +41,14 @@ var login = {{ kwd['login'] }};
                     {% end %}
 
 <div class="row bor_bottom">
-    <div class="col-sm-5"><b>标签:</b><span class="post_cat">
+    <div class="col-sm-5"><b>Tag:</b><span class="post_cat">
                          {% if 'def_tag_arr' in post_info.extinfo %}
                         {% for x in post_info.extinfo['def_tag_arr'] %}
                             <a href="/info_tag/{{ x }}" class="btn btn-primary btn-xs">{{ x }}</a>
                             {% end %} {% end %}
                 </span></div>
-    <div class="col-sm-3"><b>发布时间：</b> {{ str(post_info.date)[:10] }}</div>
-    <div class="col-sm-2"><b>浏览次数：</b> {% raw post_info.view_count %}</div>
+    <div class="col-sm-3"><b>Release time：</b> {{ str(post_info.date)[:10] }}</div>
+    <div class="col-sm-2"><b>Browsing times：</b> {% raw post_info.view_count %}</div>
 
     <div class="col-sm-2"><button id="act_collect" class="btn btn-primary btn-sm">
                         <span class="glyphicon glyphicon-heart-empty"></span>
@@ -70,31 +70,31 @@ var login = {{ kwd['login'] }};
                         <div class="col-sm-6">
 
 
-                            <p><strong>贡献者 : </strong>
+                            <p><strong>Contributor : </strong>
                                 {{ post_info.extinfo['ext_contributor'] if 'ext_contributor' in post_info.extinfo else '' }}
                             </p>
 
                             <p>
 
-                                <strong>单位 : </strong>
+                                <strong>Company : </strong>
 
                                 {{ post_info.extinfo['ext_company'] if 'ext_company' in post_info.extinfo else '' }}
                             </p>
                              <p>
 
-                                <strong>地址 : </strong>
+                                <strong>Address : </strong>
 
                                 {{ post_info.extinfo['ext_address'] if 'ext_address' in post_info.extinfo else '' }}
                             </p>
                               <p>
 
-                                <strong>电话 : </strong>
+                                <strong>Tel : </strong>
 
                                 {{ post_info.extinfo['ext_tel'] if 'ext_tel' in post_info.extinfo else '' }}
                             </p>
                                <p>
 
-                                <strong>邮箱 : </strong>
+                                <strong>Email : </strong>
 
                                 {{ post_info.extinfo['ext_email'] if 'ext_email' in post_info.extinfo else '' }}
                             </p>

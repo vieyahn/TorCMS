@@ -344,3 +344,7 @@ a.btn-primary {
 li {
     list-style-type: none;
 }
+
+.infoselect .list-group-item span{
+    line-height: 25px;
+}
