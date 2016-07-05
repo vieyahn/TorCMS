@@ -164,43 +164,40 @@
         <div class="col-sm-12">
 
 
+            <div id="list-group">
+                <div class="panel-heading2"><a href="/page/cmi.html" class="move"> Survey project of wetland
+                    resources in
+                    China </a></div>
+            </div>
+            <bR>
 
-                <div id="list-group">
-                    <h3 class="panel-heading2"><a href="/page/cmi.html" class="move"> Survey project of wetland
-                        resources in
-                        China </a></h3>
-                </div>
-                <bR>
-
-                <div class="col-sm-12">
-                    Chinese marsh wetland resources investigation will be on the basis of the existing work, marsh
-                    wetland
-                    classification and further establish a scientific survey specification, break administrative
-                    division
-                    limit,
-                    from hydrothermal differentiation and natural geographical units as partition principle, focusing on
-                    the
-                    investigation of water peat and germplasm resources, will make up for the weak link in the past
-                    project
-
-               </div>
-
+            <div class="col-sm-12">
+                Chinese marsh wetland resources investigation will be on the basis of the existing work, marsh
+                wetland
+                classification and further establish a scientific survey specification, break administrative
+                division
+                limit,
+                from hydrothermal differentiation and natural geographical units as partition principle, focusing on
+                the
+                investigation of water peat and germplasm resources, will make up for the weak link in the past
+                project
+                <br><br>
+            </div>
 
 
-                  <div id="list-group">
-                    <h3 class="panel-heading2"><a> Subject Data Bases</a></h3>
-                </div>
-                <br>
+            <div id="list-group">
+                <div class="panel-heading2"><a> Subject Data Bases</a></div>
+            </div>
+            <br>
 
-                <div class="col-sm-12">
-                    Chinese marsh wetland resources investigation will be on the basis of the existing work, marsh
-                    wetland
-                    classification and further establish a scientificChinese marsh wetland resources investigation will
-                    be
-                    on the basis of the existing work
-
-                </div>
-
+            <div class="col-sm-12">
+                Chinese marsh wetland resources investigation will be on the basis of the existing work, marsh
+                wetland
+                classification and further establish a scientificChinese marsh wetland resources investigation will
+                be
+                on the basis of the existing work
+                <br><br>
+            </div>
 
 
         </div>
@@ -218,45 +215,45 @@
 </div>
 <br><Br>
 
-    <div class="col-sm-12">
-        <div class="indexGoods">
-            <div class="panel panel-info">
+<div class="col-sm-12">
+    <div class="indexGoods">
+        <div class="panel panel-info">
 
-                <div class="panel-body">
-                    <div class="scrollBox">
-                        <div class="goodsImage" style="width: 100%; overflow: hidden">
-                            <ul class="list">
-                                {% for x in view %}
-                                <li style="float: left; width: 162px; margin-right: 10px ">
-                                    <a href="/post/{{ x.uid }}.html" title="{{ x.title }}">
-                                        <img src="{{ x.logo }}" width="162"
-                                             height="120"
-                                             alt="{{ x.title }}" style="border: 1px solid #ddd">
-                                        <span>{{ str(x.title)[:21]}}...</span>
-                                    </a>
-                                </li>
-                                {% end %}
+            <div class="panel-body">
+                <div class="scrollBox">
+                    <div class="goodsImage" style="width: 100%; overflow: hidden">
+                        <ul class="list">
+                            {% for x in view %}
+                            <li style="float: left; width: 162px; margin-right: 10px ">
+                                <a href="/post/{{ x.uid }}.html" title="{{ x.title }}">
+                                    <img src="{{ x.logo }}" width="162"
+                                         height="120"
+                                         alt="{{ x.title }}" style="border: 1px solid #ddd">
+                                    <span>{{ str(x.title)[:21]}}...</span>
+                                </a>
+                            </li>
+                            {% end %}
 
 
-                            </ul>
-                        </div>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 <div style="clear: both;"></div>
 <br><br>
-    <script type="text/javascript">
-        jQuery(".indexGoods").slide({
-            mainCell: "ul",
-            effect: "leftMarquee",
-            vis: 7,
-            autoPlay: true,
-            interTime: 50,
-            switchLoad: "_src"
-        });
-    </script>
+<script type="text/javascript">
+    jQuery(".indexGoods").slide({
+        mainCell: "ul",
+        effect: "leftMarquee",
+        vis: 7,
+        autoPlay: true,
+        interTime: 50,
+        switchLoad: "_src"
+    });
+</script>
 
 
 {% end %}
