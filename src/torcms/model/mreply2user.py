@@ -12,6 +12,7 @@ from torcms.model.core_tab import CabPost2Reply
 from torcms.model.ext_tab import TabApp2Reply
 from torcms.model.msingle_table import MSingleTable
 
+
 class MReply2User(MSingleTable):
     def __init__(self):
         self.tab = CabVoter2Reply
@@ -21,42 +22,22 @@ class MReply2User(MSingleTable):
             pass
 
     def update(self, uid, post_data, update_time=False):
-
-        if 'id_spec' in post_data:
-            id_spec = post_data['id_spec'][0]
-        else:
-            id_spec = 0
-
-        if 'src_type' in post_data and post_data['src_type'][0] == '1':
-            cnt_html = tools.rst2html(post_data['cnt_md'][0])
-        else:
-            cnt_html = tools.markdown2html(post_data['cnt_md'][0])
-
-        if update_time:
-            entry = CabVoter2Reply.update(
-                title=post_data['title'][0],
-                date=datetime.datetime.now(),
-                cnt_html=cnt_html,
-                user_name=post_data['user_name'],
-                cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
-                time_update=time.time(),
-                id_spec=id_spec,
-                logo=post_data['logo'][0],
-                keywords=post_data['keywords'][0],
-                src_type=post_data['src_type'][0] if ('src_type' in post_data) else 0
-            ).where(CabVoter2Reply.uid == uid)
-        else:
-            entry = CabVoter2Reply.update(
-                title=post_data['title'][0],
-                cnt_html=cnt_html,
-                user_name=post_data['user_name'],
-                cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
-                id_spec=id_spec,
-                logo=post_data['logo'][0],
-                keywords=post_data['keywords'][0],
-                src_type=post_data['src_type'][0] if ('src_type' in post_data) else 0
-            ).where(CabVoter2Reply.uid == uid)
-        entry.execute()
+        pass
+        # cnt_html = tools.markdown2html(post_data['cnt_md'][0])
+        #
+        # entry = CabVoter2Reply.update(
+        #     title=post_data['title'][0],
+        #     date=datetime.datetime.now(),
+        #     cnt_html=cnt_html,
+        #     user_name=post_data['user_name'],
+        #     cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
+        #     time_update=time.time(),
+        #     logo=post_data['logo'][0],
+        #     keywords=post_data['keywords'][0],
+        #     src_type=post_data['src_type'][0] if ('src_type' in post_data) else 0
+        # ).where(CabVoter2Reply.uid == uid)
+        #
+        # entry.execute()
 
     def insert_data(self, user_id, reply_id):
 

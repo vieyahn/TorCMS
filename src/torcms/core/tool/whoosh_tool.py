@@ -13,7 +13,7 @@ parser = QueryParser("content", schema=ix.schema)
 class yunsearch():
     def get_all_num(self, keyword, catid=''):
         q = parser.parse(keyword)
-        if catid== '':
+        if catid == '':
             pass
         else:
             q = And([Term("catid", catid), q])
@@ -27,20 +27,15 @@ class yunsearch():
         finally:
             pass
 
+    def search_pager(self, keyword, catid='', page_index=1, doc_per_page=10):
 
-    def search_pager(self, keyword,  catid = '',page_index=1, doc_per_page=10):
- 
         q = parser.parse(keyword)
         if catid == '':
             pass
         else:
-            q = And([Term("catid",catid),q ])
+            q = And([Term("catid", catid), q])
         try:
             tt = ix.searcher().search(q, limit=page_index * doc_per_page)
             return (tt[(page_index - 1) * doc_per_page: page_index * doc_per_page])
         finally:
             pass
-
-
-
-       

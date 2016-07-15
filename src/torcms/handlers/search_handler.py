@@ -2,7 +2,6 @@
 
 import config
 from torcms.core.base_handler import BaseHandler
-# from torcms.core.tool.whoosh_tool import yunsearch
 from torcms.core.tool.whoosh_tool import yunsearch
 
 from torcms.core import tools

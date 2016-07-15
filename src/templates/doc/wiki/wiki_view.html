@@ -23,7 +23,7 @@
             <span>来源: <a href="http://www.osgeo.cn/">本站</a></span>
             <span>浏览: {{ view.view_count }} 次</span>
 
-            {% if userinfo is not None and userinfo.privilege[0] == '1' %}
+            {% if userinfo and userinfo.privilege[1] >= '3' %}
             <span class="cmts"><a href="/wiki/edit/{{ view.uid }}">编辑</a></span>
             {% end %}
 

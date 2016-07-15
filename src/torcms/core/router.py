@@ -12,12 +12,12 @@ from torcms.handlers.infor_tag_hanlder import InforTagHandler
 from torcms.handlers.info_tag_hanler import InfoTagHandler
 from torcms.handlers.post_label_handler import PostLabelHandler
 from torcms.handlers.link_handler import LinkHandler, LinkAjaxHandler
-from torcms.handlers.maintain_handler import MaintainCategoryHandler,MaintainCategoryAjaxHandler
+from torcms.handlers.maintain_handler import MaintainCategoryHandler, MaintainCategoryAjaxHandler
 from torcms.handlers.maintain_info_handler import MaintainPycateCategoryHandler
 from torcms.handlers.meta_handler import MetaHandler
 from torcms.handlers.page_handler import PageHandler, PageAjaxHandler
 from torcms.handlers.post2reply_handler import Post2ReplyHandler
-from torcms.handlers.post_handler import PostHandler,PostAjaxHandler
+from torcms.handlers.post_handler import PostHandler, PostAjaxHandler
 from torcms.handlers.reply_handler import ReplyHandler
 from torcms.handlers.search_handler import SearchHandler
 from torcms.handlers.user_handler import UserHandler, UserAjaxHandler
@@ -33,7 +33,6 @@ from torcms.handlers.evaluation_handler import EvaluationHandler
 from torcms.handlers.post_info_relation_handler import RelHandler
 from torcms.handlers.info2reply_handler import Info2ReplyHandler
 
-
 urls = [
 
     ("/label/(.*)", PostLabelHandler, dict()),
@@ -45,7 +44,6 @@ urls = [
     ("/user/(.*)", UserHandler, dict()),
     ("/post/p/(.*)", PostAjaxHandler, dict()),
     ("/post/(.*)", PostHandler, dict()),
-
 
     ("/maintain/p/category/(.*)", MaintainCategoryAjaxHandler, dict()),
     ("/maintain/category/(.*)", MaintainCategoryHandler, dict()),

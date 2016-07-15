@@ -16,7 +16,6 @@ class MaintainCategoryHandler(BaseHandler):
         self.mclass = MCatalog()
         self.tmpl_router = 'maintain_category'
 
-
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
 
@@ -35,7 +34,7 @@ class MaintainCategoryHandler(BaseHandler):
             kwd = {
                 'info': '页面未找到',
             }
-            self.render('html/404.html', kwd=kwd, userinfo = self.userinfo,)
+            self.render('html/404.html', kwd=kwd, userinfo=self.userinfo, )
 
     def post(self, url_str=''):
 
@@ -57,7 +56,7 @@ class MaintainCategoryHandler(BaseHandler):
             'unescape': tornado.escape.xhtml_unescape,
             'title': '最近文档',
         }
-        self.render('doc/{0}/category_list.html'.format( self.tmpl_router),
+        self.render('doc/{0}/category_list.html'.format(self.tmpl_router),
                     kwd=kwd,
                     view=self.mclass.query_all(by_order=True),
                     format_date=tools.format_date,
@@ -75,7 +74,7 @@ class MaintainCategoryHandler(BaseHandler):
             'pager': '',
             'uid': '',
         }
-        self.render('doc/{0}/category_add.html'.format( self.tmpl_router),
+        self.render('doc/{0}/category_add.html'.format(self.tmpl_router),
                     topmenu='',
                     kwd=kwd,
                     userinfo=self.userinfo,
@@ -85,7 +84,6 @@ class MaintainCategoryHandler(BaseHandler):
     def __could_edit(self, uid):
         raw_data = self.mclass.get_by_id(uid)
         if not raw_data:
-
             return False
         if self.check_doc_priv(self.userinfo)['EDIT'] or raw_data.id_user == self.userinfo.user_name:
             return True
@@ -124,12 +122,12 @@ class MaintainCategoryHandler(BaseHandler):
             pass
         else:
             return False
-        a=self.mclass.get_by_id(id_rec)
+        a = self.mclass.get_by_id(id_rec)
         kwd = {
             'pager': '',
 
         }
-        self.render('doc/{0}/category_edit.html'.format( self.tmpl_router),
+        self.render('doc/{0}/category_edit.html'.format(self.tmpl_router),
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
                     dbrec=a,
@@ -157,7 +155,6 @@ class MaintainCategoryHandler(BaseHandler):
 
     @tornado.web.authenticated
     def p_add_catalog(self):
-
 
         if self.check_doc_priv(self.userinfo)['ADD']:
             pass
@@ -235,4 +232,3 @@ class MaintainCategoryAjaxHandler(MaintainCategoryHandler):
         self.init()
         self.mclass = MCatalog()
         self.tmpl_router = 'category_ajax'
-

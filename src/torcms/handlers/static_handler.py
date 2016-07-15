@@ -15,7 +15,7 @@ class StaticHandler(BaseHandler):
         }
         static_html_file = 'templates/html/{0}'.format(url_str)
         if os.path.exists(static_html_file) and os.path.isfile(static_html_file):
-            kwd['pager'] = ''
+            kwd['info'] = ''
             self.render('html/{0}'.format(url_str),
                         kwd=kwd,
                         userinfo=self.userinfo)

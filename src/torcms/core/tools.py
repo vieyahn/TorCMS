@@ -77,19 +77,6 @@ def markdown2html(markdown_text):
     return tornado.escape.xhtml_escape(html)
 
 
-###################################################################################################################
-## 下面是弃用的函数，不要再使用
-###################################################################################################################
-## 弃用的函数
-def rst2html(rst_text):
-    html = publish_string(
-        source=rst_text,
-        writer_name='html',
-    )
-    soup = BeautifulSoup(html, "html.parser")
-    id1_cnt = soup.find("div", {"class": "document"})
-    return tornado.escape.xhtml_escape(str(id1_cnt))
-
 
 ##  弃用的函数
 def gen_pager_bootstrap_url(cat_slug, page_num, current):
@@ -102,7 +89,7 @@ def gen_pager_bootstrap_url(cat_slug, page_num, current):
     pager_shouye = '''
     <li class="{0}">
     <a href="{1}/{2}">&lt;&lt; 首页</a>
-                </li>'''.format('hidden' if current <= 1 else '', cat_slug,current)
+                </li>'''.format('hidden' if current <= 1 else '', cat_slug, current)
 
     pager_pre = '''
                 <li class="{0}">

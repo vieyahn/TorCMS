@@ -11,12 +11,12 @@ from torcms.model.mwiki import MWiki
 from torcms.model.mwiki_hist import MWikiHist
 import config
 
+
 class WikiHandler(BaseHandler):
     def initialize(self):
         self.init()
         self.mwiki = MWiki()
         self.mwiki_hist = MWikiHist()
-
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
@@ -55,9 +55,9 @@ class WikiHandler(BaseHandler):
         self.render('doc/wiki/wiki_list.html',
                     view=self.mwiki.query_recent(),
                     format_date=tools.format_date,
-                    cfg = config.cfg,
+                    cfg=config.cfg,
                     kwd=kwd,
-                    userinfo = self.userinfo,
+                    userinfo=self.userinfo,
                     )
 
     def refresh(self):
@@ -70,8 +70,8 @@ class WikiHandler(BaseHandler):
                     view=self.mwiki.query_dated(16),
                     format_date=tools.format_date,
                     kwd=kwd,
-                    cfg = config.cfg,
-                    userinfo = self.userinfo,
+                    cfg=config.cfg,
+                    userinfo=self.userinfo,
                     )
 
     def wiki(self, title):
@@ -94,8 +94,8 @@ class WikiHandler(BaseHandler):
         }
         self.render('doc/wiki/wiki_add.html',
                     kwd=kwd,
-                    cfg  = config.cfg,
-                    userinfo = self.userinfo,
+                    cfg=config.cfg,
+                    userinfo=self.userinfo,
                     )
 
     @tornado.web.authenticated
@@ -129,10 +129,9 @@ class WikiHandler(BaseHandler):
         self.render('doc/wiki/wiki_edit.html',
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
-                    # tag_infos=self.mcat.query_all(),
                     dbrec=wiki_rec,
-                    cfg  = config.cfg,
-                    userinfo = self.userinfo,
+                    cfg=config.cfg,
+                    userinfo=self.userinfo,
                     )
 
     def viewit(self, view):
@@ -140,13 +139,12 @@ class WikiHandler(BaseHandler):
             'pager': '',
             'editable': self.editable(),
         }
-
         self.render('doc/wiki/wiki_view.html',
                     view=view,
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
                     userinfo=self.userinfo,
-                    cfg  = config.cfg,
+                    cfg=config.cfg,
                     )
 
     def ajax_count_plus(self, slug):
@@ -167,8 +165,9 @@ class WikiHandler(BaseHandler):
             post_data[key] = self.get_arguments(key)
 
         post_data['user_name'] = self.get_current_user()
-        tt = self.mwiki.get_by_wiki(post_data['title'][0])
-        if tt is None:
+        if self.mwiki.get_by_wiki(post_data['title'][0]):
+            pass
+        else:
             self.mwiki.insert_data(post_data)
 
         self.redirect('/wiki/{0}'.format(tornado.escape.url_escape(post_data['title'][0])))
