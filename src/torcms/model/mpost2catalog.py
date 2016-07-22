@@ -69,11 +69,11 @@ class MPost2Catalog(MSingleTable):
         return self.tab_post2catalog.select().where(self.tab_post2catalog.catalog == cat_id).count()
 
 
-
     def query_pager_by_slug(self, slug, current_page_num=1):
-        return self.tab_post.select().join(self.tab_post2catalog).join(self.tab_catalog).where(
+        recs =  self.tab_post.select().join(self.tab_post2catalog).join(self.tab_catalog).where(
             self.tab_catalog.slug == slug).order_by(
-            self.tab_post.time_update.desc()).paginate(current_page_num, config.page_num)
+            self.tab_post.update_time.desc()).paginate(current_page_num, config.page_num)
+        return  recs
 
     def query_by_entry_uid(self, idd):
         return self.tab_post2catalog.select().join(self.tab_catalog).where(self.tab_post2catalog.post == idd).order_by(

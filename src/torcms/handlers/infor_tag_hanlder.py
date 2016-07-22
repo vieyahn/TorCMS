@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-
+from  math import ceil as math_ceil
 import tornado.escape
 from torcms.model.app_model import MApp
 from torcms.model.minforcatalog import MInforCatalog
@@ -44,14 +44,12 @@ class InforTagHandler(BaseHandler):
             current_page_number = int(cur_p)
         taginfo = self.mtag.get_by_slug(tag_slug)
         num_of_tag = self.mapp2tag.count_of_certain_catalog(taginfo.uid)
-        page_num = int(num_of_tag / config.page_num) + 1
-        print(page_num)
+        page_num = math_ceil(num_of_tag / config.page_num) 
         tag_name = taginfo.name
 
         kwd = {
             'tag_name': tag_name,
             'tag_slug': tag_slug,
-
             'title': tag_name,
         }
 
