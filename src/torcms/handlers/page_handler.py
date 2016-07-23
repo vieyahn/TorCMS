@@ -64,7 +64,6 @@ class PageHandler(BaseHandler):
     def __could_edit(self, slug):
         page_rec = self.mpage.get_by_slug(slug)
         if not page_rec:
-
             return False
         if self.check_doc_priv(self.userinfo)['EDIT'] or page_rec.id_user == self.userinfo.user_name:
             return True
@@ -177,4 +176,3 @@ class PageAjaxHandler(PageHandler):
         self.mpage = MPage()
         self.mcat = MCatalog()
         self.cats = self.mcat.query_all()
-        self.tmpl_router = 'page_ajax'

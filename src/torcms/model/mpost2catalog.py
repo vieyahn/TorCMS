@@ -72,7 +72,7 @@ class MPost2Catalog(MSingleTable):
     def query_pager_by_slug(self, slug, current_page_num=1):
         recs =  self.tab_post.select().join(self.tab_post2catalog).join(self.tab_catalog).where(
             self.tab_catalog.slug == slug).order_by(
-            self.tab_post.update_time.desc()).paginate(current_page_num, config.page_num)
+            self.tab_post.time_update.desc()).paginate(current_page_num, config.page_num)
         return  recs
 
     def query_by_entry_uid(self, idd):

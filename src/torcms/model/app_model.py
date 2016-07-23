@@ -24,7 +24,7 @@ class MAppBase(object):
             pass
 
     def get_all(self):
-        return (self.tab_app.select().order_by(self.tab_app.update_time.desc()))
+        return (self.tab_app.select().order_by(self.tab_app.time_update.desc()))
 
     def update_jsonb(self, uid, extinfo):
         cur_extinfo = self.get_by_uid(uid).extinfo
@@ -80,7 +80,7 @@ class MAppBase(object):
         :return:
         '''
         entry = self.tab_app.update(
-            update_time=int(time.time()),
+            time_update=int(time.time()),
             # html_path=data_dic['html_path'],
             date=datetime.now(),
             keywords=data_dic['keywords'],
@@ -138,10 +138,10 @@ class MAppBase(object):
 
     def get_by_keyword(self, par2):
         return self.tab_app.select().where(self.tab_app.title.contains(par2)).order_by(
-            self.tab_app.update_time.desc()).limit(20)
+            self.tab_app.time_update.desc()).limit(20)
 
     def query_recent(self, num=8):
-        return self.tab_app.select().order_by(self.tab_app.update_time.desc()).limit(num)
+        return self.tab_app.select().order_by(self.tab_app.time_update.desc()).limit(num)
 
     def get_by_uid(self, sig):
         try:
@@ -182,7 +182,7 @@ class MApp(MAppBase):
             entry = self.tab_app.update(
                 title=data_dic['title'][0],
                 keywords=','.join([x.strip() for x in data_dic['keywords'][0].strip().strip(',').split(',')]),
-                update_time=int(time.time()),
+                time_update=int(time.time()),
                 date=datetime.now(),
                 cnt_md=data_dic['cnt_md'][0],
                 logo=data_dic['logo'][0],
@@ -198,11 +198,11 @@ class MApp(MAppBase):
 
     def query_extinfo_by_cat(self, cat_id):
         return self.tab_app.select().where(self.tab_app.extinfo['def_cat_uid'] == cat_id).order_by(
-            self.tab_app.update_time.desc())
+            self.tab_app.time_update.desc())
 
     def query_by_tagname(self, tag_name):
         return self.tab_app.select().where(self.tab_app.extinfo['def_tag_arr'].contains(tag_name)).order_by(
-            self.tab_app.update_time.desc())
+            self.tab_app.time_update.desc())
 
     def get_label_fenye(self, tag_slug, page_num):
         all_list = self.query_by_tagname(tag_slug)
@@ -218,7 +218,7 @@ class MApp(MAppBase):
             uid=uid,
             title=data_dic['title'][0],
             keywords=','.join([x.strip() for x in data_dic['keywords'][0].split(',')]),
-            update_time=int(time.time()),
+            time_update=int(time.time()),
             date=datetime.now(),
             cnt_md=data_dic['cnt_md'][0],
             logo=data_dic['logo'][0],
@@ -229,7 +229,7 @@ class MApp(MAppBase):
 
     def get_list(self, condition):
         db_data = self.tab_app.select().where(self.tab_app.extinfo.contains(condition)).order_by(
-            self.tab_app.update_time.desc())
+            self.tab_app.time_update.desc())
         return (db_data)
 
     def get_num_condition(self, con):
@@ -244,7 +244,7 @@ class MApp(MAppBase):
         :return:
         '''
         entry = self.tab_app.update(
-            update_time=int(time.time()),
+            time_update=int(time.time()),
             # html_path=data_dic['html_path'],
             date=datetime.now(),
             type=data_dic['type'],
@@ -266,7 +266,7 @@ class MApp(MAppBase):
                 uid=data_dic['sig'],
                 title=data_dic['title'],
                 create_time=time_stamp,
-                update_time=time_stamp,
+                time_update=time_stamp,
                 cnt_md=data_dic['cnt_md'],
                 cnt_html=data_dic['cnt_html'],
                 date=datetime.now(),

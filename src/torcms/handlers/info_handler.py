@@ -17,6 +17,8 @@ from torcms.model.minforcatalog import MInforCatalog
 from torcms.model.usage_model import MUsage
 from torcms.model.app2catalog_model import MApp2Catalog
 
+import tornado.gen
+import tornado.web
 
 class InfoHandler(BaseHandler):
     def initialize(self, hinfo=''):

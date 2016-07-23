@@ -27,7 +27,6 @@ class PostHandler(BaseHandler):
         self.mpost2reply = MPost2Reply()
         self.mpost2label = MPost2Label()
         self.mrel = MRelation()
-        self.tmpl_router = 'post'
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
@@ -86,7 +85,7 @@ class PostHandler(BaseHandler):
             'with_catalog': with_catalog,
             'with_date': with_date,
         }
-        self.render('doc/{0}/post_list.html'.format(self.tmpl_router),
+        self.render('doc/post/post_list.html',
                     kwd=kwd,
                     view=self.mpost.query_recent(),
                     view_all=self.mpost.query_all(),
@@ -110,7 +109,7 @@ class PostHandler(BaseHandler):
             'pager': '',
             'title': '最近文档',
         }
-        self.render('doc/{0}/post_list.html'.format(self.tmpl_router),
+        self.render('doc/post/post_list.html',
                     kwd=kwd,
                     userinfo=self.userinfo,
                     view=self.mpost.query_dated(10),
@@ -118,12 +117,11 @@ class PostHandler(BaseHandler):
                     unescape=tornado.escape.xhtml_unescape,
                     cfg=config.cfg, )
 
-    def get_random(self):
-        return self.mpost.query_random()
+    # def get_random(self):
+    #     return self.mpost.query_random()
 
     def wiki(self, uid):
-        dbdate = self.mpost.get_by_id(uid)
-        if dbdate:
+        if self.mpost.get_by_id(uid):
             self.viewit(uid)
         else:
             self.to_add(uid)
@@ -139,8 +137,7 @@ class PostHandler(BaseHandler):
             'uid': '',
 
         }
-        self.render('doc/{0}/post_add.html'.format(self.tmpl_router),
-
+        self.render('doc/post/post_add.html',
                     kwd=kwd,
                     tag_infos=self.mcat.query_all(),
                     userinfo=self.userinfo,
@@ -158,7 +155,7 @@ class PostHandler(BaseHandler):
             'uid': uid,
             'pager': '',
         }
-        self.render('doc/{0}/post_add.html'.format(self.tmpl_router),
+        self.render('doc/post/post_add.html',
                     kwd=kwd,
                     tag_infos=self.mcat.query_all(),
                     cfg=config.cfg,
@@ -271,7 +268,12 @@ class PostHandler(BaseHandler):
             if x['id_cat'] == id_cat:
                 return (x['name'])
 
-    def viewit(self, post_id):
+    def __gen_last_current_relation(self, post_id):
+        '''
+        Generate the relation for the post and last post viewed.
+        :param post_id:
+        :return:
+        '''
         last_post_id = self.get_secure_cookie('last_post_uid')
         if last_post_id:
             last_post_id = last_post_id.decode('utf-8')
@@ -279,6 +281,9 @@ class PostHandler(BaseHandler):
 
         if last_post_id and self.mpost.get_by_id(last_post_id):
             self.add_relation(last_post_id, post_id)
+
+    def viewit(self, post_id):
+        self.__gen_last_current_relation(post_id)
 
         cats = self.mpost2catalog.query_entry_catalog(post_id)
         replys = self.mpost2reply.get_by_id(post_id)
@@ -309,7 +314,7 @@ class PostHandler(BaseHandler):
 
         rand_recs = self.mpost.query_random(4 - rel_recs.count() + 2)
 
-        self.render('doc/{0}/post_view.html'.format(self.tmpl_router),
+        self.render('doc/post/post_view.html',
                     view=rec,
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
@@ -388,21 +393,10 @@ class PostHandler(BaseHandler):
         else:
             return False
         is_deleted = self.mpost.delete(del_id)
-        if self.tmpl_router == "post":
-            if is_deleted:
-                self.redirect('/post/recent')
-            else:
-                return False
+        if is_deleted:
+            self.redirect('/post/recent')
         else:
-            if is_deleted:
-                output = {
-                    'del_info ': 1,
-                }
-            else:
-                output = {
-                    'del_info ': 0,
-                }
-            return json.dump(output, self)
+            return False
 
 
 class PostAjaxHandler(PostHandler):
@@ -416,4 +410,22 @@ class PostAjaxHandler(PostHandler):
         self.mpost2reply = MPost2Reply()
         self.mpost2label = MPost2Label()
         self.mrel = MRelation()
-        self.tmpl_router = 'post_ajax'
+
+
+    @tornado.web.authenticated
+    def delete(self, del_id):
+        if self.check_doc_priv(self.userinfo)['DELETE']:
+            pass
+        else:
+            return False
+        is_deleted = self.mpost.delete(del_id)
+
+        if is_deleted:
+            output = {
+                'del_info ': 1,
+            }
+        else:
+            output = {
+                'del_info ': 0,
+            }
+        return json.dump(output, self)
