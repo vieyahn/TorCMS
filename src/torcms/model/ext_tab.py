@@ -17,13 +17,13 @@ class TabApp(BaseModel):
     run_count = peewee.IntegerField(null=False, default=0, help_text='运行次数')
     view_count = peewee.IntegerField(null=False, default=0, help_text='查看次数')
     run_time = peewee.IntegerField(null=False, default=0, help_text='上次运行时间')
-    update_time = peewee.IntegerField(null=False, default=0, help_text='更新时间')
+    # update_time = peewee.IntegerField(null=False, default=0, help_text='更新时间')
     create_time = peewee.IntegerField(null=False, default=0, help_text='创建时间')
+    time_update = peewee.IntegerField(null=False, default=0, help_text='更新时间')
     type = peewee.IntegerField(null=False, default=1)
     html_path = peewee.CharField(default='')
     cnt_md = peewee.TextField(null=True)
     cnt_html = peewee.TextField(null=True)
-    time_update = peewee.IntegerField(null=False, default=0)
     extinfo = BinaryJSONField()
 
 
