@@ -241,7 +241,7 @@ class PostHandler(BaseHandler):
             'cats': self.cats,
 
         }
-        self.render('doc/{0}/post_edit.html'.format(self.tmpl_router),
+        self.render('doc/post/post_edit.html',
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
                     tag_infos=self.mcat.query_all(),
